@@ -25,13 +25,13 @@ const SideBarNavGroup = ({
   return (
     <div
       className={
-        `p-1 text-white font-normal my-[2px] rounded-md flex flex-col items-start nav-group group ` +
+        `px-1 text-white font-normal my-[2px] rounded-md flex flex-col items-start nav-group group ` +
         (toggle ? 'bg-white/10' : 'bg-white/5')
       }
     >
       <button
         className={
-          `p-2 flex justify-between items-center w-full text-sm whitespace-nowrap ` +
+          `px-2 flex justify-between items-center w-full text-sm whitespace-nowrap h-10 ` +
           (toggle ? 'mb-1' : '')
         }
         onClick={() => {

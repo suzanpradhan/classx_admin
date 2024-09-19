@@ -20,7 +20,7 @@ const AppBar = ({
         <div className="w-full max-w-[15rem] h-full flex items-center gap-2 justify-center max-lg:justify-start">
           {hasSideBar ? (
             <button
-              className="w-9 h-9 bg-white/20 rounded-md hidden items-center justify-center max-lg:flex"
+              className="w-9 h-9 bg-white/5 rounded-md hidden items-center justify-center max-lg:flex"
               onClick={onSideBarToggle}
             >
               <Menu className="text-white" size={20} variant="Bold" />

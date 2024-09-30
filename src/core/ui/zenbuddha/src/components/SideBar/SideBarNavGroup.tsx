@@ -19,7 +19,7 @@ const SideBarNavGroup = ({
   const pathName = usePathname();
 
   useEffect(() => {
-    setToggle(pathName.startsWith('/' + segment) ? true : false);
+    setToggle(!!pathName.startsWith('/' + segment));
   }, [pathName, setToggle, segment]);
 
   return (

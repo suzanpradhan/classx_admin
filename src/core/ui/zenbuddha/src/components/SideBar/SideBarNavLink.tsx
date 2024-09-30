@@ -22,7 +22,7 @@ const SideBarNavLink = ({
     if (linkExact) {
       setToggle(pathName == link ? true : false);
     } else {
-      setToggle(pathName.startsWith(link) ? true : false);
+      setToggle(!!pathName.startsWith(link));
     }
   }, [pathName, setToggle, link, linkExact]);
 

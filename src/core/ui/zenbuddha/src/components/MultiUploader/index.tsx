@@ -112,9 +112,12 @@ const ServerAttachment = ({
         color="red"
         className="absolute top-2 right-2 z-30"
         onClick={() => {
-          if (!onServerAttachmentRemove) return;
+          if (!onServerAttachmentRemove) {
+            return;
+          }
           onServerAttachmentRemove(serverFile);
         }}
+        
       />
     </div>
   );

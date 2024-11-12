@@ -53,16 +53,47 @@ export default function TestLayout({
             link="/admin/dashboard"
           />
           <div className="my-2 border-t border-white/5"></div>
+          <SideBarNavTitle title="Music" />
+          <SideBarNavGroup title='Artists' segment='admin/artists'>
           <SideBarNavLink
-            title="Artists"
+            title="All Artists"
             link="/admin/artists"
           />
-          <SideBarNavGroup title="Discography" segment="admin/discography">
-            <div className="w-full border-t border-white/5"></div>
-            <SideBarNavLink title="All" link="/admin/discography" />
-            <SideBarNavLink title="Albums" link="/admin/discography/albums" />
-            <SideBarNavLink title="Single" link="/admin/discography/single" />
-            <SideBarNavLink title="EP" link="/admin/discography/ep" />
+          <SideBarNavLink
+            title="Add New Artists"
+            link="/admin/artists"
+          />
+          </SideBarNavGroup>
+          <SideBarNavGroup title='Genres' segment='admin/artists'>
+          <SideBarNavLink
+            title="All Genres"
+            link="/admin/genres"
+          />
+          <SideBarNavLink
+            title="Add New Genres"
+            link="/admin/genres"
+          />
+          </SideBarNavGroup>
+          <SideBarNavGroup title='Releases' segment='admin/artists'>
+          <SideBarNavLink
+            title="All Releases"
+            link="/admin/artists"
+          />
+          <SideBarNavLink
+            title="Add New Releases"
+            link="/admin/releases"
+          />
+          </SideBarNavGroup>
+          
+          <SideBarNavGroup title="Track waves" segment="admin/discography">
+            <SideBarNavLink title="All Track" link="/admin/discography" />
+            <SideBarNavLink title="Add New Track" link="/admin/discography" />
+    
+          </SideBarNavGroup>
+          <SideBarNavGroup title="Tracks" segment="admin/discography">
+            <SideBarNavLink title="All Tracks" link="/admin/discography" />
+            <SideBarNavLink title="Add New Tracks" link="/admin/discography" />
+    
           </SideBarNavGroup>
           <div className="my-2 border-t border-white/5"></div>
           <SideBarNavTitle title="Merchant" />

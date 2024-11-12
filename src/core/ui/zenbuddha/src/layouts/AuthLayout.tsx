@@ -13,12 +13,12 @@ export default function AuthLayout({
 }) {
   return (
     <div className="flex justify-center items-center min-h-screen bg-blueWhite">
-      <div className="w-full max-w-5xl bg-white min-h-screen sm:min-h-[600px] max-h-fit mx-0 sm:mx-8 my-0 sm:my-8 grid grid-rows-4 md:grid-rows-none md:grid-cols-3">
+      <div className="w-full max-w-5xl bg-black min-h-screen sm:min-h-[600px] max-h-fit mx-0 sm:mx-8 my-0 sm:my-8 grid grid-rows-4 md:grid-rows-none md:grid-cols-3">
         <div className="bg-accentBlue-500 flex row-span-1 md:col-span-1 md:row-auto relative">
           {backgroundImage != null ? (
             <img
               src={backgroundImage}
-              alt="buddha_air_logo_white"
+              alt="classX_logo_white"
               className="absolute w-full h-full object-cover"
             />
           ) : (
@@ -28,7 +28,7 @@ export default function AuthLayout({
             {logo ? (
               <img
                 src={logo}
-                alt="buddha_air_logo_white"
+                alt="classX_logo_white"
                 className="h-[34px] w-[160px] object-contain"
               />
             ) : (

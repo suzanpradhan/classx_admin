@@ -8,6 +8,7 @@ import {
 } from '@/core/ui/zenbuddha/src';
 import SideBarNavTitle from '@/core/ui/zenbuddha/src/components/SideBar/SideBarNavTitle';
 import { Logout, NotificationBing } from 'iconsax-react';
+import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { useState } from 'react';
 
@@ -19,7 +20,7 @@ export default function TestLayout({
   const [toggle, setToggle] = useState(true);
 
   return (
-    <div className="relative overflow-hidden">
+    <div className="relative overflow-hidden ">
       <AppBar
         onSideBarToggle={() => {
           setToggle(!toggle);
@@ -28,7 +29,7 @@ export default function TestLayout({
           <Link href="/">
             <img
               src="/logo/classX-white.png"
-              alt="buddha_air_logo_white"
+              alt="classX_logo_white"
               className="h-full w-full object-contain"
             />
           </Link>
@@ -37,7 +38,11 @@ export default function TestLayout({
         <button className="flex h-9 w-9 items-center justify-center rounded-md bg-white/5">
           <NotificationBing className="text-white" variant="Bold" size={20} />
         </button>
-        <button className="flex h-9 w-9 items-center justify-center rounded-md bg-white/5">
+        <button className="flex h-9 w-9 items-center justify-center rounded-md bg-white/5"
+         onClick={() => {
+          signOut({ callbackUrl: '/login', redirect: true });
+        }}
+        >
           <Logout className="text-white" />
         </button>
       </AppBar>

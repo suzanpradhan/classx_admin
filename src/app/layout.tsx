@@ -1,5 +1,7 @@
+import Notification from '@/core/ui/components/Notification';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
+import 'react-toastify/dist/ReactToastify.css';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -63,6 +65,7 @@ export default function RootLayout({
       <body
         className={`${helvetica.variable} font-sans`}
       >
+        <Notification />
         {children}
       </body>
     </html>

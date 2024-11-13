@@ -9,12 +9,15 @@ import { ArtistsType } from '@/modules/artists/artistsType';
 import { Eye } from 'iconsax-react';
 import { PencilSimpleLine, TrashSimple } from 'phosphor-react';
 
+import AlertDialog from '@/core/ui/components/AlertDialog';
+import PaginationNav from '@/core/ui/components/Pagination';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 const ArtistsTableLisiting = () => {
   const dispatch = useAppDispatch();
   const [pageIndex, setPageIndex] = useState(1);
+  const [deleteModelOpen, toggleDeleteModel] = useState(false);
   const [onDelete, setOnDelete] = useState<string | undefined>(undefined);
 
   useEffect(() => {
@@ -26,12 +29,11 @@ const ArtistsTableLisiting = () => {
       state.baseApi.queries[`getAllArtists`]
         ?.data as PaginatedResponseType<ArtistsType>
   );
- 
 
   return (
     <>
         <>
-          {/* <AlertDialog
+          <AlertDialog
             isOpen={deleteModelOpen}
             deleteContent={onDelete}
             onClickNo={() => {
@@ -41,28 +43,28 @@ const ArtistsTableLisiting = () => {
               if (onDelete) {
                 await Promise.resolve(
                   dispatch(
-                    hotelApi.endpoints.deleteHotel.initiate(onDelete as string)
+                    artistsApi.endpoints.deleteArtists.initiate(onDelete as string)
                   )
                 );
               }
               toggleDeleteModel(false);
               setOnDelete(undefined);
             }}
-          /> */}
+          />
           <TableCard
-            // footer={
-            //   hotelData.results.length ? (
-            //     <PaginationNav
-            //       gotoPage={setPageIndex}
-            //       canPreviousPage={pageIndex > 0}
-            //       canNextPage={pageIndex < hotelData.pagination.total_page}
-            //       pageCount={hotelData.pagination.total_page}
-            //       pageIndex={hotelData.pagination.current_page - 1}
-            //     />
-            //   ) : (
-            //     <></>
-            //   )
-            // }
+            footer={
+                artistsData && artistsData?.results.length > 0 ?  (
+                <PaginationNav
+                  gotoPage={setPageIndex}
+                  canPreviousPage={pageIndex > 0}
+                  canNextPage={pageIndex < artistsData.pagination.total_page}
+                  pageCount={artistsData.pagination.total_page}
+                  pageIndex={artistsData.pagination.current_page - 1}
+                />
+              ) : (
+                <></>
+              )
+            }
           >
             <thead>
               <tr className={tableStyles.table_thead_tr}>
@@ -111,14 +113,18 @@ const ArtistsTableLisiting = () => {
                 />
                 <Button
                         className="h-8 w-8"
-                        // type="link"
-                        // href={`/admin/news/mutate/${item.id}`}
+                        type="link"
+                        href={`/admin/artists/mutate/${item.id}`}
                         prefix={<PencilSimpleLine size={15} weight="duotone" />}
                       />
                 <Button
                   className="h-8 w-8"
                   kind="danger"
                   type="button"
+                  onClick={() => {
+                    setOnDelete(item.id?.toString());
+                    toggleDeleteModel(true);
+                  }}
                   prefix={<TrashSimple size={18} weight="duotone" />}
                  
                 />

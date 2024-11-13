@@ -15,6 +15,7 @@ const artistsApi = baseApi.injectEndpoints({
                 const fromData = new FormData();
                 fromData.append('id', String(payload.id));
                 fromData.append('name', String(payload.name));
+                fromData.append('bio', String(payload.bio));
                 if (payload.profile_picture) fromData.append('profile_picture', payload.profile_picture);
                 return {
                     url: `${apiPaths.artistsUrl}`,
@@ -90,6 +91,60 @@ const artistsApi = baseApi.injectEndpoints({
             //   console.log('get hotek response', response);
             //   return response;
             // },
+        }),
+        // delete
+
+        deleteArtists: builder.mutation<any, string>({
+            query(id) {
+                return {
+                    url: `${apiPaths.artistsUrl}${id}/`,
+                    method: 'DELETE',
+                };
+            },
+            async onQueryStarted(payload, { queryFulfilled }) {
+                try {
+                    await queryFulfilled;
+                    toast.success('Artists has been deleted.');
+                } catch (err) {
+                    console.error('Delete Artists Error:', err);
+                    toast.error(
+                        'Failed to delete the Artists. Please check if the ID is correct.'
+                    );
+                }
+            },
+            invalidatesTags: (result, error, id) => [{ type: 'Artists', id }],
+        }),
+
+        // Update
+        updateArtists: builder.mutation<
+            ArtistsType,
+            ArtistsSchemaType
+        >({
+            query: ({ id, ...payload }) => {
+                const formData = new FormData();
+
+                formData.append('name', String(payload.name));
+                formData.append('bio', String(payload.bio));
+                if (payload.profile_picture) formData.append('profile_picture', payload.profile_picture);
+
+                return {
+                    url: `${apiPaths.artistsUrl}${id}/`,
+                    method: 'PATCH',
+                    body: formData,
+                };
+            },
+            async onQueryStarted(payload, { queryFulfilled }) {
+                try {
+                    await queryFulfilled;
+                    toast.success('Artists  Updated.');
+                } catch (err) {
+                    console.log(err);
+                    toast.error('Failed updating a Artists.');
+                }
+            },
+            invalidatesTags: (result, error, { id }) => [
+                { type: 'Artists', id: id! },
+            ],
         }),
 
 

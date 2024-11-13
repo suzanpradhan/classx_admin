@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, TextField } from '@/core/ui/zenbuddha/src';
+import { Button, TextField2 } from '@/core/ui/zenbuddha/src';
 import { useFormik } from 'formik';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -64,7 +64,7 @@ export default function Login() {
       <div className="text-sm mb-4">
         Sign in by entering the information below.
       </div>
-      <TextField
+      <TextField2
         placeholder="Your email"
         id="email"
         type="email"
@@ -75,7 +75,7 @@ export default function Login() {
         <div className="text-red-500">{formik.errors.email}</div>
       )}
 
-      <TextField
+      <TextField2
         placeholder="•••••••••••"
         id="password"
         type="password"

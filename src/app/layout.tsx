@@ -1,6 +1,8 @@
+import Provider from '@/core/redux/provider';
 import Notification from '@/core/ui/components/Notification';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import 'react-toastify/dist/ReactToastify.css';
 import './globals.css';
 
@@ -66,7 +68,8 @@ export default function RootLayout({
         className={`${helvetica.variable} font-sans`}
       >
         <Notification />
-        {children}
+        <div id="deleteWarningDialog"></div>
+       <Provider>{children}</Provider>
       </body>
     </html>
   );

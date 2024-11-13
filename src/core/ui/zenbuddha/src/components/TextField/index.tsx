@@ -19,7 +19,7 @@ const TextField = ({
   return (
     <div className={`flex flex-col last-of-type:mb-0 ` + className}>
       {props.label ? (
-        <label htmlFor={props.id} className="text-sm mb-2 text-white">
+        <label htmlFor={props.id} className="text-sm mb-2 text-black">
           {props.label}
           {props.required ? '*' : ''}
         </label>

@@ -58,46 +58,46 @@ export default function TestLayout({
             link="/admin/dashboard"
           />
           <div className="my-2 border-t border-white/5"></div>
-          <SideBarNavTitle title="Music" />
           <SideBarNavGroup title='Artists' segment='admin/artists'>
           <SideBarNavLink
             title="All Artists"
-            link="/admin/artists"
+            link="/admin/artists/all"
           />
           <SideBarNavLink
             title="Add New Artists"
-            link="/admin/artists"
+            link="/admin/artists/mutate"
           />
           </SideBarNavGroup>
-          <SideBarNavGroup title='Genres' segment='admin/artists'>
+          <SideBarNavTitle title="Music" />
+         
+          <SideBarNavGroup title='Genres' segment='admin/genres'>
           <SideBarNavLink
             title="All Genres"
-            link="/admin/genres"
+            link="/admin/genres/all"
           />
           <SideBarNavLink
             title="Add New Genres"
-            link="/admin/genres"
+            link="/admin/genres/mutate"
           />
           </SideBarNavGroup>
-          <SideBarNavGroup title='Releases' segment='admin/artists'>
+          <SideBarNavGroup title='Releases' segment='admin/releases'>
           <SideBarNavLink
             title="All Releases"
-            link="/admin/artists"
+            link="/admin/releases/all"
           />
           <SideBarNavLink
             title="Add New Releases"
-            link="/admin/releases"
+            link="/admin/releases/mutate"
           />
           </SideBarNavGroup>
-          
-          <SideBarNavGroup title="Track waves" segment="admin/discography">
-            <SideBarNavLink title="All Track" link="/admin/discography" />
-            <SideBarNavLink title="Add New Track" link="/admin/discography" />
+          <SideBarNavGroup title="Track waves" segment="admin/trackwaves">
+            <SideBarNavLink title="All Track" link="/admin/trackwaves/all" />
+            <SideBarNavLink title="Add New Track" link="/admin/trackwaves/mutate" />
     
           </SideBarNavGroup>
-          <SideBarNavGroup title="Tracks" segment="admin/discography">
-            <SideBarNavLink title="All Tracks" link="/admin/discography" />
-            <SideBarNavLink title="Add New Tracks" link="/admin/discography" />
+          <SideBarNavGroup title="Tracks" segment="admin/tracks">
+            <SideBarNavLink title="All Tracks" link="/admin/tracks/all" />
+            <SideBarNavLink title="Add New Tracks" link="/admin/tracks/mutate" />
     
           </SideBarNavGroup>
           <div className="my-2 border-t border-white/5"></div>

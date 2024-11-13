@@ -11,8 +11,8 @@ export const baseApi = createApi({
         'Roles',
         'Permissions',
         'UserPermissions',
-        'ContentTypes',
         'Users',
+        'Artists',
 
     ],
     endpoints: () => ({}),

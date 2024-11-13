@@ -2,7 +2,7 @@ import { ArtistsType } from '@/modules/artists/artistsType';
 import parse from "html-react-parser";
 import Image from 'next/image';
 
-const ArtistsInfosTab = ({ Artists }: { Artists: ArtistsType }) => {
+const ArtistsInfosTab = ({ Artists }: { Artists:  ArtistsType }) => {
   return (
     <div className="m-4 flex flex-col max-w-5xl">
       <div className="bg-blueWhite border border-primaryGray-300 rounded-lg overflow-hidden max-w-xl relative aspect-video">

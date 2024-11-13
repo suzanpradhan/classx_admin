@@ -1,15 +1,37 @@
 'use client';
 
+import { useAppDispatch, useAppSelector } from '@/core/redux/clientStore';
+import { RootState } from '@/core/redux/store';
+import { PaginatedResponseType } from '@/core/types/responseTypes';
+import AlertDialog from '@/core/ui/components/AlertDialog';
+import PaginationNav from '@/core/ui/components/Pagination';
 import { Button, TableCard, tableStyles } from '@/core/ui/zenbuddha/src';
-import { Edit2, Eye, Trash } from 'iconsax-react';
+import genresApi from '@/modules/genres/genresApi';
+import { GenresType } from '@/modules/genres/genresType';
+import { Edit2, Trash } from 'iconsax-react';
+import { useEffect, useState } from 'react';
 
 const GenresTableLisiting = () => {
- 
+  const dispatch = useAppDispatch();
+  const [pageIndex, setPageIndex] = useState(1);
+  const [deleteModelOpen, toggleDeleteModel] = useState(false);
+  const [onDelete, setOnDelete] = useState<string | undefined>(undefined);
+
+  
+  useEffect(() => {
+    dispatch(genresApi.endpoints.getAllGenres.initiate(pageIndex.toString()));
+  }, [dispatch, pageIndex]);
+
+  const genresData = useAppSelector(
+    (state: RootState) => 
+      state.baseApi.queries[`getAllGenres`]
+        ?.data as PaginatedResponseType<GenresType>
+  );
 
   return (
     <>
         <>
-          {/* <AlertDialog
+          <AlertDialog
             isOpen={deleteModelOpen}
             deleteContent={onDelete}
             onClickNo={() => {
@@ -19,28 +41,28 @@ const GenresTableLisiting = () => {
               if (onDelete) {
                 await Promise.resolve(
                   dispatch(
-                    hotelApi.endpoints.deleteHotel.initiate(onDelete as string)
+                    genresApi.endpoints.deleteGenres.initiate(onDelete as string)
                   )
                 );
               }
               toggleDeleteModel(false);
               setOnDelete(undefined);
             }}
-          /> */}
+          />
           <TableCard
-            // footer={
-            //   hotelData.results.length ? (
-            //     <PaginationNav
-            //       gotoPage={setPageIndex}
-            //       canPreviousPage={pageIndex > 0}
-            //       canNextPage={pageIndex < hotelData.pagination.total_page}
-            //       pageCount={hotelData.pagination.total_page}
-            //       pageIndex={hotelData.pagination.current_page - 1}
-            //     />
-            //   ) : (
-            //     <></>
-            //   )
-            // }
+            footer={
+              genresData?.results.length ? (
+                <PaginationNav
+                  gotoPage={setPageIndex}
+                  canPreviousPage={pageIndex > 0}
+                  canNextPage={pageIndex < genresData.pagination.total_page}
+                  pageCount={genresData.pagination.total_page}
+                  pageIndex={genresData.pagination.current_page - 1}
+                />
+              ) : (
+                <></>
+              )
+            }
           >
             <thead>
               <tr className={tableStyles.table_thead_tr}>
@@ -51,42 +73,32 @@ const GenresTableLisiting = () => {
               </tr>
             </thead>
             <tbody>
-                  <tr className={tableStyles.table_tbody_tr}>
-                    <td className={tableStyles.table_td}>{"1"}</td>
-                    <td className={tableStyles.table_td}>{'Hello'}</td>
-                    
-                    <td
-                      className={tableStyles.table_td + ` flex gap-2 max-w-xs`}
-                    >
-                        <Button
-                          className="h-8 w-8"
-                        //   type="link"
-                        //   href={`/admin/hotels/${item.id}`}
-                          buttonType="bordered"
-                          prefix={<Eye size={18} variant="Bold" />}
-                        />
-                    
-                        <Button
-                          className="h-8 w-8"
-                        //   type="link"
-                        //   href={`/admin/hotels/mutate/${item.id}/`}
-                          prefix={<Edit2 size={18} variant="Bold" />}
-                        />
-                     
-                        <Button
-                          className="h-8 w-8"
-                          kind="danger"
-                          type="button"
-                        //   onClick={() => {
-                        //     setOnDelete(item.id?.toString());
-                        //     toggleDeleteModel(true);
-                        //   }}
-                          prefix={<Trash size={18} variant="Bold" />}
-                        />
-                     
-                    </td>
-                  </tr>
-            </tbody>
+          {genresData?.results.map((item, index) => (
+            <tr key={item.id} className={tableStyles.table_tbody_tr}>
+              <td className={tableStyles.table_td}>{index + 1}</td>
+              <td className={tableStyles.table_td}>{item.name}</td>
+              <td className={tableStyles.table_td + ` flex gap-2 max-w-xs`}>
+                  <Button
+                    className="h-8 w-8"
+                    type="link"
+                    href={`/admin/genres/mutate/${item.id}`}
+                    prefix={<Edit2 size={18} variant="Bold" />}
+                  />
+                  <Button
+                    className="h-8 w-8"
+                    kind="danger"
+                    type="button"
+                    prefix={<Trash size={18} variant="Bold" />}
+                    onClick={() => {
+                      setOnDelete(item.id.toString());
+                      toggleDeleteModel(true);
+                    }}
+                  />
+               
+              </td>
+            </tr>
+          ))}
+        </tbody>
           </TableCard>
         </>
     </>

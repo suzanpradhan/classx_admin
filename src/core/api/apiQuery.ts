@@ -13,6 +13,7 @@ export const baseApi = createApi({
         'UserPermissions',
         'Users',
         'Artists',
+        'Genres',
 
     ],
     endpoints: () => ({}),

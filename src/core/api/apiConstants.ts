@@ -24,5 +24,6 @@ export const apiPaths = {
     baseUrl: process.env.NEXT_PUBLIC_SERVER_URL + '/api/v1/',
     loginUrl: 'auth/login/',
     artistsUrl: 'artists/',
+    genresUrl: 'genres/',
 
 };

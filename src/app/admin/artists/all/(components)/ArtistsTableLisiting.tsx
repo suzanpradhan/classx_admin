@@ -3,15 +3,15 @@
 import { useAppDispatch, useAppSelector } from '@/core/redux/clientStore';
 import { RootState } from '@/core/redux/store';
 import { PaginatedResponseType } from '@/core/types/responseTypes';
+import AlertDialog from '@/core/ui/components/AlertDialog';
+import PaginationNav from '@/core/ui/components/Pagination';
 import { Button, TableCard, tableStyles } from '@/core/ui/zenbuddha/src';
 import artistsApi from '@/modules/artists/artistsApi';
 import { ArtistsType } from '@/modules/artists/artistsType';
+import parse from "html-react-parser";
 import { Eye } from 'iconsax-react';
-import { PencilSimpleLine, TrashSimple } from 'phosphor-react';
-
-import AlertDialog from '@/core/ui/components/AlertDialog';
-import PaginationNav from '@/core/ui/components/Pagination';
 import Image from 'next/image';
+import { PencilSimpleLine, TrashSimple } from 'phosphor-react';
 import { useEffect, useState } from 'react';
 
 const ArtistsTableLisiting = () => {
@@ -79,7 +79,7 @@ const ArtistsTableLisiting = () => {
             <tbody>
             {artistsData?.results.map((item, index) => (
             <tr key={index} className={tableStyles.table_tbody_tr}>
-              <td className={tableStyles.table_td}>{index + 1}</td>
+              <td className={tableStyles.table_td}>{item.id}</td>
               <td className={tableStyles.table_td}>
                   <div className="relative w-20 h-20 overflow-hidden rounded-md">
                     {item.profile_picture && (
@@ -101,13 +101,13 @@ const ArtistsTableLisiting = () => {
                   </div>
                 </td>
                 <td className={tableStyles.table_td}>{item.name}</td>
-                <td className={tableStyles.table_td}>{item.bio}</td>
+                <td className={tableStyles.table_td}>{parse(item.bio)}</td>
 
               <td className={tableStyles.table_td + ` flex gap-2 max-w-xs`}>
               <Button
                   className="h-8 w-8"
-                  // type="link"
-                  // href={`/admin/bookings/${item.id}`}
+                   type="link"
+                   href={`/admin/artists/${item.id}`}
                   buttonType="bordered"
                   prefix={<Eye size={18} variant="Bold" />}
                 />

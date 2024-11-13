@@ -2,6 +2,7 @@
 import { useGetApiResponse } from '@/core/api/getApiResponse';
 import { useAppDispatch } from '@/core/redux/clientStore';
 import { Button, FormCard, FormGroup, ImageInput, TextField } from '@/core/ui/zenbuddha/src';
+import RichTextField from '@/core/ui/zenbuddha/src/components/RichTextField';
 import artistsApi from '@/modules/artists/artistsApi';
 import { artistsSchema, ArtistsSchemaType, ArtistsType } from '@/modules/artists/artistsType';
 import { useFormik } from 'formik';
@@ -84,6 +85,9 @@ const Page = ({ params }: { params: {artistsId: string } }) => {
       formik.setFieldValue('profile_picture', e.target.files[0]);
     }
   };
+  const handleRichTextChange = (value: string) => {
+    formik.setFieldValue('bio', value);
+  };
   return (
     <FormCard onSubmit={formik.handleSubmit} className="m-4">
       <FormGroup title="Basic Type">
@@ -116,18 +120,13 @@ const Page = ({ params }: { params: {artistsId: string } }) => {
           </div>
         </div>
         <div className="flex gap-2 mb-2 max-sm:flex-col">
-          <div className="flex flex-col flex-1">
-            <TextField
-              id="bio"
-              type="text"
-              label="Bio"
-              className="flex-1"
-              {...formik.getFieldProps('bio')}
-            />
-             {!!formik.errors.bio && (
-              <div className="text-red-500 text-sm">{formik.errors.bio}</div>
-            )}
-          </div>
+        <RichTextField
+          id="bio"
+          label="Bio"
+          value={formik.values.bio}
+          onChange={handleRichTextChange}
+
+        />
         </div>
       </FormGroup>
       <div className="flex justify-end gap-2 m-4">

@@ -12,7 +12,7 @@ export default function AddUsersLayout({
       <PageBar
         leading={
           <div className="text-base font-bold text-dark-500">
-            {params ? ' Update' : 'Add New  '} Releases
+            {params ? '  Add New ' : 'Update'} Releases
           </div>
         }
       ></PageBar>

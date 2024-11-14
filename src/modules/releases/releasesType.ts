@@ -19,13 +19,12 @@ const imageFile = z.instanceof(File).refine(
 
 export const releasesSchema = z.object({
     id: z.number().optional().nullable(),
-    artist: z.number().optional().nullable(),
-    name: z.string(),
+    artist: z.string(),
     title: z.string(),
     genres: z.array(selectorDataSchema).optional(),
     description: z.string().optional().nullable(),
     release_type: z.string(),
-    release_date: z.string(),
+    release_date: z.date().optional(),
     cover: imageFile.optional().nullable(),
     cover_small: imageFile.optional().nullable(),
 });
@@ -35,15 +34,19 @@ export const genresSchema = z.object({
     name: z.string(),
 
 });
-
+export const releasesRequestSchema = releasesSchema.extend({
+    genres: z.array(genresSchema).optional(),
+});
 
 export type ReleasesSchemaType = z.infer<typeof releasesSchema>;
+export type ReleasesRequestType = z.infer<typeof releasesRequestSchema>;
+
 
 export type ReleasesType = {
     id: number;
     artist: number;
     title: string;
-    genres: GenreType;
+    genres: GenreType[];
     product_slug: string,
     description: string,
     release_type: string,

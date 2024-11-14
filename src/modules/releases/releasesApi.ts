@@ -3,36 +3,52 @@ import { baseApi } from '@/core/api/apiQuery';
 import { PaginatedResponseType } from '@/core/types/responseTypes';
 import { toast } from 'react-toastify';
 // import { GenresSchemaType, GenresType } from './genresType';
-import { ReleasesSchemaType, ReleasesType } from './releasesType';
+import { ReleasesRequestType, ReleasesType } from './releasesType';
 
 const releaseApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
         // ADD
-        // addReleases: builder.mutation<any, GenresSchemaType>({
-        //     query: (payload) => {
-        //         const formData = new FormData();
-        //         formData.append('id', String(payload.id));
-        //         formData.append('name', String(payload.name));
-        //         return {
-        //             url: `${apiPaths.genresUrl}`,
-        //             method: 'POST',
-        //             body: formData,
-        //         };
-        //     },
-        //     async onQueryStarted(payload, { queryFulfilled }) {
-        //         try {
-        //             await queryFulfilled;
-        //             toast.success('Genres Type added.');
-        //         } catch (err) {
-        //             console.log(err);
-        //             toast.error('Genres Type adding Failed.');
-        //         }
-        //     },
-        //     transformResponse: (response: any) => {
-        //         return response;
-        //     },
-        //     invalidatesTags: [{ type: 'Genres', id: 'LIST' }],
-        // }),
+        addReleases: builder.mutation<any, ReleasesRequestType>({
+            query: (payload) => {
+                const formData = new FormData();
+                formData.append('id', String(payload.id));
+                formData.append('title', String(payload.title));
+                if (payload.release_date)
+                    formData.append(
+                        'release_date',
+                        `${payload.release_date.getFullYear()}-${payload.release_date.getMonth()}-${payload.release_date.getDate()}`
+                    );
+                if (payload.cover) formData.append('cover', payload.cover);
+                if (payload.artist) formData.append('artist', payload.artist);
+                if (payload.release_type)
+                    formData.append('release_type', payload.release_type);
+                payload.genres?.forEach((item, index) => {
+                    formData.append(`genres[${index}]name`, item.name);
+                    if (item.id)
+                        formData.append(`genres[${index}]id`, item.id.toString());
+                });
+                if (payload.description)
+                    formData.append('description', payload.description);
+                return {
+                    url: `${apiPaths.releasesUrl}`,
+                    method: 'POST',
+                    body: formData,
+                };
+            },
+            async onQueryStarted(payload, { queryFulfilled }) {
+                try {
+                    await queryFulfilled;
+                    toast.success('Releases Type added.');
+                } catch (err) {
+                    console.log(err);
+                    toast.error('Releases Type adding Failed.');
+                }
+            },
+            transformResponse: (response: any) => {
+                return response;
+            },
+            invalidatesTags: [{ type: 'Releases', id: 'LIST' }],
+        }),
 
         // Get All
         getAllReleases: builder.query<PaginatedResponseType<ReleasesType>, string>({
@@ -109,10 +125,25 @@ const releaseApi = baseApi.injectEndpoints({
         }),
 
         // Update
-        updateReleases: builder.mutation<ReleasesType, ReleasesSchemaType>({
+        updateReleases: builder.mutation<ReleasesType, ReleasesRequestType>({
             query: ({ id, ...payload }) => {
                 const formData = new FormData();
-                formData.append('name', String(payload.name));
+                formData.append('title', String(payload.title));
+                if (payload.release_date)
+                    formData.append(
+                        'release_date',
+                        `${payload.release_date.getFullYear()}-${payload.release_date.getMonth()}-${payload.release_date.getDate()}}`
+                    );
+                if (payload.cover) formData.append('cover', payload.cover);
+                if (payload.release_type)
+                    formData.append('pricingType', payload.release_type);
+                payload.genres?.forEach((item, index) => {
+                    formData.append(`genres[${index}]name`, item.name);
+                    if (item.id)
+                        formData.append(`genres[${index}]id`, item.id.toString());
+                });
+                if (payload.description)
+                    formData.append('description', payload.description);
                 return {
                     url: `${apiPaths.releasesUrl}${id}/`,
                     method: 'PATCH',

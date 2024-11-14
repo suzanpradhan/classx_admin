@@ -19,15 +19,6 @@ const ReleasesTableListing = () => {
   useEffect(() => {
     dispatch(releaseApi.endpoints.getAllReleases.initiate(pageIndex.toString()));
   }, [dispatch, pageIndex]);
-  // useEffect(() => {
-  //   dispatch(artistsApi.endpoints.getAllArtists.initiate(pageIndex));
-  // }, [dispatch, pageIndex]);
-
-
-  // const artitstData = useAppSelector(
-  //   (state: RootState) =>
-  //     state.baseApi.queries[`getAllArtists`]?.data as PaginatedResponseType<ArtistsType>
-  // );
   const releaseData = useAppSelector(
     (state: RootState) =>
       state.baseApi.queries[`getAllReleases`]?.data as PaginatedResponseType<ReleasesType>
@@ -42,7 +33,8 @@ const ReleasesTableListing = () => {
           <tr className={tableStyles.table_thead_tr}>
             <th className={tableStyles.table_th}>S.N.</th>
             <th className={tableStyles.table_th}>Title</th>
-            {/* <th className={tableStyles.table_th}>Artists</th> */}
+            <th className={tableStyles.table_th}>Artists</th>
+            <th className={tableStyles.table_th}>Genres</th>
             <th className={tableStyles.table_th}>Release Type</th>
             <th className={tableStyles.table_th}>Release Date</th>
             <th className={tableStyles.table_th}>Actions</th>
@@ -53,7 +45,8 @@ const ReleasesTableListing = () => {
             <tr key={index} className={tableStyles.table_tbody_tr}>
               <td className={tableStyles.table_td}>{item.id}</td>
               <td className={tableStyles.table_td}>{item.title}</td>
-              {/* <td className={tableStyles.table_td}>{item.}</td> */}
+              <td className={tableStyles.table_td}>Artists Object Needed</td>
+              <td className={tableStyles.table_td}>{item.genres && item.genres.length > 0 ? item.genres.map((item, index) => <div key={index} className='inline-block px-1 text-xs bg-slate-300 text-dark-500 rounded-sm mr-1'>{item.name}</div>) : ""}</td>
               <td className={tableStyles.table_td}>{item.release_type}</td>
               <td className={tableStyles.table_td}>{item.release_date}</td>
              
@@ -61,7 +54,7 @@ const ReleasesTableListing = () => {
               <Button
                   className="h-8 w-8"
                   //  type="link"
-                  //  href={`/admin/artists/${item.id}`}
+                  //  href={`/admin/releases/${item.id}`}
                   buttonType="bordered"
                   prefix={<Eye size={18} weight="duotone" />}
                 />

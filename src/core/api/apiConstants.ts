@@ -25,5 +25,6 @@ export const apiPaths = {
     loginUrl: 'auth/login/',
     artistsUrl: 'artists/',
     genresUrl: 'genres/',
+    releasesUrl: 'releases/',
 
 };

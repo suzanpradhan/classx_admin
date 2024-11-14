@@ -34,9 +34,8 @@ const Page = () => {
         <div className="flex gap-2 mb-2 max-sm:flex-col">
         <div className="flex flex-col flex-1">
             <DateSelector
-              id="release date"
+              id="release_date"
               label="Release date"
-            
             /> 
           </div>
           <div className="flex flex-col flex-1">

@@ -9,9 +9,8 @@ import { Button, TableCard, tableStyles } from '@/core/ui/zenbuddha/src';
 import artistsApi from '@/modules/artists/artistsApi';
 import { ArtistsType } from '@/modules/artists/artistsType';
 import parse from "html-react-parser";
-import { Eye } from 'iconsax-react';
 import Image from 'next/image';
-import { PencilSimpleLine, TrashSimple } from 'phosphor-react';
+import { Eye, PencilSimpleLine, TrashSimple } from 'phosphor-react';
 import { useEffect, useState } from 'react';
 
 const ArtistsTableLisiting = () => {
@@ -109,7 +108,8 @@ const ArtistsTableLisiting = () => {
                    type="link"
                    href={`/admin/artists/${item.id}`}
                   buttonType="bordered"
-                  prefix={<Eye size={18} variant="Bold" />}
+                  prefix={<Eye size={18} weight="duotone" />}
+
                 />
                 <Button
                         className="h-8 w-8"

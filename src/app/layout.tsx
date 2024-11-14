@@ -2,6 +2,7 @@ import Provider from '@/core/redux/provider';
 import Notification from '@/core/ui/components/Notification';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
+import "react-datetime/css/react-datetime.css";
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import 'react-toastify/dist/ReactToastify.css';
 import './globals.css';

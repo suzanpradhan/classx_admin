@@ -13,7 +13,7 @@
   },
   "scripts": {
     "dev": "cross-env NODE_OPTIONS='--inspect' next dev",
-    "build": "babel src -d lib",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "prettier": "prettier --write .",

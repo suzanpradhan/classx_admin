@@ -6,40 +6,47 @@ import RichTextField from '@/core/ui/zenbuddha/src/components/RichTextField';
 import artistsApi from '@/modules/artists/artistsApi';
 import { artistsSchema, ArtistsSchemaType, ArtistsType } from '@/modules/artists/artistsType';
 import { useFormik } from 'formik';
-
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { ZodError } from 'zod';
 
-const Page = ({ params }: { params: {artistsId: string } }) => {
+const Page = () => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const param = useParams();
+  const artistsId = param.artistsId && param.artistsId[0];
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    if (params.artistsId) {
-      dispatch(
-        artistsApi.endpoints.getEachArtists.initiate(
-          params.artistsId
-        )
-      );
-    }
-  }, [params, dispatch]);
-
+  // Fetch artist data if ID is provided
   const toMutateArtistsData = useGetApiResponse<ArtistsType>(
-    `getEachArtists("${params.artistsId ? params.artistsId : undefined}")`
+    `getEachArtists("${artistsId ?? ''}")`
   );
 
-  const onSubmit = async (values: ArtistsSchemaType) => {
-    if (isLoading) {
-      return;
+  useEffect(() => {
+    if (artistsId) {
+      const fetchArtist = async () => {
+        try {
+          await dispatch(
+            artistsApi.endpoints.getEachArtists.initiate(artistsId)
+          );
+        } catch (error) {
+          console.error("Error fetching artist data:", error);
+        }
+      };
+
+      fetchArtist();
     }
+  }, [artistsId, dispatch]);
+
+  const onSubmit = async (values: ArtistsSchemaType) => {
+    if (isLoading) return;
     setIsLoading(true);
+    
     try {
-      const data = params.artistsId
+      const data = artistsId
         ? await dispatch(
             artistsApi.endpoints.updateArtists.initiate({
-              id: Number(params.artistsId),
+              id: Number(artistsId),
               ...values,
             })
           ).unwrap()
@@ -47,15 +54,14 @@ const Page = ({ params }: { params: {artistsId: string } }) => {
             artistsApi.endpoints.addArtists.initiate(values)
           ).unwrap();
 
-      if (data) {
-        router.push('/admin/artists/all');
-      }
+      if (data) router.push('/admin/artists/all');
     } catch (error) {
       console.error('Failed to submit:', error);
+    } finally {
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
   };
+
   const validateForm = (values: ArtistsSchemaType) => {
     try {
       artistsSchema.parse(values);
@@ -66,28 +72,30 @@ const Page = ({ params }: { params: {artistsId: string } }) => {
       }
     }
   };
+
   const formik = useFormik<ArtistsSchemaType>({
     enableReinitialize: true,
     initialValues: {
-      id: toMutateArtistsData
-        ? (toMutateArtistsData.id ?? null)
-        : null,
-      name: toMutateArtistsData ? toMutateArtistsData.name : '',
-      bio: toMutateArtistsData ? toMutateArtistsData.bio : '',
+      id: toMutateArtistsData?.id ?? null,
+      name: toMutateArtistsData?.name || '',
+      bio: toMutateArtistsData?.bio || '',
       profile_picture: toMutateArtistsData ? null : null,
     },
     validateOnChange: true,
     validate: validateForm,
     onSubmit,
   });
+
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.[0]) {
       formik.setFieldValue('profile_picture', e.target.files[0]);
     }
   };
+
   const handleRichTextChange = (value: string) => {
     formik.setFieldValue('bio', value);
   };
+
   return (
     <FormCard onSubmit={formik.handleSubmit} className="m-4">
       <FormGroup title="Basic Type">
@@ -100,7 +108,7 @@ const Page = ({ params }: { params: {artistsId: string } }) => {
               className="flex-1"
               {...formik.getFieldProps('name')}
             />
-            {!!formik.errors.name && (
+            {formik.errors.name && (
               <div className="text-red-500 text-sm">{formik.errors.name}</div>
             )}
           </div>
@@ -114,21 +122,22 @@ const Page = ({ params }: { params: {artistsId: string } }) => {
               value={formik.values.profile_picture}
               onChange={handleImageChange}
             />
-             {!!formik.errors.profile_picture && (
+            {formik.errors.profile_picture && (
               <div className="text-red-500 text-sm">{formik.errors.profile_picture}</div>
             )}
           </div>
         </div>
-        <div className="flex gap-2 mb-2 max-sm:flex-col">
-        <RichTextField
-          id="bio"
-          label="Bio"
-          value={formik.values.bio}
-          onChange={handleRichTextChange}
 
-        />
+        <div className="flex gap-2 mb-2 max-sm:flex-col">
+          <RichTextField
+            id="bio"
+            label="Bio"
+            value={formik.values.bio}
+            onChange={handleRichTextChange}
+          />
         </div>
       </FormGroup>
+
       <div className="flex justify-end gap-2 m-4">
         <Button
           text="Submit"
@@ -142,9 +151,7 @@ const Page = ({ params }: { params: {artistsId: string } }) => {
           kind="danger"
           className="h-8 w-fit"
           buttonType="flat"
-          onClick={() => {
-            router.back();
-          }}
+          onClick={() => router.back()}
         />
       </div>
     </FormCard>

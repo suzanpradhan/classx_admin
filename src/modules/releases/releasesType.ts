@@ -47,10 +47,10 @@ export type ReleasesType = {
     artist: number;
     title: string;
     genres: GenreType[];
-    product_slug: string,
-    description: string,
-    release_type: string,
-    release_date: string,
+    product_slug: string;
+    description: string;
+    release_type: string;
+    release_date: string;
     cover_small?: string;
     cover?: string;
 };

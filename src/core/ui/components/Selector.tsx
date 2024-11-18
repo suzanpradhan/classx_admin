@@ -110,8 +110,8 @@ const Selector = ({ className, suffix, ...props }: SelectorProps) => {
           styles={{
             control: (base) => ({
               ...base,
-              // minHeight: props.isCompact ? 34 : 44,
-              // maxHeight: props.isCompact ? 34 : 44,
+              minHeight: props.isCompact ? 34 : 44,
+              maxHeight: props.isCompact ? 34 : 44,
               border: 'none',
               outline: 'none',
               borderRadius: 6,

@@ -5,26 +5,28 @@ import { Button, FormCard, FormGroup, TextField } from '@/core/ui/zenbuddha/src'
 import genresApi from '@/modules/genres/genresApi';
 import { genresSchema, GenresSchemaType, GenresType } from '@/modules/genres/genresType';
 import { useFormik } from 'formik';
-
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { ZodError } from 'zod';
 
-const Page = ({ params }: { params: { genresId: string } }) => {
+const Page = () => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const param = useParams();
+  const genresId = param.genresId && param.genresId[0];
   const dispatch = useAppDispatch();
+  // console.log(genresId)
 
   useEffect(() => {
-    if (params.genresId) {
+    if (genresId) {
       dispatch(
-        genresApi.endpoints.getEachGenres.initiate(params.genresId)
+        genresApi.endpoints.getEachGenres.initiate(genresId)
       );
     }
-  }, [params, dispatch]);
+  }, [genresId, dispatch]);
 
   const toMutatePropertyData = useGetApiResponse<GenresType>(
-    `getEachGenres("${params.genresId ? params.genresId : undefined}")`
+    `getEachGenres("${genresId ? genresId : undefined}")`
   );
 
   const onSubmit = async (values: GenresSchemaType) => {
@@ -33,10 +35,10 @@ const Page = ({ params }: { params: { genresId: string } }) => {
     }
     setIsLoading(true);
     try {
-      const data = params.genresId
+      const data = genresId
         ? await dispatch(
             genresApi.endpoints.updateGenres.initiate({
-              id: Number(params.genresId),
+              id: Number(genresId),
               ...values,
             })
           ).unwrap()

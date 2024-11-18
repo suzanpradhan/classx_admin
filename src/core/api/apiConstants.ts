@@ -26,5 +26,7 @@ export const apiPaths = {
     artistsUrl: 'artists/',
     genresUrl: 'genres/',
     releasesUrl: 'releases/',
+    tracksUrl: 'tracks/',
+    trackwavesUrl: 'track_wave/',
 
 };

@@ -8,7 +8,7 @@ import PaginationNav from '@/core/ui/components/Pagination';
 import { Button, TableCard, tableStyles } from '@/core/ui/zenbuddha/src';
 import genresApi from '@/modules/genres/genresApi';
 import { GenresType } from '@/modules/genres/genresType';
-import { Edit2, Trash } from 'iconsax-react';
+import { PencilSimpleLine, TrashSimple } from 'phosphor-react';
 import { useEffect, useState } from 'react';
 
 const GenresTableLisiting = () => {
@@ -82,13 +82,13 @@ const GenresTableLisiting = () => {
                     className="h-8 w-8"
                     type="link"
                     href={`/admin/genres/mutate/${item.id}`}
-                    prefix={<Edit2 size={18} variant="Bold" />}
+                    prefix={<PencilSimpleLine size={18} weight="duotone" />}
                   />
                   <Button
                     className="h-8 w-8"
                     kind="danger"
                     type="button"
-                    prefix={<Trash size={18} variant="Bold" />}
+                    prefix={<TrashSimple size={18} weight="duotone" />}
                     onClick={() => {
                       setOnDelete(item.id.toString());
                       toggleDeleteModel(true);

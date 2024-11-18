@@ -16,14 +16,16 @@ import releaseApi from '@/modules/releases/releasesApi';
 import { ReleasesRequestType, releasesSchema, ReleasesSchemaType, ReleasesType } from '@/modules/releases/releasesType';
 import { useFormik } from 'formik';
 
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { SingleValue } from 'react-select';
 import { ZodError } from 'zod';
 
-const Page = ({ params }: { params: { releasesId: string } }) => {
+const Page = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const param = useParams();
+  const releasesId = param.releasesId && param.releasesId[0];
   const dispatch = useAppDispatch();
 
   const Releases_TYPES: Array<SelectorDataType> = [
@@ -35,17 +37,17 @@ const Page = ({ params }: { params: { releasesId: string } }) => {
   useEffect(() => {
     dispatch(genresApi.endpoints.getAllGenres.initiate('1'));
     dispatch(artistsApi.endpoints.getAllArtists.initiate(1)); 
-    if (params.releasesId) {
+    if (releasesId) {
       dispatch(
         releaseApi.endpoints.getEachReleases.initiate(
-          params.releasesId
+          releasesId
         )
       );
     }
-  }, [params, dispatch]);
+  }, [releasesId, dispatch]);
 
   const toMutateReleasesData = useGetApiResponse<ReleasesType>(
-    `getEachReleases("${params.releasesId ? params.releasesId : undefined}")`
+    `getEachReleases("${releasesId ? releasesId : undefined}")`
   );
 
   const genresData = useAppSelector(
@@ -86,11 +88,11 @@ const Page = ({ params }: { params: { releasesId: string } }) => {
     setIsLoading(true);
     try {
       var data;
-      if (params.releasesId && params.releasesId[0]) {
+      if (param.releasesId && param.releasesId[0]) {
         data = await Promise.resolve(
           dispatch(
             releaseApi.endpoints.updateReleases.initiate({
-              id: parseInt(params.releasesId[0]),
+              id: parseInt(param.releasesId[0]),
               ...finalRequestData,
             })
           )
@@ -143,7 +145,7 @@ const Page = ({ params }: { params: { releasesId: string } }) => {
     formik.setFieldValue('description', value);
   };
 
-  console.log(formik.values.artist, "Artist name")
+  // console.log(formik.values.artist, "Artist name")
   
 
   return (
@@ -208,10 +210,12 @@ const Page = ({ params }: { params: { releasesId: string } }) => {
                 label="Genres"
                 isMulti
                 type="Creatable"
-                placeholder="Select sources"
+                placeholder="Select genres"
                 className="flex-1"
-                handleChange={(e) => formik.setFieldValue('genres', e)}
+                handleChange={(selectedOptions) => formik.setFieldValue('genres', selectedOptions)}
                 name="genres"
+                value={formik.values.genres}
+
                 ></Selector>
             )}
           </div>
@@ -220,7 +224,7 @@ const Page = ({ params }: { params: { releasesId: string } }) => {
         <div className="flex flex-col flex-1">
              {artistsData && (
               <Selector
-                id="artists"
+                id="artist"
                 options={artistsData?.results.map(
                   (artist) =>
                     ({
@@ -230,7 +234,7 @@ const Page = ({ params }: { params: { releasesId: string } }) => {
                 )}
                 label="Artists"
                 type="Creatable"
-                placeholder="Select sources"
+                placeholder="Select artist"
                 className="flex-1"
                 handleChange={(e) => {
                   formik.setFieldValue(
@@ -238,7 +242,8 @@ const Page = ({ params }: { params: { releasesId: string } }) => {
                     (e as SingleValue<{ value: string; label: string }>)?.value
                   );
                 }}
-                name="artists"
+                name="artist"
+                
                 ></Selector>
             )}
           </div>
@@ -253,6 +258,7 @@ const Page = ({ params }: { params: { releasesId: string } }) => {
                );
              }}
              options={Releases_TYPES}
+             placeholder="Select release_type"
              value={{
                label:
                Releases_TYPES.find(

@@ -4,13 +4,13 @@ import { useGetApiResponse } from '@/core/api/getApiResponse';
 import { useAppDispatch } from '@/core/redux/clientStore';
 import AlertDialog from '@/core/ui/components/AlertDialog';
 import { Button, PageBar, Spinner } from '@/core/ui/zenbuddha/src';
-import artistsApi from '@/modules/artists/artistsApi';
-import { ArtistsType } from '@/modules/artists/artistsType';
+import releaseApi from '@/modules/releases/releasesApi';
+import { ReleasesType } from '@/modules/releases/releasesType';
 import { PencilSimpleLine, TrashSimple, X } from 'phosphor-react';
 
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import ArtistsInfosTab from './(components)/AtristsDetailsTab';
+import ReleasesInfosTab from './(components)/ReleasesDetailsTap';
 
 export default function EachDetailPage() {
   const navigator = useRouter();
@@ -18,17 +18,17 @@ export default function EachDetailPage() {
   const [tab, setTab] = useState(0);
   const [modalIsOpen, setIsOpen] = useState(false);
   const param = useParams();
-  const artistsId = param.artistsId && param.artistsId[0];
+  const releasesId = param.releasesId && param.releasesId[0];
   const [onDelete, setOnDelete] = useState<any>(undefined);
 
   useEffect(() => {
-    if (artistsId) {
-      dispatch(artistsApi.endpoints.getEachArtists.initiate(artistsId));
+    if (releasesId) {
+      dispatch(releaseApi.endpoints.getEachReleases.initiate(releasesId));
     }
-  }, [dispatch, artistsId]);
+  }, [dispatch, releasesId]);
 
-  const ArtistsData = useGetApiResponse<ArtistsType>(
-    `getEachArtists("${artistsId ? artistsId : undefined}")`
+  const releasesData = useGetApiResponse<ReleasesType>(
+    `getEachReleases("${releasesId ? releasesId : undefined}")`
   );
 
   return (
@@ -42,25 +42,25 @@ export default function EachDetailPage() {
         onClickYes={async () => {
           if (onDelete) {
             await Promise.resolve(
-              dispatch(artistsApi.endpoints.deleteArtists.initiate(onDelete))
+              dispatch(releaseApi.endpoints.deleteReleases.initiate(onDelete))
             );
-            navigator.push('/admin/artists/all');
+            navigator.push('/admin/releases/all');
           }
           setIsOpen(false);
           setOnDelete(undefined);
         }}
       />
       <div className="flex flex-col">
-        {ArtistsData ? (
+        {releasesData ? (
           <>
             <PageBar
               leading={
                 <div className="flex flex-col pt-4 pb-4">
                   <div className="text-sm font-medium text-primaryGray-500">
-                    #{ArtistsData.id} Artists
+                    #{releasesData.id} Releases
                   </div>
                   <div className="text-base font-bold text-dark-500">
-                    {ArtistsData.name}
+                    {releasesData.title}
                   </div>
                  
                 </div>
@@ -78,7 +78,7 @@ export default function EachDetailPage() {
                       setTab(0);
                     }}
                   >
-                    ARTISTS TAP
+                    RELEASES TAP
                     {tab == 1 ? (
                       <div className="absolute top-[calc(100%+6px)] h-[2px] w-full bg-dark-500 rounded-md"></div>
                     ) : (
@@ -94,8 +94,8 @@ export default function EachDetailPage() {
                   buttonType="bordered"
                   prefix={<TrashSimple size={20} weight="duotone" />}
                   onClick={() => {
-                    if (param.artistsId) {
-                      setOnDelete(param.artistsId);
+                    if (param.releasesId) {
+                      setOnDelete(param.releasesId);
                       setIsOpen(true);
                     }
                   }}
@@ -105,20 +105,20 @@ export default function EachDetailPage() {
                   buttonType="bordered"
                   prefix={<PencilSimpleLine size={20} weight="duotone" />}
                   type="link"
-                  href={`/admin/artists/mutate/${param.artistsId}`}
+                  href={`/admin/releases/mutate/${param.releasesId}`}
                 />
                 <Button
                   className="w-9 h-9"
                   buttonType="bordered"
                   type="button"
                   onClick={() => {
-                    navigator.push('/admin/artists/all');
+                    navigator.push('/admin/releases/all');
                   }}
                   suffix={<X size={20} weight="duotone" />}
                 />
               </div>
             </PageBar>
-            {tab == 0 ? <ArtistsInfosTab Artists={ArtistsData} /> : <></>}
+            {tab == 0 ? <ReleasesInfosTab releases={releasesData} /> : <></>}
           </>
         ) : (
           <div className="flex justify-center items-center min-h-[calc(100vh-3.25rem)]">

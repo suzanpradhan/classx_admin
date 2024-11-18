@@ -2,35 +2,29 @@ import { apiPaths } from '@/core/api/apiConstants';
 import { baseApi } from '@/core/api/apiQuery';
 import { PaginatedResponseType } from '@/core/types/responseTypes';
 import { toast } from 'react-toastify';
-// import { GenresSchemaType, GenresType } from './genresType';
-import { ReleasesRequestType, ReleasesType } from './releasesType';
+import { TrackRequestType, Trackstype } from './trackType';
 
-const releaseApi = baseApi.injectEndpoints({
+const tracksApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
         // ADD
-        addReleases: builder.mutation<any, ReleasesRequestType>({
+        addTracks: builder.mutation<any, TrackRequestType>({
             query: (payload) => {
                 const formData = new FormData();
                 formData.append('id', String(payload.id));
                 formData.append('title', String(payload.title));
-                if (payload.release_date)
-                    formData.append(
-                        'release_date',
-                        `${payload.release_date.getFullYear()}-${payload.release_date.getMonth()}-${payload.release_date.getDate()}`
-                    );
-                if (payload.cover) formData.append('cover', payload.cover);
+                formData.append('slug', String(payload.slug));
+                if (payload.intro_track) formData.append('intro_track', payload.intro_track);
+                if (payload.duration) formData.append('duration', payload.duration);
                 if (payload.artist) formData.append('artist', payload.artist);
-                if (payload.release_type)
-                    formData.append('release_type', payload.release_type);
+                if (payload.release)
+                    formData.append('release', payload.release);
                 payload.genres?.forEach((item, index) => {
                     formData.append(`genres[${index}]name`, item.name);
                     if (item.id)
                         formData.append(`genres[${index}]id`, item.id.toString());
                 });
-                if (payload.description)
-                    formData.append('description', payload.description);
                 return {
-                    url: `${apiPaths.releasesUrl}`,
+                    url: `${apiPaths.tracksUrl}`,
                     method: 'POST',
                     body: formData,
                 };
@@ -38,10 +32,10 @@ const releaseApi = baseApi.injectEndpoints({
             async onQueryStarted(payload, { queryFulfilled }) {
                 try {
                     await queryFulfilled;
-                    toast.success('Releases  added.');
+                    toast.success('Tracks added');
                 } catch (err) {
                     console.log(err);
-                    toast.error('Releases  adding Failed.');
+                    toast.error('Tracks adding failed');
                 }
             },
             transformResponse: (response: any) => {
@@ -50,17 +44,21 @@ const releaseApi = baseApi.injectEndpoints({
         }),
 
         // Get All
-        getAllReleases: builder.query<PaginatedResponseType<ReleasesType>, string>({
-            query: (pageNumber) => `${apiPaths.releasesUrl}?page=${pageNumber}`,
+        getAllTracks: builder.query<
+            PaginatedResponseType<Trackstype>,
+            number
+        >({
+            query: (pageNumber) =>
+                `${apiPaths.tracksUrl}?page=${pageNumber}`,
             providesTags: (response) =>
                 response?.results
                     ? [
                         ...response.results.map(
-                            ({ id }) => ({ type: 'Releases', id }) as const
+                            ({ id }) => ({ type: 'Tracks', id }) as const
                         ),
-                        { type: 'Releases', id: 'LIST' },
+                        { type: 'Tracks', id: 'LIST' },
                     ]
-                    : [{ type: 'Releases', id: 'LIST' }],
+                    : [{ type: 'Tracks', id: 'LIST' }],
             serializeQueryArgs: ({ endpointName }) => {
                 return endpointName;
             },
@@ -78,11 +76,11 @@ const releaseApi = baseApi.injectEndpoints({
 
         // Get Each
 
-        getEachReleases: builder.query<ReleasesType, string>({
-            query: (releasesId) =>
-                `${apiPaths.releasesUrl}${releasesId}/`,
+        getEachTracks: builder.query<Trackstype, string>({
+            query: (tracksId) =>
+                `${apiPaths.tracksUrl}${tracksId}/`,
             providesTags: (result, error, id) => {
-                return [{ type: 'Releases', id }];
+                return [{ type: 'Tracks', id }];
             },
             serializeQueryArgs: ({ queryArgs, endpointName }) => {
                 return `${endpointName}("${queryArgs}")`;
@@ -96,56 +94,55 @@ const releaseApi = baseApi.injectEndpoints({
                 }
             },
             // transformResponse: (response: any) => {
+            //   console.log('get hotek response', response);
             //   return response;
             // },
         }),
-
         // delete
 
-        deleteReleases: builder.mutation<any, string>({
+        deleteTracks: builder.mutation<any, string>({
             query(id) {
                 return {
-                    url: `${apiPaths.releasesUrl}${id}/`,
+                    url: `${apiPaths.tracksUrl}${id}/`,
                     method: 'DELETE',
                 };
             },
             async onQueryStarted(payload, { queryFulfilled }) {
                 try {
                     await queryFulfilled;
-                    toast.success('Releases Type has been deleted.');
+                    toast.success('Tracks has been deleted.');
                 } catch (err) {
-                    console.error('Delete Releases Type Error:', err);
+                    console.error('Delete Tracks Error:', err);
                     toast.error(
-                        'Failed to delete the Releases Type. Please check if the ID is correct.'
+                        'Failed to delete the Tracks. Please check if the ID is correct.'
                     );
                 }
             },
-            invalidatesTags: (result, error, id) => [{ type: 'Releases', id }],
+            invalidatesTags: (result, error, id) => [{ type: 'Tracks', id }],
         }),
 
         // Update
-        updateReleases: builder.mutation<ReleasesType, ReleasesRequestType>({
+        updateTracks: builder.mutation<
+            Trackstype,
+            TrackRequestType
+        >({
             query: ({ id, ...payload }) => {
                 const formData = new FormData();
                 formData.append('title', String(payload.title));
-                if (payload.release_date)
-                    formData.append(
-                        'release_date',
-                        `${payload.release_date.getFullYear()}-${payload.release_date.getMonth()}-${payload.release_date.getDate()}`
-                    );
-                if (payload.cover) formData.append('cover', payload.cover);
+                formData.append('slug', String(payload.slug));
+                if (payload.intro_track) formData.append('intro_track', payload.intro_track);
                 if (payload.artist) formData.append('artist', payload.artist);
-                if (payload.release_type)
-                    formData.append('release_type', payload.release_type);
+                if (payload.release)
+                    formData.append('release', payload.release);
                 payload.genres?.forEach((item, index) => {
                     formData.append(`genres[${index}]name`, item.name);
                     if (item.id)
                         formData.append(`genres[${index}]id`, item.id.toString());
                 });
-                if (payload.description)
-                    formData.append('description', payload.description);
+
+
                 return {
-                    url: `${apiPaths.releasesUrl}${id}/`,
+                    url: `${apiPaths.tracksUrl}${id}/`,
                     method: 'PATCH',
                     body: formData,
                 };
@@ -153,17 +150,18 @@ const releaseApi = baseApi.injectEndpoints({
             async onQueryStarted(payload, { queryFulfilled }) {
                 try {
                     await queryFulfilled;
-                    toast.success('Releases Type  Updated.');
+                    toast.success('Tracks  Updated.');
                 } catch (err) {
                     console.log(err);
-                    toast.error('Failed updating a Releases Type.');
+                    toast.error('Failed updating a Tracks.');
                 }
             },
             invalidatesTags: (result, error, { id }) => [
-                { type: 'Releases', id: id! },
+                { type: 'Tracks', id: id! },
             ],
         }),
     }),
     overrideExisting: true,
 });
-export default releaseApi;
+
+export default tracksApi;

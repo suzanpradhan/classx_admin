@@ -6,6 +6,7 @@ export { default as FormGroup } from './Forms/FormGroup';
 export { default as GridHidden } from './GridHidden';
 export { default as ImageInput } from './ImageInput';
 export { default as MultiUploader } from './MultiUploader';
+export { default as MusicUploader } from './MusicUploader';
 export { default as PageBar } from './PageBar';
 export { default as SideBarNavGroup } from './SideBar/SideBarNavGroup';
 export { default as SideBarNavLink } from './SideBar/SideBarNavLink';

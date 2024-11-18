@@ -4,13 +4,13 @@ import { useGetApiResponse } from '@/core/api/getApiResponse';
 import { useAppDispatch } from '@/core/redux/clientStore';
 import AlertDialog from '@/core/ui/components/AlertDialog';
 import { Button, PageBar, Spinner } from '@/core/ui/zenbuddha/src';
-import artistsApi from '@/modules/artists/artistsApi';
-import { ArtistsType } from '@/modules/artists/artistsType';
 import { PencilSimpleLine, TrashSimple, X } from 'phosphor-react';
 
+import tracksApi from '@/modules/tracks/tracksApi';
+import { Trackstype } from '@/modules/tracks/trackType';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import ArtistsInfosTab from './(components)/AtristsDetailsTab';
+import TrackDetailsTap from './(components)/TrackDetailsTap';
 
 export default function EachDetailPage() {
   const navigator = useRouter();
@@ -18,17 +18,17 @@ export default function EachDetailPage() {
   const [tab, setTab] = useState(0);
   const [modalIsOpen, setIsOpen] = useState(false);
   const param = useParams();
-  const artistsId = param.artistsId && param.artistsId[0];
+  const tracksId = param.tracksId && param.tracksId[0];
   const [onDelete, setOnDelete] = useState<any>(undefined);
 
   useEffect(() => {
-    if (artistsId) {
-      dispatch(artistsApi.endpoints.getEachArtists.initiate(artistsId));
+    if (tracksId) {
+      dispatch(tracksApi.endpoints.getEachTracks.initiate(tracksId));
     }
-  }, [dispatch, artistsId]);
+  }, [dispatch, tracksId]);
 
-  const ArtistsData = useGetApiResponse<ArtistsType>(
-    `getEachArtists("${artistsId ? artistsId : undefined}")`
+  const tracksData = useGetApiResponse<Trackstype>(
+    `getEachTracks("${tracksId ? tracksId : undefined}")`
   );
 
   return (
@@ -42,25 +42,25 @@ export default function EachDetailPage() {
         onClickYes={async () => {
           if (onDelete) {
             await Promise.resolve(
-              dispatch(artistsApi.endpoints.deleteArtists.initiate(onDelete))
+              dispatch(tracksApi.endpoints.deleteTracks.initiate(onDelete))
             );
-            navigator.push('/admin/artists/all');
+            navigator.push('/admin/tracks/all');
           }
           setIsOpen(false);
           setOnDelete(undefined);
         }}
       />
       <div className="flex flex-col">
-        {ArtistsData ? (
+        {tracksData ? (
           <>
             <PageBar
               leading={
                 <div className="flex flex-col pt-4 pb-4">
                   <div className="text-sm font-medium text-primaryGray-500">
-                    #{ArtistsData.id} Artists
+                    #{tracksData.id} Tracks
                   </div>
                   <div className="text-base font-bold text-dark-500">
-                    {ArtistsData.name}
+                    {tracksData.title}
                   </div>
                  
                 </div>
@@ -78,7 +78,7 @@ export default function EachDetailPage() {
                       setTab(0);
                     }}
                   >
-                    ARTISTS TAP
+                    TRACKS TAP
                     {tab == 1 ? (
                       <div className="absolute top-[calc(100%+6px)] h-[2px] w-full bg-dark-500 rounded-md"></div>
                     ) : (
@@ -94,8 +94,8 @@ export default function EachDetailPage() {
                   buttonType="bordered"
                   prefix={<TrashSimple size={20} weight="duotone" />}
                   onClick={() => {
-                    if (param.artistsId) {
-                      setOnDelete(param.artistsId);
+                    if (param.tracksId) {
+                      setOnDelete(param.tracksId);
                       setIsOpen(true);
                     }
                   }}
@@ -105,20 +105,20 @@ export default function EachDetailPage() {
                   buttonType="bordered"
                   prefix={<PencilSimpleLine size={20} weight="duotone" />}
                   type="link"
-                  href={`/admin/artists/mutate/${param.artistsId}`}
+                  href={`/admin/tracks/mutate/${param.tracksId}`}
                 />
                 <Button
                   className="w-9 h-9"
                   buttonType="bordered"
                   type="button"
                   onClick={() => {
-                    navigator.push('/admin/artists/all');
+                    navigator.push('/admin/tracks/all');
                   }}
                   suffix={<X size={20} weight="duotone" />}
                 />
               </div>
             </PageBar>
-            {tab == 0 ? <ArtistsInfosTab Artists={ArtistsData} /> : <></>}
+            {tab == 0 ? <TrackDetailsTap tracks={tracksData} /> : <></>}
           </>
         ) : (
           <div className="flex justify-center items-center min-h-[calc(100vh-3.25rem)]">

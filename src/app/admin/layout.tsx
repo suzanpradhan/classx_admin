@@ -90,25 +90,23 @@ export default function TestLayout({
             link="/admin/releases/mutate"
           />
           </SideBarNavGroup>
-          <SideBarNavGroup title="Track waves" segment="admin/trackwaves">
-            <SideBarNavLink title="All Track" link="/admin/trackwaves/all" />
-            <SideBarNavLink title="Add New Track" link="/admin/trackwaves/mutate" />
-    
-          </SideBarNavGroup>
+        
           <SideBarNavGroup title="Tracks" segment="admin/tracks">
             <SideBarNavLink title="All Tracks" link="/admin/tracks/all" />
             <SideBarNavLink title="Add New Tracks" link="/admin/tracks/mutate" />
     
           </SideBarNavGroup>
           <div className="my-2 border-t border-white/5"></div>
-          <SideBarNavTitle title="Merchant" />
-          <SideBarNavGroup title="Shop" segment="admin/shop">
-            <div className="w-full border-t border-white/5"></div>
-            <SideBarNavLink title="Products" link="/admin/shop/products" />
-            <SideBarNavLink title="Add Product" link="/admin/shop/products/create" />
-            <SideBarNavLink title="Categories" link="/admin/shop/categories" />
-            <SideBarNavLink title="Orders" link="/admin/shop/orders" />
+          <SideBarNavTitle title="SHOP" />
+          <SideBarNavGroup title="Orders" segment="admin/orders">
+            <SideBarNavLink title="All Orders items" link="/admin/Orders/all" />
+            <SideBarNavLink title="Add Orders items" link="/admin/Orders/mutate" />
           </SideBarNavGroup>
+           <SideBarNavGroup title="Products" segment="admin/products">
+            <SideBarNavLink title="All Products" link="/admin/products/all" />
+            <SideBarNavLink title="Add New Products" link="/admin/products/mutate" />
+          </SideBarNavGroup>
+            
           <div className="my-2 border-t border-white/5"></div>
           <SideBarNavTitle title="Settings" />
           <SideBarNavGroup title="Accounts" segment="admin/accounts">

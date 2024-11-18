@@ -15,6 +15,8 @@ export const baseApi = createApi({
         'Artists',
         'Genres',
         'Releases',
+        'Tracks',
+        'TrackWave',
 
     ],
     endpoints: () => ({}),

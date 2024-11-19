@@ -28,5 +28,7 @@ export const apiPaths = {
     releasesUrl: 'releases/',
     tracksUrl: 'tracks/',
     trackwavesUrl: 'track_wave/',
+    ordersUrl: 'orders/',
+    productsUrl: 'products/',
 
 };

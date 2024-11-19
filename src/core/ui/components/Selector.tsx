@@ -38,6 +38,7 @@ export interface SelectorProps {
   type?: 'Creatable' | 'Select' | 'Async' | 'AsyncPaginate';
   loadOptions?: (inputValue: string) => void;
   handleChange?: (
+    // eslint-disable-next-line no-unused-vars
     e:
       | SingleValue<{
           value: string;

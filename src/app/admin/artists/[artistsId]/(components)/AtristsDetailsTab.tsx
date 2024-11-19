@@ -7,7 +7,7 @@ const ArtistsInfosTab = ({ Artists }: { Artists:  ArtistsType }) => {
     <div className="m-4 flex flex-col max-w-5xl">
       <div className="bg-blueWhite border border-primaryGray-300 rounded-lg overflow-hidden max-w-xl relative aspect-video">
         <Image
-          src={Artists.profile_picture}
+        src={Artists.profile_picture ?? '/default-profile-picture.jpg'}
           alt="cover image"
           fill
           objectFit="cover"

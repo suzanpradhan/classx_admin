@@ -1,11 +1,11 @@
 import { PageBar } from "@/core/ui/zenbuddha/src";
 
-export default async function AddReleasesLayout({
+export default async function AddArtistsLayout({
   children,
   params,
 }: {
   children: React.ReactNode;
-  params: Promise<{ releasesId: string }>;
+  params: Promise<{ productsId: string }>;
 }) {
   const resolvedParams = await params;
   return (
@@ -13,7 +13,7 @@ export default async function AddReleasesLayout({
       <PageBar
         leading={
           <div className="text-base font-bold text-dark-500">
-            {resolvedParams ? 'Update' : 'Add New'} Releases
+            {resolvedParams ? ' Add New' : 'Update'} Products
           </div>
         }
       ></PageBar>

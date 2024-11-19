@@ -99,8 +99,8 @@ export default function TestLayout({
           <div className="my-2 border-t border-white/5"></div>
           <SideBarNavTitle title="SHOP" />
           <SideBarNavGroup title="Orders" segment="admin/orders">
-            <SideBarNavLink title="All Orders items" link="/admin/Orders/all" />
-            <SideBarNavLink title="Add Orders items" link="/admin/Orders/mutate" />
+            <SideBarNavLink title="All Orders" link="/admin/orders/all" />
+            <SideBarNavLink title="Add Orders" link="/admin/orders/mutate" />
           </SideBarNavGroup>
            <SideBarNavGroup title="Products" segment="admin/products">
             <SideBarNavLink title="All Products" link="/admin/products/all" />

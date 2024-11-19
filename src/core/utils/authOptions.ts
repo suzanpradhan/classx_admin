@@ -42,6 +42,7 @@ export const authOptions: NextAuthOptions = {
         async jwt({ token, user }) {
             if (user) {
                 token = {
+                    id: (user as any).id,
                     accessToken: (user as any).access,
                     refreshToken: (user as any).refresh,
                 };
@@ -55,6 +56,7 @@ export const authOptions: NextAuthOptions = {
             return Promise.resolve(session);
         },
     },
+
     pages: {
         signIn: '/login',
         signOut: '/login',

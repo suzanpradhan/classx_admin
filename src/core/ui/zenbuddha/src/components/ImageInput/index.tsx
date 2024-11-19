@@ -8,6 +8,7 @@ export interface ImageInputProps {
   value?: File | null;
   className?: string;
   required?: boolean;
+  // eslint-disable-next-line no-unused-vars
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 

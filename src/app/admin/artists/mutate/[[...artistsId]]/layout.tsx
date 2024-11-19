@@ -1,18 +1,19 @@
 import { PageBar } from "@/core/ui/zenbuddha/src";
 
-export default function AddUsersLayout({
+export default async function AddArtistsLayout({
   children,
   params,
 }: {
   children: React.ReactNode;
-  params: { bookingId: string };
+  params: Promise<{ artitstId: string }>;
 }) {
+  const resolvedParams = await params;
   return (
     <div className="flex flex-col">
       <PageBar
         leading={
           <div className="text-base font-bold text-dark-500">
-            {params ? '  Add New' : ' Update '} Artists
+            {resolvedParams ? ' Add New' : 'Update'} Artists
           </div>
         }
       ></PageBar>

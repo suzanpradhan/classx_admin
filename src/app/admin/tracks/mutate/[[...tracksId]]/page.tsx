@@ -100,6 +100,7 @@ const Page = () => {
           )
         );
       } else {
+        // eslint-disable-next-line no-unused-vars
         data = await Promise.resolve(
           dispatch(
             tracksApi.endpoints.addTracks.initiate(finalRequestData)

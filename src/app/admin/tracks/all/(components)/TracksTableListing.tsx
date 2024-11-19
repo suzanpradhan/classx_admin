@@ -82,7 +82,6 @@ const TaraclTableListing = () => {
               <td className={tableStyles.table_td}>{item.id}</td>
               <td className={tableStyles.table_td}>{item.title}</td>
               <td className={tableStyles.table_td}>{item.artist}</td>
-              {/* <td className={tableStyles.table_td}>{item.artist && item.artist.length > 0 ? item.artist.map((item, index) => <div key={index} className='inline-block px-1 text-xs bg-slate-300 text-dark-500 rounded-sm mr-1'>{item.name}</div>) : ""}</td> */}
               <td className={tableStyles.table_td}>{item.slug}</td>
               <td className={tableStyles.table_td}>{item.genres && item.genres.length > 0 ? item.genres.map((item, index) => <div key={index} className='inline-block px-1 text-xs bg-slate-300 text-dark-500 rounded-sm mr-1'>{item.name}</div>) : ""}</td>
               <td className={tableStyles.table_td}>{item.release}</td>

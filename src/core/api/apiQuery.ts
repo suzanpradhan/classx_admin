@@ -17,6 +17,8 @@ export const baseApi = createApi({
         'Releases',
         'Tracks',
         'TrackWave',
+        'Orders',
+        'Products',
 
     ],
     endpoints: () => ({}),

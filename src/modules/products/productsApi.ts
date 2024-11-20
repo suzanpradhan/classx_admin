@@ -2,10 +2,44 @@ import { apiPaths } from '@/core/api/apiConstants';
 import { baseApi } from '@/core/api/apiQuery';
 import { PaginatedResponseType } from '@/core/types/responseTypes';
 import { toast } from 'react-toastify';
-import { ProductsType } from './productType';
+import { ProductsSchemaType, ProductsType } from './productType';
 
 const productsApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
+        addProducts: builder.mutation<any, ProductsSchemaType>({
+            query: (payload) => {
+                const formData = new FormData();
+                formData.append('id', String(payload.id));
+                formData.append('title', String(payload.title));
+                formData.append('slug', String(payload.slug));
+                if (payload.thumbnail) formData.append('thumbnail', payload.thumbnail);
+                if (payload.price) formData.append('price', payload.price);
+                if (payload.stock) formData.append('stock', payload.stock.toString());
+                if (payload.artist) formData.append('artist', payload.artist.name.toString());
+                if (payload.release) formData.append('release', payload.release.toString());
+                if (payload.product_type)
+                    formData.append('product_type', payload.product_type);
+                if (payload.description)
+                    formData.append('description', payload.description);
+                return {
+                    url: `${apiPaths.productsUrl}`,
+                    method: 'POST',
+                    body: formData,
+                };
+            },
+            async onQueryStarted(payload, { queryFulfilled }) {
+                try {
+                    await queryFulfilled;
+                    toast.success('Products  added.');
+                } catch (err) {
+                    console.log(err);
+                    toast.error('Products  adding Failed.');
+                }
+            },
+            transformResponse: (response: any) => {
+                return response;
+            },
+        }),
 
         // Get All
         getAllProducts: builder.query<
@@ -43,10 +77,9 @@ const productsApi = baseApi.injectEndpoints({
         // Get Each
 
         getEachProducts: builder.query<ProductsType, string>({
-            query: (id) =>
-                `${apiPaths.productsUrl}${id}/`,
-            providesTags: (result, error, id) => {
-                return [{ type: 'Products', id }];
+            query: (productsSlug) => `${apiPaths.productsUrl}${productsSlug}/`,
+            providesTags: (result, error, productsSlug) => {
+                return [{ type: 'Products', productsSlug }];
             },
             serializeQueryArgs: ({ queryArgs, endpointName }) => {
                 return `${endpointName}("${queryArgs}")`;
@@ -59,18 +92,13 @@ const productsApi = baseApi.injectEndpoints({
                     toast.error(JSON.stringify(err));
                 }
             },
-            // transformResponse: (response: any) => {
-            //   console.log('get hotek response', response);
-            //   return response;
-            // },
         }),
-
         // delete
 
-        deleteOrders: builder.mutation<any, string>({
-            query(id) {
+        deleteProducts: builder.mutation<any, string>({
+            query(slug) {
                 return {
-                    url: `${apiPaths.productsUrl}${id}/`,
+                    url: `${apiPaths.productsUrl}${slug}/`,
                     method: 'DELETE',
                 };
             },
@@ -85,11 +113,44 @@ const productsApi = baseApi.injectEndpoints({
                     );
                 }
             },
-            invalidatesTags: (result, error, id) => [{ type: 'Orders', id }],
+            invalidatesTags: (result, error, slug) => [{ type: 'Orders', slug }],
         }),
 
 
-
+        // Update
+        updateProducts: builder.mutation<ProductsType, ProductsSchemaType>({
+            query: ({ id, ...payload }) => {
+                const formData = new FormData();
+                formData.append('title', String(payload.title));
+                formData.append('slug', String(payload.slug));
+                if (payload.thumbnail) formData.append('thumbnail', payload.thumbnail);
+                if (payload.price) formData.append('price', payload.price);
+                if (payload.stock) formData.append('stock', payload.stock.toString());
+                if (payload.artist) formData.append('artist', payload.artist.name);
+                if (payload.release) formData.append('release', payload.release.toString());
+                if (payload.product_type)
+                    formData.append('product_type', payload.product_type);
+                if (payload.description)
+                    formData.append('description', payload.description);
+                return {
+                    url: `${apiPaths.productsUrl}${id}/`,
+                    method: 'PATCH',
+                    body: formData,
+                };
+            },
+            async onQueryStarted(payload, { queryFulfilled }) {
+                try {
+                    await queryFulfilled;
+                    toast.success('Products Type  Updated.');
+                } catch (err) {
+                    console.log(err);
+                    toast.error('Failed updating a Products Type.');
+                }
+            },
+            invalidatesTags: (result, error, { id }) => [
+                { type: 'Products', id: id! },
+            ],
+        }),
 
     }),
     overrideExisting: true,

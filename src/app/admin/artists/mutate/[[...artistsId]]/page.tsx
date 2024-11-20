@@ -17,7 +17,6 @@ const Page = () => {
   const artistsId = param.artistsId && param.artistsId[0];
   const dispatch = useAppDispatch();
 
-  // Fetch artist data if ID is provided
   const toMutateArtistsData = useGetApiResponse<ArtistsType>(
     `getEachArtists("${artistsId ?? ''}")`
   );

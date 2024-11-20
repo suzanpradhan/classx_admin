@@ -26,7 +26,7 @@ const ProductsTableListing = () => {
         state.baseApi.queries[`getAllProducts`]
           ?.data as PaginatedResponseType<ProductsType>
     );
-    console.log(productsData,'data')
+    // console.log(productsData,'data')
   
     return (
       <>
@@ -55,7 +55,7 @@ const ProductsTableListing = () => {
                   <PaginationNav
                     gotoPage={setPageIndex}
                     canPreviousPage={pageIndex > 0}
-                    canNextPage={pageIndex < productsData.pagination.total_page}
+                    canNextPage={pageIndex < productsData.pagination.total_page - 1}
                     pageCount={productsData.pagination.total_page}
                     pageIndex={productsData.pagination.current_page - 1}
                   />
@@ -111,7 +111,7 @@ const ProductsTableListing = () => {
                 <Button
                     className="h-8 w-8"
                      type="link"
-                     href={`/admin/products/${item.id}`}
+                     href={`/admin/products/${item.slug}`}
                     buttonType="bordered"
                     prefix={<Eye size={18} weight="duotone" />}
   
@@ -119,7 +119,7 @@ const ProductsTableListing = () => {
                   <Button
                           className="h-8 w-8"
                           type="link"
-                          href={`/admin/products/mutate/${item.id}`}
+                          href={`/admin/products/mutate/${item.slug}`}
                           prefix={<PencilSimpleLine size={15} weight="duotone" />}
                         />
                   <Button
@@ -127,7 +127,7 @@ const ProductsTableListing = () => {
                     kind="danger"
                     type="button"
                     onClick={() => {
-                      setOnDelete(item.id?.toString());
+                      setOnDelete(item.slug?.toString());
                       toggleDeleteModel(true);
                     }}
                     prefix={<TrashSimple size={18} weight="duotone" />}

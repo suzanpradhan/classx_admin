@@ -15,29 +15,26 @@ const imageFile = z.instanceof(File).refine(
         message: 'Invalid file type. Only image files are allowed.',
     }
 );
+
+
+export const artistSchema = z.object({
+    id: z.number().optional().nullable(),
+    name: z.string(),
+})
 export const productsSchema = z.object({
     id: z.number().optional().nullable(),
-    artist: z.object({
-        id: z.number().optional().nullable(),
-        name: z.string(),
-        bio: z.string(),
-        profile_picture: z.string(),
-    }),
+    artist: artistSchema,
     deleted: z.string().optional().nullable(),
-    deleted_by_cascade: z.boolean(),
-    created_on: z.string().optional().nullable(),
-    modified_on: z.string().optional().nullable(),
     title: z.string(),
     slug: z.string(),
     description: z.string(),
     thumbnail: imageFile.optional().nullable(),
     price: z.string(),
-    stock: z.number(),
+    stock: z.string(),
     product_type: z.string(),
-    created_by: z.number(),
-    modified_by: z.number(),
-    release: z.number(),
+    release: z.string(),
 });
+export type ProductsSchemaType = z.infer<typeof productsSchema>;
 
 
 export type ProductsType = {
@@ -45,21 +42,16 @@ export type ProductsType = {
     artist: {
         id?: number | null;
         name: string;
-        bio: string;
-        profile_picture: string;
     };
-    deleted?: string | null;
-    deleted_by_cascade: boolean;
-    created_on?: string | null;
-    modified_on?: string | null;
     title: string;
     slug: string;
     description: string;
     thumbnail: string;
     price: string;
-    stock: number;
+    stock: string;
     product_type: string;
     created_by: number;
     modified_by: number;
     release: number;
 };
+

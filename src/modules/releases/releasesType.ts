@@ -32,7 +32,6 @@ export const releasesSchema = z.object({
 export const genresSchema = z.object({
     id: z.number().optional().nullable(),
     name: z.string(),
-
 });
 export const releasesRequestSchema = releasesSchema.extend({
     genres: z.array(genresSchema).optional(),
@@ -58,4 +57,5 @@ export type ReleasesType = {
 export type GenreType = {
     id: number;
     name: string;
+
 }

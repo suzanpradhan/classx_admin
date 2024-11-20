@@ -1,4 +1,5 @@
 export interface PaginatedResponseType<T> {
+    [x: string]: any;
     pagination: PaginationType;
     results: T[];
 }

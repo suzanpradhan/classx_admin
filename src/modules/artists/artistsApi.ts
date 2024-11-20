@@ -147,8 +147,6 @@ const artistsApi = baseApi.injectEndpoints({
             ],
         }),
 
-
-
     }),
     overrideExisting: true,
 });

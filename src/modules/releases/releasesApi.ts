@@ -38,7 +38,7 @@ const releaseApi = baseApi.injectEndpoints({
             async onQueryStarted(payload, { queryFulfilled }) {
                 try {
                     await queryFulfilled;
-                    toast.success('Releases  added.');
+                    toast.success('Releases Added.');
                 } catch (err) {
                     console.log(err);
                     toast.error('Releases  adding Failed.');
@@ -50,7 +50,7 @@ const releaseApi = baseApi.injectEndpoints({
         }),
 
         // Get All
-        getAllReleases: builder.query<PaginatedResponseType<ReleasesType>, string>({
+        getAllReleases: builder.query<PaginatedResponseType<ReleasesType>, number>({
             query: (pageNumber) => `${apiPaths.releasesUrl}?page=${pageNumber}`,
             providesTags: (response) =>
                 response?.results
@@ -112,7 +112,7 @@ const releaseApi = baseApi.injectEndpoints({
             async onQueryStarted(payload, { queryFulfilled }) {
                 try {
                     await queryFulfilled;
-                    toast.success('Releases Type has been deleted.');
+                    toast.success('Releases has been deleted.');
                 } catch (err) {
                     console.error('Delete Releases Type Error:', err);
                     toast.error(
@@ -153,10 +153,10 @@ const releaseApi = baseApi.injectEndpoints({
             async onQueryStarted(payload, { queryFulfilled }) {
                 try {
                     await queryFulfilled;
-                    toast.success('Releases Type  Updated.');
+                    toast.success('Releases Updated.');
                 } catch (err) {
                     console.log(err);
-                    toast.error('Failed updating a Releases Type.');
+                    toast.error('Failed updating a Releases.');
                 }
             },
             invalidatesTags: (result, error, { id }) => [

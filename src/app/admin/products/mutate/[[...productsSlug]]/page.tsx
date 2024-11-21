@@ -16,7 +16,7 @@ import { ReleasesType } from '@/modules/releases/releasesType';
 import { useFormik } from 'formik';
 import { useParams, useRouter } from 'next/navigation';
 import { ChangeEvent, useEffect, useState } from 'react';
-import { SingleValue } from 'react-select';
+import { MultiValue, SingleValue } from 'react-select';
 import { ZodError } from 'zod';
 
 const Page = () => {
@@ -32,9 +32,9 @@ const Page = () => {
   ];
   
   useEffect(() => {
-    dispatch(releaseApi.endpoints.getAllReleases.initiate('1'));
+    dispatch(releaseApi.endpoints.getAllReleases.initiate(1));
     dispatch(artistsApi.endpoints.getAllArtists.initiate(1)); 
-    dispatch(releaseApi.endpoints.getAllReleases.initiate('')); 
+    dispatch(releaseApi.endpoints.getAllReleases.initiate(1)); 
     if (slug) {
       dispatch(productsApi.endpoints.getEachProducts.initiate(slug.toString()));
     }
@@ -54,7 +54,7 @@ const Page = () => {
       state.baseApi.queries[`getAllReleases`]
         ?.data as PaginatedResponseType<ReleasesType>
   );
-  
+
 
   const onSubmit = async (values: ProductsSchemaType) => {
     if (isLoading) {
@@ -62,18 +62,19 @@ const Page = () => {
     }
     setIsLoading(true);
     try {
-      // eslint-disable-next-line no-unused-vars
-      var data = params.packageSlug
+      var data = slug
         ? await Promise.resolve(
             dispatch(
               productsApi.endpoints.updateProducts.initiate({
                 ...values,
+                // artist: {}
               })
             )
           )
         : await Promise.resolve(
             dispatch(productsApi.endpoints.addProducts.initiate(values))
           );
+      if (data) router.push('/admin/products/all');
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -101,12 +102,12 @@ const Page = () => {
       release: toMutateProductsData ? toMutateProductsData.release.toString() ?? "0" : "0",
       thumbnail: toMutateProductsData ? null : null,
       artist: {
-        name: toMutateProductsData
+        label: toMutateProductsData
           ? toMutateProductsData.artist.name
           : '',
-        id: toMutateProductsData
-          ? (toMutateProductsData.artist.id ?? undefined)
-          : 0,
+        value: toMutateProductsData?.artist.id
+          ? (toMutateProductsData.artist.id?.toString() )
+          : "0",
       },
       price: toMutateProductsData ? toMutateProductsData.price : '',
 
@@ -115,6 +116,28 @@ const Page = () => {
     validate: validateForm,
     onSubmit,
   });
+
+  const selectedArtist = useAppSelector(
+    (state: RootState) => 
+      state.baseApi.queries[`getEachArtists("${formik.values.artist.value}")`]
+        ?.data as ArtistsType
+  );
+
+  // useEffect(() => {
+  //   if(selectedArtist?.id) {
+  //     formik.setFieldValue('artists.label', selectedArtist.id);
+  //     formik.setFieldValue('artists.value', selectedArtist.name);
+  //   }
+  //   console.log("selectedArtist", selectedArtist);
+  // },[selectedArtist?.id])
+
+  useEffect(() => {
+    if (formik.values.artist.value != '0') {
+      dispatch(artistsApi.endpoints.getEachArtists.initiate(formik.values.artist.value.toString()));
+    }
+  }, [dispatch, formik.values.artist.value ]);
+  // console.log("selectedArtist", selectedArtist, formik.values.artist.value);
+
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.[0]) {
@@ -125,6 +148,7 @@ const Page = () => {
   const handleRichTextChange = (value: string) => {
     formik.setFieldValue('description', value);
   };
+
 
   return (
     <FormCard onSubmit={formik.handleSubmit}  className="m-4">
@@ -198,27 +222,25 @@ const Page = () => {
           </div>
           <div className="flex flex-col flex-1">
           {artistsData && (
-              <Selector
-                id="artist"
-                options={artistsData?.results.map(
-                  (artist) =>
-                    ({
-                      value: artist.id!.toString(),
-                      label: artist.name,
-                    }) as SelectorDataType
-                )}
-                label="Artists"
-                placeholder="Select artist"
-                className="flex-1"
-                handleChange={(e) => {
-                  formik.setFieldValue(
-                    'artist',
-                    (e as SingleValue<{ value: string; label: string }>)?.value
-                  );
-                }}
-                name="artist"
-                
-                ></Selector>
+             <Selector
+             id="artist"
+             options={artistsData.results.map((artist) => ({
+               value: artist.id.toString(),
+               label: artist.name,
+             }))}
+             label="Artists"
+             placeholder="Select artist"
+             className="flex-1"
+             handleChange={(
+              selectedArtist: SingleValue<{ value: string; label: string; extra?: string; __isNew__?: boolean }> 
+                 | MultiValue<{ value: string; label: string; extra?: string; __isNew__?: boolean }>
+             ) => {
+               formik.setFieldValue("artist.id", selectedArtist)
+             }}
+             name="artist"
+             isMulti={false}
+           />
+           
             )}
           </div>
         </div>

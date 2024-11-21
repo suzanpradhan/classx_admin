@@ -7,10 +7,10 @@ const OrdersDetails = ({ orders }: { orders:  OrdersType }) => {
           <div
             className={`h-fit grid md:grid-rows-none grid-rows-3 md:grid-cols-2 mt-4 gap-4`}
           >
-            <div className="grid grid-cols-2 md:grid-cols-none md:grid-rows-2">
+            {/* <div className="grid grid-cols-2 md:grid-cols-none md:grid-rows-2">
               <div className="text-sm text-black">Customer</div>
               <div className="text-base capitalize text-black">{orders.customer}</div>
-            </div>
+            </div> */}
             <div className="grid grid-cols-2 md:grid-cols-none md:grid-rows-2">
               <div className="text-sm text-black">Status</div>
               <div className="text-base text-black">{orders.status}</div>

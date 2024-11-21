@@ -15,7 +15,7 @@ const productsApi = baseApi.injectEndpoints({
                 if (payload.thumbnail) formData.append('thumbnail', payload.thumbnail);
                 if (payload.price) formData.append('price', payload.price);
                 if (payload.stock) formData.append('stock', payload.stock.toString());
-                if (payload.artist) formData.append('artist', payload.artist.name.toString());
+                if (payload.artist) formData.append('artist', payload.artist.label.toString());
                 if (payload.release) formData.append('release', payload.release.toString());
                 if (payload.product_type)
                     formData.append('product_type', payload.product_type);
@@ -113,27 +113,27 @@ const productsApi = baseApi.injectEndpoints({
                     );
                 }
             },
-            invalidatesTags: (result, error, slug) => [{ type: 'Orders', slug }],
+            invalidatesTags: (result, error, slug) => [{ type: 'Products', slug }],
         }),
 
 
         // Update
         updateProducts: builder.mutation<ProductsType, ProductsSchemaType>({
-            query: ({ id, ...payload }) => {
+            query: ({ slug, ...payload }) => {
                 const formData = new FormData();
                 formData.append('title', String(payload.title));
-                formData.append('slug', String(payload.slug));
+                // formData.append('slug', String(payload.slug));
                 if (payload.thumbnail) formData.append('thumbnail', payload.thumbnail);
                 if (payload.price) formData.append('price', payload.price);
                 if (payload.stock) formData.append('stock', payload.stock.toString());
-                if (payload.artist) formData.append('artist', payload.artist.name);
+                if (payload.artist) formData.append('artist', payload.artist.label);
                 if (payload.release) formData.append('release', payload.release.toString());
                 if (payload.product_type)
                     formData.append('product_type', payload.product_type);
                 if (payload.description)
                     formData.append('description', payload.description);
                 return {
-                    url: `${apiPaths.productsUrl}${id}/`,
+                    url: `${apiPaths.productsUrl}${slug}/`,
                     method: 'PATCH',
                     body: formData,
                 };
@@ -141,14 +141,14 @@ const productsApi = baseApi.injectEndpoints({
             async onQueryStarted(payload, { queryFulfilled }) {
                 try {
                     await queryFulfilled;
-                    toast.success('Products Type  Updated.');
+                    toast.success('Products Updated.');
                 } catch (err) {
                     console.log(err);
-                    toast.error('Failed updating a Products Type.');
+                    toast.error('Failed updating a Products.');
                 }
             },
-            invalidatesTags: (result, error, { id }) => [
-                { type: 'Products', id: id! },
+            invalidatesTags: (result, error, { slug }) => [
+                { type: 'Products', id: slug! },
             ],
         }),
 

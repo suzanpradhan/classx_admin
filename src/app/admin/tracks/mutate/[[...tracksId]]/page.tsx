@@ -31,7 +31,7 @@ const Page = () => {
   useEffect(() => {
     dispatch(genresApi.endpoints.getAllGenres.initiate('1'));
     dispatch(artistsApi.endpoints.getAllArtists.initiate(1)); 
-    dispatch(releaseApi.endpoints.getAllReleases.initiate('')); 
+    dispatch(releaseApi.endpoints.getAllReleases.initiate(1)); 
     if (tracksId) {
       dispatch(
         tracksApi.endpoints.getEachTracks.initiate(

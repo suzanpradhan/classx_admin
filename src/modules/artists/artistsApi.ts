@@ -87,10 +87,10 @@ const artistsApi = baseApi.injectEndpoints({
                     toast.error(JSON.stringify(err));
                 }
             },
-            // transformResponse: (response: any) => {
-            //   console.log('get hotek response', response);
-            //   return response;
-            // },
+            transformResponse: (response: any) => {
+                console.log('get each artist response', response);
+                return response;
+            },
         }),
         // delete
 

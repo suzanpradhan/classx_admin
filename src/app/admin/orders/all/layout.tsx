@@ -1,6 +1,5 @@
 'use client';
-import { Button, PageBar } from '@/core/ui/zenbuddha/src';
-import { AddSquare } from 'iconsax-react';
+import { PageBar } from '@/core/ui/zenbuddha/src';
 
 export default function AddNewLayout({
   children,
@@ -14,13 +13,13 @@ export default function AddNewLayout({
         leading={<div className="text-base font-bold text-dark-500">Orders</div>}
       >
           <div className="flex">
-            <Button
+            {/* <Button
               text="Add New Orders"
               className="h-8"
               type="link"
               href="/admin/orders/mutate"
               prefix={<AddSquare size={18} variant="Bold" className="mr-1" />}
-            />
+            /> */}
           </div>
       
       </PageBar>

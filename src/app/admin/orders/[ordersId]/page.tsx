@@ -4,7 +4,6 @@ import { useGetApiResponse } from '@/core/api/getApiResponse';
 import { useAppDispatch } from '@/core/redux/clientStore';
 import AlertDialog from '@/core/ui/components/AlertDialog';
 import { Button, PageBar, Spinner } from '@/core/ui/zenbuddha/src';
-import artistsApi from '@/modules/artists/artistsApi';
 import { PencilSimpleLine, TrashSimple, X } from 'phosphor-react';
 
 import ordersApi from '@/modules/orders/ordersApi';
@@ -43,9 +42,9 @@ export default function EachDetailPage() {
         onClickYes={async () => {
           if (onDelete) {
             await Promise.resolve(
-              dispatch(artistsApi.endpoints.deleteArtists.initiate(onDelete))
+              dispatch(ordersApi.endpoints.deleteOrders.initiate(onDelete))
             );
-            navigator.push('/admin/artists/all');
+            navigator.push('/admin/orders/all');
           }
           setIsOpen(false);
           setOnDelete(undefined);
@@ -61,7 +60,7 @@ export default function EachDetailPage() {
                     #{OrdersData.id} Orders
                   </div>
                   <div className="text-base font-bold text-dark-500">
-                    {OrdersData.customer}
+                    {/* {OrdersData.customer} */}
                   </div>
                  
                 </div>

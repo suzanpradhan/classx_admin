@@ -2,6 +2,7 @@
 import { useAppDispatch, useAppSelector } from '@/core/redux/clientStore';
 import { RootState } from '@/core/redux/store';
 import { PaginatedResponseType } from '@/core/types/responseTypes';
+import AlertDialog from '@/core/ui/components/AlertDialog';
 import PaginationNav from '@/core/ui/components/Pagination';
 import { Button, TableCard, tableStyles } from '@/core/ui/zenbuddha/src';
 import productsApi from '@/modules/products/productsApi';
@@ -31,7 +32,7 @@ const ProductsTableListing = () => {
     return (
       <>
           <>
-            {/* <AlertDialog
+            <AlertDialog
               isOpen={deleteModelOpen}
               deleteContent={onDelete}
               onClickNo={() => {
@@ -41,14 +42,14 @@ const ProductsTableListing = () => {
                 if (onDelete) {
                   await Promise.resolve(
                     dispatch(
-                      productsApi.endpoints.de.initiate(onDelete as string)
+                      productsApi.endpoints.deleteProducts.initiate(onDelete as string)
                     )
                   );
                 }
                 toggleDeleteModel(false);
                 setOnDelete(undefined);
               }}
-            /> */}
+            />
             <TableCard
               footer={
                   productsData && productsData?.results.length > 0 ?  (
@@ -72,7 +73,7 @@ const ProductsTableListing = () => {
                   <th className={tableStyles.table_th}>Artists</th>
                   <th className={tableStyles.table_th}>Price</th>
                   <th className={tableStyles.table_th}>Stock</th>
-                  <th className={tableStyles.table_th}>Product_type</th>
+                  <th className={tableStyles.table_th}>Product Type</th>
                   <th className={tableStyles.table_th}>Action</th>
                   
                 </tr>

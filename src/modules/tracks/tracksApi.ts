@@ -1,4 +1,4 @@
-import { apiPaths } from '@/core/api/apiConstants';
+import { apiPaths, setHeaders } from '@/core/api/apiConstants';
 import { baseApi } from '@/core/api/apiQuery';
 import { PaginatedResponseType } from '@/core/types/responseTypes';
 import { toast } from 'react-toastify';
@@ -27,6 +27,8 @@ const tracksApi = baseApi.injectEndpoints({
                     url: `${apiPaths.tracksUrl}`,
                     method: 'POST',
                     body: formData,
+                    prepareHeaders: async (headers: Headers) => await setHeaders(headers),
+
                 };
             },
             async onQueryStarted(payload, { queryFulfilled }) {
@@ -41,6 +43,7 @@ const tracksApi = baseApi.injectEndpoints({
             transformResponse: (response: any) => {
                 return response;
             },
+
         }),
 
         // Get All

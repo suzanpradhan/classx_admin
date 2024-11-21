@@ -19,6 +19,7 @@ export const baseApi = createApi({
         'TrackWave',
         'Orders',
         'Products',
+        'News',
 
     ],
     endpoints: () => ({}),

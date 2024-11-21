@@ -30,5 +30,6 @@ export const apiPaths = {
     trackwavesUrl: 'track_wave/',
     ordersUrl: 'orders/',
     productsUrl: 'products/',
+    newsUrl: 'blogs/'
 
 };

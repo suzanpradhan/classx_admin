@@ -19,7 +19,7 @@ const ReleasesTableListing = () => {
   const [onDelete, setOnDelete] = useState<string | undefined>(undefined);
 
   useEffect(() => {
-    dispatch(releaseApi.endpoints.getAllReleases.initiate(pageIndex.toString()));
+    dispatch(releaseApi.endpoints.getAllReleases.initiate(pageIndex));
   }, [dispatch, pageIndex]);
   const releaseData = useAppSelector(
     (state: RootState) =>

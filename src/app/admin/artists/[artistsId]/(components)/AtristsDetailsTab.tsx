@@ -15,13 +15,13 @@ const ArtistsInfosTab = ({ Artists }: { Artists:  ArtistsType }) => {
         />
       </div>
       <div
-        className={`h-fit grid md:grid-rows-none grid-rows-3 md:grid-cols-2 mt-4 gap-4`}
+        className={`h-fit grid md:grid-rows-none grid-rows-3 md:grid-cols-2 mt-4 gap-3`}
       >
-        <div className="grid grid-cols-2 md:grid-cols-none md:grid-rows-2">
+        <div className="grid grid-cols-2 md:grid-cols-none md:mt-2 ">
           <div className="text-sm text-black">Name</div>
           <div className="text-base capitalize text-black">{Artists.name}</div>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-none md:grid-rows-2">
+        <div className="grid grid-cols-2 md:grid-cols-none">
           <div className="text-sm text-black">Bio</div>
           <div className="text-base text-black">{parse(Artists.bio)}</div>
         </div> 

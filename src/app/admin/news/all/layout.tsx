@@ -1,4 +1,4 @@
-'use client';
+'use client'
 import { Button, PageBar } from '@/core/ui/zenbuddha/src';
 import { AddSquare } from 'iconsax-react';
 

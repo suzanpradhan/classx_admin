@@ -80,7 +80,7 @@ const ReleasesTableListing = () => {
             <tr key={index} className={tableStyles.table_tbody_tr}>
               <td className={tableStyles.table_td}>{item.id}</td>
               <td className={tableStyles.table_td}>{item.title}</td>
-              <td className={tableStyles.table_td}>Artists Object Needed</td>
+              <td className={tableStyles.table_td}>{item.artist.name}</td>
               <td className={tableStyles.table_td}>{item.genres && item.genres.length > 0 ? item.genres.map((item, index) => <div key={index} className='inline-block px-1 text-xs bg-slate-300 text-dark-500 rounded-sm mr-1'>{item.name}</div>) : ""}</td>
               <td className={tableStyles.table_td}>{item.release_type}</td>
               <td className={tableStyles.table_td}>{item.release_date}</td>

@@ -13,7 +13,7 @@ export default async function AddReleasesLayout({
       <PageBar
         leading={
           <div className="text-base font-bold text-dark-500">
-            {resolvedParams ? 'Update' : 'Add New'} Releases
+            {resolvedParams ? ' Add New' : 'Update'} Releases
           </div>
         }
       ></PageBar>

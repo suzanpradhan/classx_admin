@@ -59,11 +59,11 @@ export type GenreType = {
 
 
 export type ReleaseType = {
-    id: 1,
+    id: number,
     title: string,
 }
 export type ArtistType = {
-    id: 1
+    id: number
     name: string,
     bio: string,
     profile_picture: string,

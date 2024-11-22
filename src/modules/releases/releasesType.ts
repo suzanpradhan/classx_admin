@@ -43,7 +43,7 @@ export type ReleasesRequestType = z.infer<typeof releasesRequestSchema>;
 
 export type ReleasesType = {
     id: number;
-    artist: number;
+    artist: ArtistType;
     title: string;
     genres: GenreType[];
     product_slug: string;
@@ -58,4 +58,10 @@ export type GenreType = {
     id: number;
     name: string;
 
+}
+export type ArtistType = {
+    id: number
+    name: string,
+    bio: string,
+    profile_picture: string,
 }

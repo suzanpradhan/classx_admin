@@ -48,11 +48,23 @@ export type Trackstype = {
     slug: string;
     duration: string;
     intro_track: string;
-    artist: number;
-    release: number;
+    artist: ArtistType;
+    release: ReleaseType;
 }
 
 export type GenreType = {
     id: number,
     name: string,
+}
+
+
+export type ReleaseType = {
+    id: number,
+    title: string,
+}
+export type ArtistType = {
+    id: number
+    name: string,
+    bio: string,
+    profile_picture: string,
 }

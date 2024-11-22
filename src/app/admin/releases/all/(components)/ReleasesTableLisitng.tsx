@@ -5,18 +5,18 @@ import { RootState } from '@/core/redux/store';
 import { PaginatedResponseType } from '@/core/types/responseTypes';
 import AlertDialog from '@/core/ui/components/AlertDialog';
 import PaginationNav from '@/core/ui/components/Pagination';
-import { TableCard, tableStyles } from '@/core/ui/zenbuddha/src';
+import { Button, TableCard, tableStyles } from '@/core/ui/zenbuddha/src';
 import releaseApi from '@/modules/releases/releasesApi';
 import { ReleasesType } from '@/modules/releases/releasesType';
 // import { Eye } from 'iconsax-react';
+import { Eye, PencilSimpleLine, TrashSimple } from 'phosphor-react';
 import { useEffect, useState } from 'react';
-import RealesTableRow from './RealesTableRow';
 
 const ReleasesTableListing = () => {
   const dispatch = useAppDispatch();
   const [pageIndex, setPageIndex] = useState(1);
-  const [onDelete, setOnDelete] = useState<string | undefined>(undefined);
   const [deleteModelOpen, toggleDeleteModel] = useState(false);
+  const [onDelete, setOnDelete] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     dispatch(releaseApi.endpoints.getAllReleases.initiate(pageIndex));
@@ -67,7 +67,6 @@ const ReleasesTableListing = () => {
         <thead>
           <tr className={tableStyles.table_thead_tr}>
             <th className={tableStyles.table_th}>S.N.</th>
-            <th className={tableStyles.table_th}>Cover</th>
             <th className={tableStyles.table_th}>Title</th>
             <th className={tableStyles.table_th}>Artists</th>
             <th className={tableStyles.table_th}>Genres</th>
@@ -78,7 +77,40 @@ const ReleasesTableListing = () => {
         </thead>
         <tbody>
           {releaseData?.results.map((item, index) => (
-            <RealesTableRow props={item} setOnDelete={setOnDelete} toggleDeleteModel={toggleDeleteModel} key={index}/>
+            <tr key={index} className={tableStyles.table_tbody_tr}>
+              <td className={tableStyles.table_td}>{item.id}</td>
+              <td className={tableStyles.table_td}>{item.title}</td>
+              <td className={tableStyles.table_td}>Artists Object Needed</td>
+              <td className={tableStyles.table_td}>{item.genres && item.genres.length > 0 ? item.genres.map((item, index) => <div key={index} className='inline-block px-1 text-xs bg-slate-300 text-dark-500 rounded-sm mr-1'>{item.name}</div>) : ""}</td>
+              <td className={tableStyles.table_td}>{item.release_type}</td>
+              <td className={tableStyles.table_td}>{item.release_date}</td>
+             
+              <td className={`${tableStyles.table_td} flex gap-2 max-w-xs`}>
+              <Button
+                  className="h-8 w-8"
+                   type="link"
+                   href={`/admin/releases/${item.id}`}
+                  buttonType="bordered"
+                  prefix={<Eye size={18} weight="duotone" />}
+                />
+                <Button
+                  className="h-8 w-8"
+                  type="link"
+                  href={`/admin/releases/mutate/${item.id}`}
+                  prefix={<PencilSimpleLine size={15} weight="duotone" />}
+                />
+                <Button
+                  className="h-8 w-8"
+                  kind="danger"
+                  type="button"
+                  onClick={() => {
+                    setOnDelete(item.id.toString());
+                    toggleDeleteModel(true);
+                  }}
+                  prefix={<TrashSimple size={18} weight="duotone" />}
+                />
+              </td>
+            </tr>
           ))}
         </tbody>
       </TableCard>

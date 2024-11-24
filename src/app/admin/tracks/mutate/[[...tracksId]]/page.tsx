@@ -224,7 +224,6 @@ const Page = () => {
                     }) as SelectorDataType
                 )}
                 label="Artists"
-                // type="Creatable"
                 placeholder="Select artist"
                 className="flex-1"
                 handleChange={(e) => {

@@ -16,7 +16,7 @@ import { ReleasesType } from '@/modules/releases/releasesType';
 import { useFormik } from 'formik';
 import { useParams, useRouter } from 'next/navigation';
 import { ChangeEvent, useEffect, useState } from 'react';
-import { MultiValue, SingleValue } from 'react-select';
+import { SingleValue } from 'react-select';
 import { ZodError } from 'zod';
 
 const Page = () => {
@@ -67,7 +67,6 @@ const Page = () => {
             dispatch(
               productsApi.endpoints.updateProducts.initiate({
                 ...values,
-                // artist: {}
               })
             )
           )
@@ -101,42 +100,13 @@ const Page = () => {
       slug: toMutateProductsData ? toMutateProductsData.slug: '',
       release: toMutateProductsData ? toMutateProductsData.release.toString() ?? "0" : "0",
       thumbnail: toMutateProductsData ? null : null,
-      artist: {
-        label: toMutateProductsData
-          ? toMutateProductsData.artist.name
-          : '',
-        value: toMutateProductsData?.artist.id
-          ? (toMutateProductsData.artist.id?.toString() )
-          : "0",
-      },
+      artist: toMutateProductsData ? toMutateProductsData.artist.toString() ?? "0" : "0",
       price: toMutateProductsData ? toMutateProductsData.price : '',
-
       stock: toMutateProductsData? toMutateProductsData.stock.toString() : '', 
     },
     validate: validateForm,
     onSubmit,
   });
-
-  const selectedArtist = useAppSelector(
-    (state: RootState) => 
-      state.baseApi.queries[`getEachArtists("${formik.values.artist.value}")`]
-        ?.data as ArtistsType
-  );
-
-  // useEffect(() => {
-  //   if(selectedArtist?.id) {
-  //     formik.setFieldValue('artists.label', selectedArtist.id);
-  //     formik.setFieldValue('artists.value', selectedArtist.name);
-  //   }
-  //   console.log("selectedArtist", selectedArtist);
-  // },[selectedArtist?.id])
-
-  useEffect(() => {
-    if (formik.values.artist.value != '0') {
-      dispatch(artistsApi.endpoints.getEachArtists.initiate(formik.values.artist.value.toString()));
-    }
-  }, [dispatch, formik.values.artist.value ]);
-  // console.log("selectedArtist", selectedArtist, formik.values.artist.value);
 
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -222,25 +192,28 @@ const Page = () => {
           </div>
           <div className="flex flex-col flex-1">
           {artistsData && (
-             <Selector
-             id="artist"
-             options={artistsData.results.map((artist) => ({
-               value: artist.id.toString(),
-               label: artist.name,
-             }))}
-             label="Artists"
-             placeholder="Select artist"
-             className="flex-1"
-             handleChange={(
-              selectedArtist: SingleValue<{ value: string; label: string; extra?: string; __isNew__?: boolean }> 
-                 | MultiValue<{ value: string; label: string; extra?: string; __isNew__?: boolean }>
-             ) => {
-               formik.setFieldValue("artist.id", selectedArtist)
-             }}
-             name="artist"
-             isMulti={false}
-           />
-           
+              <Selector
+                id="artist"
+                options={artistsData?.results.map(
+                  (artist) =>
+                    ({
+                      value: artist.id!.toString(),
+                      label: artist.name,
+                    }) as SelectorDataType
+                )}
+                label="Artists"
+                // type="Creatable"
+                placeholder="Select artist"
+                className="flex-1"
+                handleChange={(e) => {
+                  formik.setFieldValue(
+                    'artist',
+                    (e as SingleValue<{ value: string; label: string }>)?.value
+                  );
+                }}
+                name="artist"
+                
+                ></Selector>
             )}
           </div>
         </div>

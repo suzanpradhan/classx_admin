@@ -66,7 +66,7 @@ const OrdersTableLisiting = () => {
             <thead>
               <tr className={tableStyles.table_thead_tr}>
                 <th className={tableStyles.table_th}>S.N.</th>
-                {/* <th className={tableStyles.table_th}>Customer</th> */}
+                <th className={tableStyles.table_th}>Customer</th>
                 <th className={tableStyles.table_th}>Billing Address</th>
                 <th className={tableStyles.table_th}>Billing City</th>
                 <th className={tableStyles.table_th}>Billing Country</th>
@@ -80,7 +80,7 @@ const OrdersTableLisiting = () => {
             {orderseData?.results.map((item, index) => (
             <tr key={index} className={tableStyles.table_tbody_tr}>
               <td className={tableStyles.table_td}>{item.id}</td>
-              {/* <td className={tableStyles.table_td}>{item.customer}</td> */}
+              <td className={tableStyles.table_td}>{item.customer.profile?.full_name}</td>
                 <td className={tableStyles.table_td}>{item.billing_address}</td>
                 <td className={tableStyles.table_td}>{item.billing_city}</td>
                 <td className={tableStyles.table_td}>{item.billing_country}</td>

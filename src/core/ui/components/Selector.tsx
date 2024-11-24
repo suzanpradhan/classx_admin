@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { SelectorDataType } from '@/core/types/selectorType';
 import { cn } from '@/lib/utils';
 import React from 'react';

@@ -1,4 +1,3 @@
-import { selectorDataSchema } from "@/core/types/selectorType";
 import { z } from "zod";
 
 const imageFile = z.instanceof(File).refine(
@@ -24,7 +23,7 @@ export const artistSchema = z.object({
 })
 export const productsSchema = z.object({
     id: z.number().optional().nullable(),
-    artist: selectorDataSchema,
+    artist: z.string(),
     deleted: z.string().optional().nullable(),
     title: z.string(),
     slug: z.string(),
@@ -40,11 +39,7 @@ export type ProductsSchemaType = z.infer<typeof productsSchema>;
 
 export type ProductsType = {
     id?: number | null;
-    artist: {
-        id?: number | null;
-        name: string;
-
-    };
+    artist: ArtistType;
     title: string;
     slug: string;
     description: string;
@@ -57,3 +52,9 @@ export type ProductsType = {
     release: number;
 };
 
+export type ArtistType = {
+    id: number
+    name: string,
+    bio: string,
+    profile_picture: string,
+}

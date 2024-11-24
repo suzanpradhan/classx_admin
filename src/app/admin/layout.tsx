@@ -59,13 +59,13 @@ export default function TestLayout({
           />
           <div className="my-2 border-t border-white/5"></div>
           
-          <SideBarNavGroup title='News & Article' segment='admin/news'>
+          <SideBarNavGroup title='News' segment='admin/news'>
           <SideBarNavLink
-            title="All News & Article"
+            title="All News"
             link="/admin/news/all"
           />
           <SideBarNavLink
-            title="Add News & Article"
+            title="Add News"
             link="/admin/news/mutate"
           />
           </SideBarNavGroup>
@@ -115,6 +115,10 @@ export default function TestLayout({
            <SideBarNavGroup title="Products" segment="admin/products">
             <SideBarNavLink title="All Products" link="/admin/products/all" />
             <SideBarNavLink title="Add New Products" link="/admin/products/mutate" />
+          </SideBarNavGroup>
+           <SideBarNavGroup title="Digital Download" segment="admin/download">
+            <SideBarNavLink title="All Digital Download" link="/admin/download/all" />
+            <SideBarNavLink title="Add New Digital Download" link="/admin/download/mutate" />
           </SideBarNavGroup>
             
           <div className="my-2 border-t border-white/5"></div>

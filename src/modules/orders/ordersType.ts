@@ -9,14 +9,9 @@ export const ordersSchema = z.object({
     billing_postal_code: z.string(),
     billing_country: z.string(),
     total_amount: z.string(),
-    // created_by: z.number(),
-    // modified_by: z.number(),
-    // customer: z.number(),
 });
 
 export type OrdersSchemaType = z.infer<typeof ordersSchema>;
-
-
 export type OrdersType = {
     id: number;
     status: string;
@@ -25,7 +20,24 @@ export type OrdersType = {
     billing_postal_code: string;
     billing_country: string;
     total_amount: string;
-    // created_by: number;
-    // modified_by: number;
-    // customer: number;
+    customer: Customer;
+};
+export type Profile = {
+    id: number;
+    full_name: string;
+    phone: string | null;
+    secondary_email: string | null;
+    mobile: string | null;
+    address: string | null;
+    gender: string | null;
+    birth_date: string | null;
+    avatar: string | null;
+    created_on: string;
+    modified_on: string;
+    is_staff: boolean;
+};
+
+export type Customer = {
+    profile: Profile;
+    is_staff: boolean;
 };

@@ -8,8 +8,6 @@ export default function AddNewLayout({
   children: React.ReactNode;
 }) {
 
-  
- 
   return (
     <div className="flex flex-col">
       <PageBar

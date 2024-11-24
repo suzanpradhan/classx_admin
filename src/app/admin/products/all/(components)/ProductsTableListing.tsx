@@ -74,8 +74,7 @@ const ProductsTableListing = () => {
                   <th className={tableStyles.table_th}>Price</th>
                   <th className={tableStyles.table_th}>Stock</th>
                   <th className={tableStyles.table_th}>Product Type</th>
-                  <th className={tableStyles.table_th}>Action</th>
-                  
+                  <th className={tableStyles.table_th}>Action</th>   
                 </tr>
               </thead>
               <tbody>
@@ -115,7 +114,6 @@ const ProductsTableListing = () => {
                      href={`/admin/products/${item.slug}`}
                     buttonType="bordered"
                     prefix={<Eye size={18} weight="duotone" />}
-  
                   />
                   <Button
                           className="h-8 w-8"
@@ -131,8 +129,7 @@ const ProductsTableListing = () => {
                       setOnDelete(item.slug?.toString());
                       toggleDeleteModel(true);
                     }}
-                    prefix={<TrashSimple size={18} weight="duotone" />}
-                   
+                    prefix={<TrashSimple size={18} weight="duotone" />}    
                   />
                 </td>
               </tr>

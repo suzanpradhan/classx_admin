@@ -1,6 +1,6 @@
 'use client';
 import { Button, PageBar } from '@/core/ui/zenbuddha/src';
-import { AddSquare } from 'iconsax-react';
+import { CirclePlus } from 'lucide-react';
 
 export default function AddNewLayout({
   children,
@@ -21,7 +21,7 @@ export default function AddNewLayout({
               className="h-8"
               type="link"
               href="/admin/artists/mutate"
-              prefix={<AddSquare size={18} variant="Bold" className="mr-1" />}
+              prefix={<CirclePlus size={18} className="mr-1" />}
             />
           </div>
       

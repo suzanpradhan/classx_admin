@@ -8,6 +8,7 @@ export const apiConfig = {
 };
 export async function setHeaders(headers: Headers) {
     const session = await getSession();
+    // eslint-disable-next-line no-unused-vars
     const apiKey = process.env.NEXT_PUBLIC_API_KEY;
     if (session) {
         const token = (session! as any).user.accessToken as string;
@@ -30,6 +31,7 @@ export const apiPaths = {
     trackwavesUrl: 'track_wave/',
     ordersUrl: 'orders/',
     productsUrl: 'products/',
-    newsUrl: 'blogs/'
+    newsUrl: 'blogs/',
+    digital_downloadUrl: 'digital_files/',
 
 };

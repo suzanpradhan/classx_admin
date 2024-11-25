@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 'use client';
 
 import { Button, TextField2 } from '@/core/ui/zenbuddha/src';
@@ -54,7 +55,7 @@ export default function Login() {
 
   return (
     <form
-      className="flex flex-col "
+      className="flex flex-col text-white "
       onSubmit={(e) => {
         e.preventDefault();
         formik.handleSubmit(e);

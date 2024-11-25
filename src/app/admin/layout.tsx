@@ -7,7 +7,7 @@ import {
   SideBarNavLink,
 } from '@/core/ui/zenbuddha/src';
 import SideBarNavTitle from '@/core/ui/zenbuddha/src/components/SideBar/SideBarNavTitle';
-import { Logout, NotificationBing } from 'iconsax-react';
+import { Bell, LogOut } from 'lucide-react';
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -36,14 +36,14 @@ export default function TestLayout({
         }
       >
         <button className="flex h-9 w-9 items-center justify-center rounded-md bg-white/5">
-          <NotificationBing className="text-white" variant="Bold" size={20} />
+          <Bell className="text-white"  size={20} />
         </button>
         <button className="flex h-9 w-9 items-center justify-center rounded-md bg-white/5"
          onClick={() => {
           signOut({ callbackUrl: '/login', redirect: true });
         }}
         >
-          <Logout className="text-white" />
+          <LogOut className="text-white" />
         </button>
       </AppBar>
       <div className="min-h-[calc(100vh-3.75rem)] gap-2 overflow-hidden">
@@ -116,9 +116,9 @@ export default function TestLayout({
             <SideBarNavLink title="All Products" link="/admin/products/all" />
             <SideBarNavLink title="Add New Products" link="/admin/products/mutate" />
           </SideBarNavGroup>
-           <SideBarNavGroup title="Digital Download" segment="admin/download">
-            <SideBarNavLink title="All Digital Download" link="/admin/download/all" />
-            <SideBarNavLink title="Add New Digital Download" link="/admin/download/mutate" />
+           <SideBarNavGroup title="Digital Download" segment="admin/digital_download">
+            <SideBarNavLink title="All Digital Download" link="/admin/digital_download/all" />
+            <SideBarNavLink title="Add New Digital Download" link="/admin/digital_download/mutate" />
           </SideBarNavGroup>
             
           <div className="my-2 border-t border-white/5"></div>

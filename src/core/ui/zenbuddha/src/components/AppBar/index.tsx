@@ -1,4 +1,4 @@
-import { Menu } from 'iconsax-react';
+import { Menu } from 'lucide-react';
 
 export interface AppBarProps {
   leading?: React.ReactNode;
@@ -23,7 +23,7 @@ const AppBar = ({
               className="w-9 h-9 bg-white/5 rounded-md hidden items-center justify-center max-lg:flex"
               onClick={onSideBarToggle}
             >
-              <Menu className="text-white" size={20} variant="Bold" />
+              <Menu className="text-white" size={20} accentHeight={'bold'} />
             </button>
           ) : (
             <></>

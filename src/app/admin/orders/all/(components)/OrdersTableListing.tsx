@@ -27,6 +27,8 @@ const OrdersTableLisiting = () => {
         ?.data as PaginatedResponseType<OrdersType>
   );
 
+
+  console.log(orderseData,"data")
   return (
     <>
         <>

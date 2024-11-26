@@ -9,7 +9,7 @@
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "cSpell.words": ["Formik", "grayfont", "nextauth", "reduxjs", "toastify"],
   "[typescriptreact]": {
-    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+    "editor.defaultFormatter": "vscode.typescript-language-features"
   },
   "[typescript]": {
     "editor.defaultFormatter": "vscode.typescript-language-features"

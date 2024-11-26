@@ -3,13 +3,13 @@ import { useGetApiResponse } from '@/core/api/getApiResponse';
 import { useAppDispatch } from '@/core/redux/clientStore';
 import { Button, FormCard, FormGroup, ImageInput, TextField } from '@/core/ui/zenbuddha/src';
 import DateSelector from '@/core/ui/zenbuddha/src/components/DateSelector';
-import RichTextField from '@/core/ui/zenbuddha/src/components/RichTextField';
 import TimeInput from '@/core/ui/zenbuddha/src/components/TimeInput';
 import newsApi from '@/modules/news/newsApi';
 import { newsSchema, NewsSchemaType, NewsType } from '@/modules/news/newsType';
 import { useFormik } from 'formik';
 import { useParams, useRouter } from 'next/navigation';
 import { ChangeEvent, useEffect, useState } from 'react';
+import ReactQuill from 'react-quill-new';
 import { ZodError } from 'zod';
 
 const Page = () => {
@@ -42,18 +42,18 @@ const Page = () => {
   const onSubmit = async (values: NewsSchemaType) => {
     if (isLoading) return;
     setIsLoading(true);
-    
+
     try {
       const data = newsId
         ? await dispatch(
-            newsApi.endpoints.updateNews.initiate({
-              id: Number(newsId),
-              ...values,
-            })
-          ).unwrap()
+          newsApi.endpoints.updateNews.initiate({
+            id: Number(newsId),
+            ...values,
+          })
+        ).unwrap()
         : await dispatch(
-            newsApi.endpoints.addNews.initiate(values)
-          ).unwrap();
+          newsApi.endpoints.addNews.initiate(values)
+        ).unwrap();
 
       if (data) router.push('/admin/news/all');
     } catch (error) {
@@ -74,31 +74,31 @@ const Page = () => {
     }
   };
   const dateTiemString = toMutateNewsData?.date
-  ? new Date(toMutateNewsData.date)
-  : undefined;
+    ? new Date(toMutateNewsData.date)
+    : undefined;
 
-const hours = dateTiemString
-  ? dateTiemString.getUTCHours().toString().padStart(2, '0')
-  : '';
-const minutes = dateTiemString
-  ? dateTiemString.getUTCMinutes().toString().padStart(2, '0')
-  : '';
-const seconds = dateTiemString
-  ? dateTiemString.getUTCSeconds().toString().padStart(2, '0')
-  : '';
-const timeString = `${hours}:${minutes}:${seconds}`;
+  const hours = dateTiemString
+    ? dateTiemString.getUTCHours().toString().padStart(2, '0')
+    : '';
+  const minutes = dateTiemString
+    ? dateTiemString.getUTCMinutes().toString().padStart(2, '0')
+    : '';
+  const seconds = dateTiemString
+    ? dateTiemString.getUTCSeconds().toString().padStart(2, '0')
+    : '';
+  const timeString = `${hours}:${minutes}:${seconds}`;
 
 
   const formik = useFormik<NewsSchemaType>({
     enableReinitialize: true,
     initialValues: {
       id: toMutateNewsData?.id ?? null,
-      title: toMutateNewsData ? toMutateNewsData.title:  '',
-      description: toMutateNewsData ? toMutateNewsData.description: '',
+      title: toMutateNewsData ? toMutateNewsData.title : '',
+      description: toMutateNewsData ? toMutateNewsData.description : '',
       cover_image: toMutateNewsData ? null : null,
       content: toMutateNewsData ? toMutateNewsData.content ?? '' : '',
       newsDate: dateTiemString,
-      newsTime: timeString, 
+      newsTime: timeString,
     },
     validate: validateForm,
     onSubmit,
@@ -178,28 +178,26 @@ const timeString = `${hours}:${minutes}:${seconds}`;
           </div>
         </div>
         <div className="flex flex-col flex-1">
-            <TextField
-              id="description"
-              type="text"
-              label="Description"
-              className="flex-1"
-              isMulti
-              {...formik.getFieldProps('description')}
-            />
-            {!!formik.errors.description && (
-              <div className="text-red-500 text-sm">
-                {formik.errors.description}
-              </div>
-            )}
-          </div>
-
-        <div className="flex gap-2 mb-2 max-sm:flex-col">
-          <RichTextField
-            id="content"
-            label="Content"
-            value={formik.values.content}
-            onChange={handleRichTextChange}
+          <TextField
+            id="description"
+            type="text"
+            label="Description"
+            className="flex-1"
+            isMulti
+            {...formik.getFieldProps('description')}
           />
+          {!!formik.errors.description && (
+            <div className="text-red-500 text-sm">
+              {formik.errors.description}
+            </div>
+          )}
+        </div>
+
+        <div className='mt-3 gap-2'>
+          <ReactQuill theme="snow" value={formik.values.content} onChange={handleRichTextChange} style={{
+            border: "#2560AA",
+            background: '#F5F8FA',
+          }} />
         </div>
       </FormGroup>
 
@@ -219,7 +217,7 @@ const timeString = `${hours}:${minutes}:${seconds}`;
           onClick={() => router.back()}
         />
       </div>
-    </FormCard>
+    </FormCard >
   );
 };
 

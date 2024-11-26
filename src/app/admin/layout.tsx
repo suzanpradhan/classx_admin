@@ -1,16 +1,14 @@
-'use client';
 /* eslint-disable @next/next/no-img-element */
+'use client';
 
-import {
-  AppBar,
-  SideBarNavGroup,
-  SideBarNavLink,
-} from '@/core/ui/zenbuddha/src';
-import SideBarNavTitle from '@/core/ui/zenbuddha/src/components/SideBar/SideBarNavTitle';
-import { Bell, LogOut } from 'lucide-react';
-import { signOut } from 'next-auth/react';
-import Link from 'next/link';
-import { useState } from 'react';
+import AppBar from "@/core/ui/zenbuddha/src/components/AppBar";
+import SideBarNavGroup from "@/core/ui/zenbuddha/src/components/SideBar/SideBarNavGroup";
+import SideBarNavLink from "@/core/ui/zenbuddha/src/components/SideBar/SideBarNavLink";
+import SideBarNavTitle from "@/core/ui/zenbuddha/src/components/SideBar/SideBarNavTitle";
+import { Bell, LogOut } from "lucide-react";
+import { signOut } from "next-auth/react";
+import Link from "next/link";
+import { useState } from "react";
 
 export default function TestLayout({
   children,
@@ -21,6 +19,7 @@ export default function TestLayout({
 
   return (
     <div className="relative overflow-hidden ">
+
       <AppBar
         onSideBarToggle={() => {
           setToggle(!toggle);
@@ -63,20 +62,27 @@ export default function TestLayout({
           <SideBarNavLink
             title="All News"
             link="/admin/news/all"
+            linkExact
           />
           <SideBarNavLink
             title="Add News"
             link="/admin/news/mutate"
+            linkExact
+
           />
           </SideBarNavGroup>
           <SideBarNavGroup title='Artists' segment='admin/artists'>
           <SideBarNavLink
             title="All Artists"
             link="/admin/artists/all"
+            linkExact
+
           />
           <SideBarNavLink
             title="Add New Artists"
             link="/admin/artists/mutate"
+            linkExact
+
           />
           </SideBarNavGroup>
           <SideBarNavTitle title="Music" />
@@ -144,6 +150,7 @@ export default function TestLayout({
           {children}
         </div>
       </div>
+
     </div>
   );
 }

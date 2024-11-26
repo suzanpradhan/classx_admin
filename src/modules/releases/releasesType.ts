@@ -19,7 +19,7 @@ const imageFile = z.instanceof(File).refine(
 
 export const releasesSchema = z.object({
     id: z.number().optional().nullable(),
-    artist: z.string(),
+    artist: selectorDataSchema,
     title: z.string(),
     genres: z.array(selectorDataSchema).optional(),
     description: z.string().optional().nullable(),

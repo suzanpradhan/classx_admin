@@ -61,7 +61,7 @@ export default function EachDetailPage() {
                   <div className="text-base font-bold text-dark-500">
                     {productsData.title}
                   </div>
-                 
+
                 </div>
               }
               bottom={
@@ -77,7 +77,7 @@ export default function EachDetailPage() {
                       setTab(0);
                     }}
                   >
-                    PRODUCTS TAP
+                    PRODUCTS TAB
                     {tab == 1 ? (
                       <div className="absolute top-[calc(100%+6px)] h-[2px] w-full bg-dark-500 rounded-md"></div>
                     ) : (

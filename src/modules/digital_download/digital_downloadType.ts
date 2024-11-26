@@ -27,9 +27,9 @@ const zipFile = z
 
 export const digital_downloadSchema = z.object({
     id: z.number().optional().nullable(),
-    release: selectorDataSchema,
+    release: selectorDataSchema.optional(),
     file: zipFile.optional().nullable(),
-    max_downloads: z.string(),
+    max_downloads: z.number(),
 
 });
 
@@ -39,7 +39,7 @@ export type Digital_DownloadType = {
     id: number;
     release: Release;
     file: string;
-    max_downloads: string;
+    max_downloads: number;
 };
 
 export type Genre = {

@@ -62,7 +62,7 @@ export default function EachDetailPage() {
                   <div className="text-base font-bold text-dark-500">
                     {ArtistsData.name}
                   </div>
-                 
+
                 </div>
               }
               bottom={
@@ -78,7 +78,7 @@ export default function EachDetailPage() {
                       setTab(0);
                     }}
                   >
-                    ARTISTS TAP
+                    ARTISTS TAB
                     {tab == 1 ? (
                       <div className="absolute top-[calc(100%+6px)] h-[2px] w-full bg-dark-500 rounded-md"></div>
                     ) : (

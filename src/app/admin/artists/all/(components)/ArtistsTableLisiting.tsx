@@ -1,5 +1,4 @@
 'use client';
-
 import { useAppDispatch, useAppSelector } from '@/core/redux/clientStore';
 import { RootState } from '@/core/redux/store';
 import { PaginatedResponseType } from '@/core/types/responseTypes';
@@ -130,8 +129,7 @@ const ArtistsTableLisiting = () => {
                 />
               </td>
             </tr>
-          ))}
-             
+          ))}    
                   
             </tbody>
           </TableCard>

@@ -2,6 +2,7 @@
 
 import { SelectSingleEventHandler } from 'react-day-picker';
 import { Calendar } from '../../../../../../components/ui/calendar';
+
 import {
   Popover,
   PopoverContent,
@@ -62,6 +63,7 @@ const DateSelector = ({
           </button>
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0" align="start">
+
           <Calendar
             mode="single"
             selected={value}
@@ -69,10 +71,10 @@ const DateSelector = ({
               onChange?.(day, selectedDay, activeModifiers, e);
             }}
             className={' bg-white'}
-            // disabled={(date) =>
-            //   date > new Date() || date < new Date('1900-01-01')
-            // }
-            // initialFocus
+          // disabled={(date) =>
+          //   date > new Date() || date < new Date('1900-01-01')
+          // }
+          // initialFocus
           />
         </PopoverContent>
       </Popover>

@@ -2,7 +2,6 @@ import { apiPaths } from '@/core/api/apiConstants';
 import { baseApi } from '@/core/api/apiQuery';
 import { PaginatedResponseType } from '@/core/types/responseTypes';
 import { toast } from 'react-toastify';
-// import { GenresSchemaType, GenresType } from './genresType';
 import { ReleasesRequestType, ReleasesType } from './releasesType';
 
 const releaseApi = baseApi.injectEndpoints({
@@ -19,7 +18,9 @@ const releaseApi = baseApi.injectEndpoints({
                         `${payload.release_date.getFullYear()}-${payload.release_date.getMonth()}-${payload.release_date.getDate()}`
                     );
                 if (payload.cover) formData.append('cover', payload.cover);
-                if (payload.artist) formData.append('artist', payload.artist);
+                if (payload.artist) {
+                    formData.append('artist', payload.artist.value);
+                }
                 if (payload.release_type)
                     formData.append('release_type', payload.release_type);
                 payload.genres?.forEach((item, index) => {
@@ -95,9 +96,10 @@ const releaseApi = baseApi.injectEndpoints({
                     toast.error(JSON.stringify(err));
                 }
             },
-            // transformResponse: (response: any) => {
-            //   return response;
-            // },
+            transformResponse: (response: any) => {
+                console.log('get each eleases response', response);
+                return response;
+            },
         }),
 
         // delete
@@ -134,7 +136,9 @@ const releaseApi = baseApi.injectEndpoints({
                         `${payload.release_date.getFullYear()}-${payload.release_date.getMonth()}-${payload.release_date.getDate()}`
                     );
                 if (payload.cover) formData.append('cover', payload.cover);
-                if (payload.artist) formData.append('artist', payload.artist);
+                if (payload.artist) {
+                    formData.append('artist', payload.artist.value);
+                }
                 if (payload.release_type)
                     formData.append('release_type', payload.release_type);
                 payload.genres?.forEach((item, index) => {

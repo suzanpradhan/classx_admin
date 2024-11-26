@@ -3,12 +3,13 @@
 import { useGetApiResponse } from '@/core/api/getApiResponse';
 import { useAppDispatch } from '@/core/redux/clientStore';
 import AlertDialog from '@/core/ui/components/AlertDialog';
-import { Button, PageBar, Spinner } from '@/core/ui/zenbuddha/src';
+import Button from '@/core/ui/zenbuddha/src/components/Button';
+import PageBar from '@/core/ui/zenbuddha/src/components/PageBar';
+import Spinner from '@/core/ui/zenbuddha/src/components/Spinner';
 import releaseApi from '@/modules/releases/releasesApi';
 import { ReleasesType } from '@/modules/releases/releasesType';
-import { PencilSimpleLine, TrashSimple, X } from 'phosphor-react';
-
 import { useParams, useRouter } from 'next/navigation';
+import { PencilSimpleLine, TrashSimple, X } from 'phosphor-react';
 import { useEffect, useState } from 'react';
 import ReleasesInfosTab from './(components)/ReleasesDetailsTap';
 
@@ -18,18 +19,22 @@ export default function EachDetailPage() {
   const [tab, setTab] = useState(0);
   const [modalIsOpen, setIsOpen] = useState(false);
   const param = useParams();
-  const releasesId = param.releasesId && param.releasesId[0];
+  const releasesId = param.releasesId;
   const [onDelete, setOnDelete] = useState<any>(undefined);
+
+  console.log("release id", releasesId)
 
   useEffect(() => {
     if (releasesId) {
-      dispatch(releaseApi.endpoints.getEachReleases.initiate(releasesId));
+      dispatch(releaseApi.endpoints.getEachReleases.initiate(releasesId as string));
     }
-  }, [dispatch, releasesId]);
+  }, [releasesId, dispatch]);
 
   const releasesData = useGetApiResponse<ReleasesType>(
     `getEachReleases("${releasesId ? releasesId : undefined}")`
   );
+
+  console.log(releasesData, "Data")
 
   return (
     <>
@@ -62,7 +67,7 @@ export default function EachDetailPage() {
                   <div className="text-base font-bold text-dark-500">
                     {releasesData.title}
                   </div>
-                 
+
                 </div>
               }
               bottom={
@@ -78,7 +83,7 @@ export default function EachDetailPage() {
                       setTab(0);
                     }}
                   >
-                    RELEASES TAP
+                    RELEASES TAB
                     {tab == 1 ? (
                       <div className="absolute top-[calc(100%+6px)] h-[2px] w-full bg-dark-500 rounded-md"></div>
                     ) : (

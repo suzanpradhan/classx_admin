@@ -82,7 +82,7 @@ const Page = () => {
     initialValues: {
       id: toMutateDigitalData ? (toMutateDigitalData.id ?? null) : null,
       file: toMutateDigitalData ? null : null,
-      max_downloads: toMutateDigitalData ? toMutateDigitalData.max_downloads.toString() : '' ,
+      max_downloads: toMutateDigitalData ? toMutateDigitalData.max_downloads : 0 ,
       release: toMutateDigitalData ? {value: toMutateDigitalData.release.id.toString(), label: toMutateDigitalData.release.title} : {value: '', label: ''},
     },
     validateOnChange: true,
@@ -131,7 +131,7 @@ const Page = () => {
           <div className="flex flex-col flex-1">
           <TextField
               id="max_downloads"
-              type="text"
+              type="number"
               label="Max Download"
               className="flex-1"
               {...formik.getFieldProps('max_downloads')}

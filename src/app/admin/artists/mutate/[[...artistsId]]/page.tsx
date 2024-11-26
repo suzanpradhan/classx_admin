@@ -2,12 +2,12 @@
 import { useGetApiResponse } from '@/core/api/getApiResponse';
 import { useAppDispatch } from '@/core/redux/clientStore';
 import { Button, FormCard, FormGroup, ImageInput, TextField } from '@/core/ui/zenbuddha/src';
-import RichTextField from '@/core/ui/zenbuddha/src/components/RichTextField';
 import artistsApi from '@/modules/artists/artistsApi';
 import { artistsSchema, ArtistsSchemaType, ArtistsType } from '@/modules/artists/artistsType';
 import { useFormik } from 'formik';
 import { useParams, useRouter } from 'next/navigation';
 import { ChangeEvent, useEffect, useState } from 'react';
+import ReactQuill from 'react-quill-new';
 import { ZodError } from 'zod';
 
 const Page = () => {
@@ -16,6 +16,7 @@ const Page = () => {
   const param = useParams();
   const artistsId = param.artistsId && param.artistsId[0];
   const dispatch = useAppDispatch();
+
 
   const toMutateArtistsData = useGetApiResponse<ArtistsType>(
     `getEachArtists("${artistsId ?? ''}")`
@@ -40,18 +41,18 @@ const Page = () => {
   const onSubmit = async (values: ArtistsSchemaType) => {
     if (isLoading) return;
     setIsLoading(true);
-    
+
     try {
       const data = artistsId
         ? await dispatch(
-            artistsApi.endpoints.updateArtists.initiate({
-              id: Number(artistsId),
-              ...values,
-            })
-          ).unwrap()
+          artistsApi.endpoints.updateArtists.initiate({
+            id: Number(artistsId),
+            ...values,
+          })
+        ).unwrap()
         : await dispatch(
-            artistsApi.endpoints.addArtists.initiate(values)
-          ).unwrap();
+          artistsApi.endpoints.addArtists.initiate(values)
+        ).unwrap();
 
       if (data) router.push('/admin/artists/all');
     } catch (error) {
@@ -126,14 +127,12 @@ const Page = () => {
             )}
           </div>
         </div>
+        <div className='mt-3 gap-2'>
 
-        <div className="flex gap-2 mb-2 max-sm:flex-col">
-          <RichTextField
-            id="bio"
-            label="Bio"
-            value={formik.values.bio}
-            onChange={handleRichTextChange}
-          />
+          <ReactQuill theme="snow" value={formik.values.bio} onChange={handleRichTextChange} style={{
+            border: "#2560AA",
+            background: '#F5F8FA',
+          }} />
         </div>
       </FormGroup>
 

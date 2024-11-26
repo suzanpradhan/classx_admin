@@ -6,7 +6,6 @@ import { PaginatedResponseType } from '@/core/types/responseTypes';
 import { SelectorDataType } from '@/core/types/selectorType';
 import Selector from '@/core/ui/components/Selector';
 import { Button, FormCard, FormGroup, ImageInput, TextField } from '@/core/ui/zenbuddha/src';
-import RichTextField from '@/core/ui/zenbuddha/src/components/RichTextField';
 import artistsApi from '@/modules/artists/artistsApi';
 import { ArtistsType } from '@/modules/artists/artistsType';
 import productsApi from '@/modules/products/productsApi';
@@ -16,6 +15,7 @@ import { ReleasesType } from '@/modules/releases/releasesType';
 import { useFormik } from 'formik';
 import { useParams, useRouter } from 'next/navigation';
 import { ChangeEvent, useEffect, useState } from 'react';
+import ReactQuill from 'react-quill-new';
 import { SingleValue } from 'react-select';
 import { ZodError } from 'zod';
 
@@ -30,27 +30,26 @@ const Page = () => {
     { value: 'merch', label: 'Merchandise' },
     { value: 'digital', label: 'Digital Audio' },
   ];
-  
   useEffect(() => {
     dispatch(releaseApi.endpoints.getAllReleases.initiate(1));
-    dispatch(artistsApi.endpoints.getAllArtists.initiate(1)); 
-    dispatch(releaseApi.endpoints.getAllReleases.initiate(1)); 
+    dispatch(artistsApi.endpoints.getAllArtists.initiate(1));
+    dispatch(releaseApi.endpoints.getAllReleases.initiate(1));
     if (slug) {
       dispatch(productsApi.endpoints.getEachProducts.initiate(slug.toString()));
     }
-  }, [slug, dispatch ]);
+  }, [slug, dispatch]);
 
   const toMutateProductsData = useGetApiResponse<ProductsType>(
     `getEachProducts("${slug ? slug : undefined}")`
   );
 
   const artistsData = useAppSelector(
-    (state: RootState) => 
+    (state: RootState) =>
       state.baseApi.queries[`getAllArtists`]
         ?.data as PaginatedResponseType<ArtistsType>
   );
   const releasesData = useAppSelector(
-    (state: RootState) => 
+    (state: RootState) =>
       state.baseApi.queries[`getAllReleases`]
         ?.data as PaginatedResponseType<ReleasesType>
   );
@@ -64,15 +63,15 @@ const Page = () => {
     try {
       var data = slug
         ? await Promise.resolve(
-            dispatch(
-              productsApi.endpoints.updateProducts.initiate({
-                ...values,
-              })
-            )
+          dispatch(
+            productsApi.endpoints.updateProducts.initiate({
+              ...values,
+            })
           )
+        )
         : await Promise.resolve(
-            dispatch(productsApi.endpoints.addProducts.initiate(values))
-          );
+          dispatch(productsApi.endpoints.addProducts.initiate(values))
+        );
       if (data) router.push('/admin/products/all');
       setIsLoading(false);
     } catch (error) {
@@ -95,14 +94,15 @@ const Page = () => {
     initialValues: {
       id: toMutateProductsData?.id ?? null,
       title: toMutateProductsData ? toMutateProductsData.title : '',
-      product_type: toMutateProductsData ? toMutateProductsData.product_type: '',
-      description: toMutateProductsData ? toMutateProductsData.description: '',
-      slug: toMutateProductsData ? toMutateProductsData.slug: '',
-      release: toMutateProductsData ? toMutateProductsData.release.toString() ?? "0" : "0",
+      product_type: toMutateProductsData ? toMutateProductsData.product_type : '',
+      description: toMutateProductsData ? toMutateProductsData.description : '',
+      slug: toMutateProductsData ? toMutateProductsData.slug : '',
+      release: toMutateProductsData ? toMutateProductsData.release?.toString() ?? "0" : "0",
+      artist: toMutateProductsData ? { value: toMutateProductsData.artist.id.toString(), label: toMutateProductsData.artist.name } : { value: '', label: '' },
       thumbnail: toMutateProductsData ? null : null,
-      artist: toMutateProductsData ? toMutateProductsData.artist.toString() ?? "0" : "0",
+      // artist: toMutateProductsData ? toMutateProductsData.artist.toString() ?? "0" : "0",
       price: toMutateProductsData ? toMutateProductsData.price : '',
-      stock: toMutateProductsData? toMutateProductsData.stock.toString() : '', 
+      stock: toMutateProductsData ? toMutateProductsData.stock.toString() : '',
     },
     validate: validateForm,
     onSubmit,
@@ -121,7 +121,7 @@ const Page = () => {
 
 
   return (
-    <FormCard onSubmit={formik.handleSubmit}  className="m-4">
+    <FormCard onSubmit={formik.handleSubmit} className="m-4">
       <FormGroup title="Basic Type">
         <div className="flex gap-2 mb-2 max-sm:flex-col">
           <div className="flex flex-col flex-1">
@@ -151,7 +151,7 @@ const Page = () => {
         </div>
 
         <div className="flex gap-2 mb-2 max-sm:flex-col">
-        <div className="flex flex-col flex-1">
+          <div className="flex flex-col flex-1">
             <ImageInput
               id="thumbnail"
               label="Thumbnail"
@@ -191,7 +191,7 @@ const Page = () => {
             )}
           </div>
           <div className="flex flex-col flex-1">
-          {artistsData && (
+            {artistsData && (
               <Selector
                 id="artist"
                 options={artistsData?.results.map(
@@ -201,47 +201,46 @@ const Page = () => {
                       label: artist.name,
                     }) as SelectorDataType
                 )}
-                label="Artists"
-                // type="Creatable"
+                label="Artist"
+                value={formik.values.artist}
                 placeholder="Select artist"
                 className="flex-1"
                 handleChange={(e) => {
                   formik.setFieldValue(
                     'artist',
-                    (e as SingleValue<{ value: string; label: string }>)?.value
+                    e
                   );
                 }}
                 name="artist"
-                
-                ></Selector>
+              ></Selector>
             )}
           </div>
         </div>
         <div className="flex gap-2 mb-2 max-sm:flex-col">
-        <div className="flex flex-col flex-1">
+          <div className="flex flex-col flex-1">
             <Selector
-             id="product_type"
-             label="Products Type"
-             handleChange={(e) => {
-               formik.setFieldValue(
-                 'product_type',
-                 (e as SingleValue<{ value: string; label: string }>)?.value
-               );
-             }}
-             options={Product_type}
-             placeholder="Select source"
-             value={{
-               label:
-               Product_type.find(
-                   (item) => item.value === formik.values.product_type
-                 )?.label ?? '',
-               value: formik.values.product_type ?? '',
-             }}
-             
+              id="product_type"
+              label="Products Type"
+              handleChange={(e) => {
+                formik.setFieldValue(
+                  'product_type',
+                  (e as SingleValue<{ value: string; label: string }>)?.value
+                );
+              }}
+              options={Product_type}
+              placeholder="Select source"
+              value={{
+                label:
+                  Product_type.find(
+                    (item) => item.value === formik.values.product_type
+                  )?.label ?? '',
+                value: formik.values.product_type ?? '',
+              }}
+
             ></Selector>
           </div>
           <div className="flex flex-col flex-1">
-          {releasesData && (
+            {releasesData && (
               <Selector
                 id="release"
                 options={releasesData?.results.map(
@@ -254,7 +253,7 @@ const Page = () => {
                 label="Release"
                 placeholder="Select release"
                 className="flex-1"
-                
+
                 handleChange={(e) => {
                   formik.setFieldValue(
                     'release',
@@ -262,19 +261,19 @@ const Page = () => {
                   );
                 }}
                 name="release"
-                />
+              />
             )}
           </div>
         </div>
 
-        <div className="flex gap-2 mb-2 max-sm:flex-col">
-          <RichTextField
-            id="description"
-            label="Discription"
-            value={formik.values.description}
-            onChange={handleRichTextChange}
-          />
+        <div className='mt-3 gap-2'>
+
+          <ReactQuill theme="snow" value={formik.values.description} onChange={handleRichTextChange} style={{
+            border: "#2560AA",
+            background: '#F5F8FA',
+          }} />
         </div>
+
       </FormGroup>
 
       <div className="flex justify-end gap-2 m-4">

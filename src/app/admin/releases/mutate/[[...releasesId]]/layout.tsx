@@ -1,5 +1,4 @@
 import { PageBar } from "@/core/ui/zenbuddha/src";
-
 export default async function AddReleasesLayout({
   children,
   params,

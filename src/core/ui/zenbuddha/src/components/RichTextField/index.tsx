@@ -2,15 +2,9 @@
 
 import { convertFromHTML, convertToHTML } from 'draft-convert';
 import { EditorState } from 'draft-js';
-import dynamic from 'next/dynamic';
-import React, { useState } from 'react';
-// import { Editor } from 'react-draft-wysiwyg';
-// import { EditorState } from 'react-draft-wysiwyg';
+import React, { useEffect, useState } from 'react';
+import { Editor } from 'react-draft-wysiwyg';
 
-const Editor = dynamic(
-  () => import('react-draft-wysiwyg').then((mod) => mod.Editor),
-  { ssr: false }
-);
 
 export interface TextFieldProps {
   label?: string;
@@ -20,7 +14,6 @@ export interface TextFieldProps {
   type?: string;
   rows?: number;
   className?: string;
-  // eslint-disable-next-line no-unused-vars
   onChange?: (value: string) => void;
   required?: boolean;
   suffix?: React.ReactNode;
@@ -31,6 +24,13 @@ const RichTextField = ({ className, onChange, ...props }: TextFieldProps) => {
   const [editorState, setEditorState] = useState<EditorState | undefined>(
     undefined
   );
+
+  useEffect(() => {
+    if (props.value && !editorState) {
+      const preparedDraft = prepareDraft(props.value);
+      setEditorState(preparedDraft);
+    }
+  }, [props.value, editorState]);
 
   const prepareDraft = (value: string) => {
     const editorState = EditorState.createWithContent(convertFromHTML(value));

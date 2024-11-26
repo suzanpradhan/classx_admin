@@ -15,9 +15,11 @@ const tracksApi = baseApi.injectEndpoints({
                 formData.append('slug', String(payload.slug));
                 if (payload.intro_track) formData.append('intro_track', payload.intro_track);
                 if (payload.duration) formData.append('duration', payload.duration);
-                if (payload.artist) formData.append('artist', payload.artist);
+                if (payload.artist) {
+                    formData.append('artist', payload.artist.value);
+                }
                 if (payload.release)
-                    formData.append('release', payload.release);
+                    formData.append('release', payload.release.value);
                 payload.genres?.forEach((item, index) => {
                     formData.append(`genres[${index}]name`, item.name);
                     if (item.id)
@@ -43,6 +45,7 @@ const tracksApi = baseApi.injectEndpoints({
             transformResponse: (response: any) => {
                 return response;
             },
+            invalidatesTags: [{ type: 'Track', id: 'LIST' }],
 
         }),
 
@@ -57,11 +60,11 @@ const tracksApi = baseApi.injectEndpoints({
                 response?.results
                     ? [
                         ...response.results.map(
-                            ({ id }) => ({ type: 'Tracks', id }) as const
+                            ({ id }) => ({ type: 'Track', id }) as const
                         ),
-                        { type: 'Tracks', id: 'LIST' },
+                        { type: 'Track', id: 'LIST' },
                     ]
-                    : [{ type: 'Tracks', id: 'LIST' }],
+                    : [{ type: 'Track', id: 'LIST' }],
             serializeQueryArgs: ({ endpointName }) => {
                 return endpointName;
             },
@@ -83,7 +86,7 @@ const tracksApi = baseApi.injectEndpoints({
             query: (tracksId) =>
                 `${apiPaths.tracksUrl}${tracksId}/`,
             providesTags: (result, error, id) => {
-                return [{ type: 'Tracks', id }];
+                return [{ type: 'Track', id }];
             },
             serializeQueryArgs: ({ queryArgs, endpointName }) => {
                 return `${endpointName}("${queryArgs}")`;
@@ -121,7 +124,7 @@ const tracksApi = baseApi.injectEndpoints({
                     );
                 }
             },
-            invalidatesTags: (result, error, id) => [{ type: 'Tracks', id }],
+            invalidatesTags: (result, error, id) => [{ type: 'Track', id }],
         }),
 
         // Update
@@ -134,9 +137,11 @@ const tracksApi = baseApi.injectEndpoints({
                 formData.append('title', String(payload.title));
                 formData.append('slug', String(payload.slug));
                 if (payload.intro_track) formData.append('intro_track', payload.intro_track);
-                if (payload.artist) formData.append('artist', payload.artist);
+                if (payload.artist) {
+                    formData.append('artist', payload.artist.value);
+                }
                 if (payload.release)
-                    formData.append('release', payload.release);
+                    formData.append('release', payload.release.value);
                 payload.genres?.forEach((item, index) => {
                     formData.append(`genres[${index}]name`, item.name);
                     if (item.id)
@@ -160,7 +165,7 @@ const tracksApi = baseApi.injectEndpoints({
                 }
             },
             invalidatesTags: (result, error, { id }) => [
-                { type: 'Tracks', id: id! },
+                { type: 'Track', id: id! },
             ],
         }),
     }),

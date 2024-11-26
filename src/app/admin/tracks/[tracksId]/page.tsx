@@ -18,12 +18,12 @@ export default function EachDetailPage() {
   const [tab, setTab] = useState(0);
   const [modalIsOpen, setIsOpen] = useState(false);
   const param = useParams();
-  const tracksId = param.tracksId && param.tracksId[0];
+  const tracksId = param.tracksId;
   const [onDelete, setOnDelete] = useState<any>(undefined);
 
   useEffect(() => {
     if (tracksId) {
-      dispatch(tracksApi.endpoints.getEachTracks.initiate(tracksId));
+      dispatch(tracksApi.endpoints.getEachTracks.initiate(tracksId as string));
     }
   }, [dispatch, tracksId]);
 
@@ -62,7 +62,7 @@ export default function EachDetailPage() {
                   <div className="text-base font-bold text-dark-500">
                     {tracksData.title}
                   </div>
-                 
+
                 </div>
               }
               bottom={
@@ -78,7 +78,7 @@ export default function EachDetailPage() {
                       setTab(0);
                     }}
                   >
-                    TRACKS TAP
+                    TRACKS TAB
                     {tab == 1 ? (
                       <div className="absolute top-[calc(100%+6px)] h-[2px] w-full bg-dark-500 rounded-md"></div>
                     ) : (

@@ -22,12 +22,12 @@ const introTrackFile = z
 export const trackSchema = z.object({
     id: z.number().optional().nullable(),
     slug: z.string(),
-    artist: z.string(),
+    artist: selectorDataSchema,
     title: z.string(),
     genres: z.array(selectorDataSchema).optional(),
     duration: z.string(),
     intro_track: introTrackFile.optional().nullable(),
-    release: z.string(),
+    release: selectorDataSchema,
 });
 
 export const genresSchema = z.object({

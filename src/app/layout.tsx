@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import "react-datetime/css/react-datetime.css";
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import 'react-quill-new/dist/quill.snow.css';
 import 'react-toastify/dist/ReactToastify.css';
 import './globals.css';
 
@@ -70,7 +71,7 @@ export default function RootLayout({
       >
         <Notification />
         <div id="deleteWarningDialog"></div>
-       <Provider>{children}</Provider>
+        <Provider>{children}</Provider>
       </body>
     </html>
   );

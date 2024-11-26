@@ -14,7 +14,7 @@ export default async function AddArtistsLayout({
       <PageBar
         leading={
           <div className="text-base font-bold text-dark-500">
-            {resolvedParams ? "Update" : "Add New"} Products
+            {resolvedParams ? "Add New " : "Update"} Products
           </div>
         }
       ></PageBar>

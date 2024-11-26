@@ -17,7 +17,6 @@ import { TrackRequestType, trackSchema, TrackSchemaType, Trackstype } from '@/mo
 import { useFormik } from 'formik';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { SingleValue } from 'react-select';
 import { ZodError } from 'zod';
 
 const Page = () => {
@@ -27,11 +26,11 @@ const Page = () => {
   const tracksId = param.tracksId && param.tracksId[0];
   const dispatch = useAppDispatch();
 
- 
+
   useEffect(() => {
     dispatch(genresApi.endpoints.getAllGenres.initiate('1'));
-    dispatch(artistsApi.endpoints.getAllArtists.initiate(1)); 
-    dispatch(releaseApi.endpoints.getAllReleases.initiate(1)); 
+    dispatch(artistsApi.endpoints.getAllArtists.initiate(1));
+    dispatch(releaseApi.endpoints.getAllReleases.initiate(1));
     if (tracksId) {
       dispatch(
         tracksApi.endpoints.getEachTracks.initiate(
@@ -46,24 +45,24 @@ const Page = () => {
   );
 
   const genresData = useAppSelector(
-    (state: RootState) => 
+    (state: RootState) =>
       state.baseApi.queries[`getAllGenres`]
         ?.data as PaginatedResponseType<GenresType>
   );
 
   const artistsData = useAppSelector(
-    (state: RootState) => 
+    (state: RootState) =>
       state.baseApi.queries[`getAllArtists`]
         ?.data as PaginatedResponseType<ArtistsType>
   );
-  
+
   const releasesData = useAppSelector(
-    (state: RootState) => 
+    (state: RootState) =>
       state.baseApi.queries[`getAllReleases`]
         ?.data as PaginatedResponseType<ReleasesType>
   );
-  
-   
+
+
   const validateForm = (values: TrackSchemaType) => {
     try {
       trackSchema.parse(values);
@@ -113,7 +112,7 @@ const Page = () => {
     }
     setIsLoading(false);
   };
-  
+
   const formik = useFormik<TrackSchemaType>({
     enableReinitialize: true,
     initialValues: {
@@ -121,32 +120,32 @@ const Page = () => {
         ? (toMutatetrackData.id ?? null)
         : null,
       title: toMutatetrackData ? toMutatetrackData.title : '',
-      duration: toMutatetrackData ? toMutatetrackData.duration: '',
-      slug: toMutatetrackData ? toMutatetrackData.slug: '',
-      release: toMutatetrackData ? toMutatetrackData.release.toString() ?? "0" : "0",
+      duration: toMutatetrackData ? toMutatetrackData.duration : '',
+      slug: toMutatetrackData ? toMutatetrackData.slug : '',
       intro_track: toMutatetrackData ? null : null,
-      artist: toMutatetrackData ? toMutatetrackData.artist.toString() ?? "0" : "0",
-        genres:
+      artist: toMutatetrackData ? { value: toMutatetrackData.artist.id.toString(), label: toMutatetrackData.artist.name } : { value: '', label: '' },
+      release: toMutatetrackData ? { value: toMutatetrackData.release.id.toString(), label: toMutatetrackData.release.title } : { value: '', label: '' },
+      genres:
         toMutatetrackData?.genres?.map((genres) => ({
           value: genres.id!.toString(),
           label: genres.name,
         })) ?? [],
-    
+
     },
     validate: validateForm,
     onSubmit,
-  });  
+  });
 
   const handleAudioChange = (event: any) => {
     const file = event.target.files[0];
     if (file) {
-      formik.setFieldValue("intro_track", file); 
+      formik.setFieldValue("intro_track", file);
     }
   };
-  
+
 
   return (
-    <FormCard onSubmit={formik.handleSubmit}  className="m-4">
+    <FormCard onSubmit={formik.handleSubmit} className="m-4">
       <FormGroup title="Basic Type">
         <div className="flex gap-2 mb-2 max-sm:flex-col">
           <div className="flex flex-col flex-1">
@@ -157,38 +156,38 @@ const Page = () => {
               className="flex-1"
               {...formik.getFieldProps('title')}
             />
-             {!!formik.errors.title && (
+            {!!formik.errors.title && (
               <div className="text-red-500 text-sm">{formik.errors.title}</div>
             )}
           </div>
           <div className="flex flex-col flex-1">
-          <TextField
+            <TextField
               id="slug"
               type="text"
               label="Slug"
               className="flex-1"
               {...formik.getFieldProps('slug')}
             />
-             {!!formik.errors.title && (
+            {!!formik.errors.title && (
               <div className="text-red-500 text-sm">{formik.errors.slug}</div>
             )}
           </div>
         </div>
         <div className="flex gap-2 mb-2 max-sm:flex-col">
-        <div className="flex flex-col flex-1">
-        <TextField
+          <div className="flex flex-col flex-1">
+            <TextField
               id="duration"
               type="text"
               label="Duration"
               className="flex-1"
               {...formik.getFieldProps('duration')}
             />
-             {!!formik.errors.title && (
+            {!!formik.errors.title && (
               <div className="text-red-500 text-sm">{formik.errors.duration}</div>
             )}
           </div>
           <div className="flex flex-col flex-1">
-             {genresData && (
+            {genresData && (
               <Selector
                 id="genres"
                 options={genresData?.results.map(
@@ -207,13 +206,13 @@ const Page = () => {
                 name="genres"
                 value={formik.values.genres}
 
-                ></Selector>
+              ></Selector>
             )}
           </div>
         </div>
         <div className="flex gap-2 mb-2 max-sm:flex-col">
-        <div className="flex flex-col flex-1">
-             {artistsData && (
+          <div className="flex flex-col flex-1">
+            {artistsData && (
               <Selector
                 id="artist"
                 options={artistsData?.results.map(
@@ -223,22 +222,22 @@ const Page = () => {
                       label: artist.name,
                     }) as SelectorDataType
                 )}
-                label="Artists"
+                label="Artist"
+                value={formik.values.artist}
                 placeholder="Select artist"
                 className="flex-1"
                 handleChange={(e) => {
                   formik.setFieldValue(
                     'artist',
-                    (e as SingleValue<{ value: string; label: string }>)?.value
+                    e
                   );
                 }}
                 name="artist"
-                
-                ></Selector>
+              ></Selector>
             )}
           </div>
-        <div className="flex flex-col flex-1">
-        {releasesData && (
+          <div className="flex flex-col flex-1">
+            {releasesData && (
               <Selector
                 id="release"
                 options={releasesData?.results.map(
@@ -249,38 +248,37 @@ const Page = () => {
                     }) as SelectorDataType
                 )}
                 label="Release"
+                value={formik.values.release}
                 placeholder="Select release"
                 className="flex-1"
                 handleChange={(e) => {
                   formik.setFieldValue(
                     'release',
-                    (e as SingleValue<{ value: string; label: string }>)?.value
+                    e
                   );
                 }}
                 name="release"
-
-                
-                ></Selector>
+              ></Selector>
             )}
           </div>
         </div>
         <div className="flex gap-2 mb-2 max-sm:flex-col">
-   
+
           <div className="flex flex-col flex-1">
             <MusicUploader
               id="intro_track"
               label="Audio Track"
               required
               className="flex-1 font-normal"
-              value={formik.values.intro_track} 
-              onChange={handleAudioChange} 
+              value={formik.values.intro_track}
+              onChange={handleAudioChange}
             />
-             {!!formik.errors.intro_track && (
+            {!!formik.errors.intro_track && (
               <div className="text-red-500 text-sm">{formik.errors.intro_track}</div>
             )}
           </div>
         </div>
-       
+
       </FormGroup>
       <div className="flex justify-end gap-2 m-4">
         <Button
@@ -289,7 +287,7 @@ const Page = () => {
           className="h-8 w-fit"
           type="submit"
           isLoading={isLoading}
-          
+
         />
         <Button
           text="Cancel"

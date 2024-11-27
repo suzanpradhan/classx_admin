@@ -18,8 +18,6 @@ export const metadata: Metadata = {
       url: 'https://github.com/suzanpradhan/classx_admin'
     },
   ],
-  creator: 'Niwesh Shrestha',
-  publisher: 'Niwesh Shrestha',
   icons: {
     icon: '/favicon.ico',
   }

@@ -76,3 +76,7 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+.react-datepicker__input-container {
+  display: none;
+}

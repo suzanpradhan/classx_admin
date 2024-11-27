@@ -1,4 +1,11 @@
 import type { Config } from 'tailwindcss';
+function generateTemplateGridRowsOrCols(startValue: any, lastValue: any) {
+	let obj = {};
+	for (let i = startValue; i < lastValue; i++) {
+		(obj as any)[`${i}`] = `repeat(${i}, minmax(0, 1fr))`;
+	}
+	return obj;
+}
 
 const config: Config = {
 	darkMode: ['class'],
@@ -9,6 +16,12 @@ const config: Config = {
 	],
 	theme: {
 		extend: {
+			gridTemplateColumns: {
+				...generateTemplateGridRowsOrCols(13, 100), // This generates the columns from 12 until 100
+			},
+			gridTemplateRows: {
+				...generateTemplateGridRowsOrCols(7, 100), // This generates the columns from 12 until 100
+			},
 			backgroundImage: {
 				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
 				'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))'

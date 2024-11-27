@@ -38,7 +38,7 @@ const TimeInput = ({ className, handleChange, ...props }: TimeInputProps) => {
           value={props.value}
           type="time"
           onChange={handleChange}
-          className={`flex-1 py-3 px-2 h-11 border sm:border-0 rounded-md bg-slate-50 text-sm focus:outline-none w-full text-slate-600 ${styles.inputClock}`}
+          className={`flex-1 py-3 px-2 h-11 border sm:border-0 rounded-md bg-slate-50 text-sm focus:outline-none w-full cursor-pointer text-slate-600 ${styles.inputClock}`}
           {...props}
         />
         {props.suffix ? (

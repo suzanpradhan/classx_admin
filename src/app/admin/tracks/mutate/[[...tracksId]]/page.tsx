@@ -106,11 +106,12 @@ const Page = () => {
           )
         );
       }
-
+      if (data) router.push('/admin/tracks/all');
     } catch (error) {
-      console.log(error);
+      console.error('Failed to submit:', error);
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   const formik = useFormik<TrackSchemaType>({

@@ -105,11 +105,12 @@ const Page = () => {
           )
         );
       }
-
+      if (data) router.push('/admin/releases/all');
     } catch (error) {
-      console.log(error);
+      console.error('Failed to submit:', error);
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   const dateTiemString = toMutateReleasesData?.release_date

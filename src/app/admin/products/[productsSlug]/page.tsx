@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 'use client';
 
 import { useGetApiResponse } from '@/core/api/getApiResponse';
@@ -5,6 +6,7 @@ import { useAppDispatch } from '@/core/redux/clientStore';
 import { Button, PageBar, Spinner } from '@/core/ui/zenbuddha/src';
 import { PencilSimpleLine, TrashSimple, X } from 'phosphor-react';
 
+import AlertDialog from '@/core/ui/components/AlertDialog';
 import productsApi from '@/modules/products/productsApi';
 import { ProductsType } from '@/modules/products/productType';
 import { useParams, useRouter } from 'next/navigation';
@@ -32,7 +34,7 @@ export default function EachDetailPage() {
 
   return (
     <>
-      {/* <AlertDialog
+      <AlertDialog
         isOpen={modalIsOpen}
         deleteContent={`Package: ${onDelete}`}
         onClickNo={() => {
@@ -41,14 +43,14 @@ export default function EachDetailPage() {
         onClickYes={async () => {
           if (onDelete) {
             await Promise.resolve(
-              dispatch(productsApi.endpoints..initiate(onDelete))
+              dispatch(productsApi.endpoints.deleteProducts.initiate(onDelete))
             );
             navigator.push('/admin/products/all');
           }
           setIsOpen(false);
           setOnDelete(undefined);
         }}
-      /> */}
+      />
       <div className="flex flex-col">
         {productsData ? (
           <>

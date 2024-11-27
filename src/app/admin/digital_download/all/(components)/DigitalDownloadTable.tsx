@@ -74,7 +74,7 @@ const DigitalDownloadTable = () => {
             </tr>
           </thead>
           <tbody>
-            {digitalData?.results.map((item, index) => (
+            {digitalData?.results.map((item) => (
               <tr key={item.id} className={tableStyles.table_tbody_tr}>
                 <td className={tableStyles.table_td}>{item.id}</td>
                 <td className={tableStyles.table_td}>{item.release?.title || 'N/A'}</td>

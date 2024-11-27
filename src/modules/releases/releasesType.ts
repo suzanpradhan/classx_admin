@@ -1,4 +1,5 @@
 import { selectorDataSchema } from '@/core/types/selectorType';
+import { nonempty } from '@/core/utils/formUtlis';
 import { z } from 'zod';
 
 const imageFile = z.instanceof(File).refine(
@@ -20,7 +21,7 @@ const imageFile = z.instanceof(File).refine(
 export const releasesSchema = z.object({
     id: z.number().optional().nullable(),
     artist: selectorDataSchema,
-    title: z.string(),
+    title: z.string().pipe(nonempty),
     genres: z.array(selectorDataSchema).optional(),
     description: z.string().optional().nullable(),
     release_type: z.string(),

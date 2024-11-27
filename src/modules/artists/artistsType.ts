@@ -1,3 +1,4 @@
+import { nonempty } from '@/core/utils/formUtlis';
 import { z } from 'zod';
 
 const imageFile = z.instanceof(File).refine(
@@ -18,7 +19,7 @@ const imageFile = z.instanceof(File).refine(
 
 export const artistsSchema = z.object({
     id: z.number().optional().nullable(),
-    name: z.string(),
+    name: z.string().pipe(nonempty),
     bio: z.string(),
     profile_picture: imageFile.optional().nullable(),
 });

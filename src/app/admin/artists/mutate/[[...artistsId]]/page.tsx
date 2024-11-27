@@ -105,6 +105,7 @@ const Page = () => {
               id="name"
               type="text"
               label="Name"
+              required
               className="flex-1"
               {...formik.getFieldProps('name')}
             />

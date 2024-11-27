@@ -123,6 +123,7 @@ const Page = () => {
               id="title"
               type="text"
               label="Title"
+              required
               className="flex-1"
               {...formik.getFieldProps('title')}
             />
@@ -181,6 +182,7 @@ const Page = () => {
           <TextField
             id="description"
             type="text"
+            required
             label="Description"
             className="flex-1 mb-2"
             isMulti

@@ -1,4 +1,5 @@
 import { selectorDataSchema } from "@/core/types/selectorType";
+import { nonempty } from "@/core/utils/formUtlis";
 import { z } from "zod";
 
 const introTrackFile = z
@@ -23,7 +24,7 @@ export const trackSchema = z.object({
     id: z.number().optional().nullable(),
     slug: z.string(),
     artist: selectorDataSchema,
-    title: z.string(),
+    title: z.string().pipe(nonempty),
     genres: z.array(selectorDataSchema).optional(),
     duration: z.string(),
     intro_track: introTrackFile.optional().nullable(),

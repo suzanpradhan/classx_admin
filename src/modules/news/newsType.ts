@@ -1,3 +1,4 @@
+import { nonempty } from '@/core/utils/formUtlis';
 import { z } from 'zod';
 
 const imageFile = z.instanceof(File).refine(
@@ -18,11 +19,11 @@ const imageFile = z.instanceof(File).refine(
 
 export const newsSchema = z.object({
     id: z.number().optional().nullable(),
-    title: z.string(),
-    description: z.string(),
+    title: z.string().pipe(nonempty),
+    description: z.string().pipe(nonempty),
     newsDate: z.date().optional().nullable(),
     newsTime: z.string().optional().nullable(),
-    content: z.string(),
+    content: z.string().pipe(nonempty),
     cover_image: imageFile.optional().nullable(),
 });
 

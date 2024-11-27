@@ -1,4 +1,5 @@
 import { selectorDataSchema } from "@/core/types/selectorType";
+import { nonempty } from "@/core/utils/formUtlis";
 import { z } from "zod";
 
 const imageFile = z.instanceof(File).refine(
@@ -26,7 +27,7 @@ export const productsSchema = z.object({
     id: z.number().optional().nullable(),
     artist: selectorDataSchema,
     deleted: z.string().optional().nullable(),
-    title: z.string(),
+    title: z.string().pipe(nonempty),
     slug: z.string(),
     description: z.string(),
     thumbnail: imageFile.optional().nullable(),

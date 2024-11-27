@@ -177,12 +177,12 @@ const Page = () => {
             />
           </div>
         </div>
-        <div className="flex flex-col flex-1">
+        <div className="flex flex-col mb-2">
           <TextField
             id="description"
             type="text"
             label="Description"
-            className="flex-1"
+            className="flex-1 mb-2"
             isMulti
             {...formik.getFieldProps('description')}
           />
@@ -192,12 +192,17 @@ const Page = () => {
             </div>
           )}
         </div>
-
-        <div className='mt-3 gap-2'>
-          <ReactQuill theme="snow" value={formik.values.content} onChange={handleRichTextChange} style={{
-            border: "#2560AA",
-            background: '#F5F8FA',
-          }} />
+        <div className="mt-3 gap-2">
+          <label htmlFor="content" className="block text-sm mb-2 font-medium text-gray-700">
+            Content
+          </label>
+          <ReactQuill
+            id="content"
+            theme="snow"
+            className="h-60"
+            value={formik.values.content}
+            onChange={handleRichTextChange}
+          />
         </div>
       </FormGroup>
 

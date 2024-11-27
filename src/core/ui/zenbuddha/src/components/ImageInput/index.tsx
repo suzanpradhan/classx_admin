@@ -31,7 +31,7 @@ const ImageInput = ({ className, ...props }: ImageInputProps) => {
           htmlFor={props.id}
           className="flex-1 py-3 pl-4 h-11 border sm:border-0 rounded-md bg-slate-50 text-sm focus:outline-none w-full text-slate-600 relative overflow-clip"
         >
-          {props.value?.name ?? 'Choose Picture'}
+          {props.value?.name ?? ''}
         </label>
         <input
           onChange={(e) => props.onChange?.(e)}

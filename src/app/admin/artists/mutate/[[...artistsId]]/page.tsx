@@ -128,11 +128,10 @@ const Page = () => {
           </div>
         </div>
         <div className='mt-3 gap-2'>
-
-          <ReactQuill theme="snow" value={formik.values.bio} onChange={handleRichTextChange} style={{
-            border: "#2560AA",
-            background: '#F5F8FA',
-          }} />
+          <label htmlFor="bio" className="block text-sm mb-2 font-medium text-gray-700">
+            Bio
+          </label>
+          <ReactQuill theme="snow" className='h-60' value={formik.values.bio} onChange={handleRichTextChange} />
         </div>
       </FormGroup>
 

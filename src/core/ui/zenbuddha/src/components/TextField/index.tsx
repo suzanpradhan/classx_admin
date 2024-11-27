@@ -19,7 +19,7 @@ const TextField = ({
   return (
     <div className={`flex flex-col last-of-type:mb-0 ` + className}>
       {props.label ? (
-        <label htmlFor={props.id} className="text-sm mb-2 text-black">
+        <label htmlFor={props.id} className="text-sm mb-2 text-dark-500">
           {props.label}
           {props.required ? '*' : ''}
         </label>
@@ -29,7 +29,7 @@ const TextField = ({
       {isMulti ? (
         <div className="flex border items-center rounded-md bg-slate-50">
           <textarea
-            className="flex-1 py-3 px-4 rounded-md bg-slate-50 text-sm focus:outline-none custom-scrollbar"
+            className="flex-1 py-5 px-4 rounded-md bg-slate-50 text-sm focus:outline-none custom-scrollbar"
             cols={30}
             rows={props.rows}
             {...props}
@@ -39,7 +39,7 @@ const TextField = ({
       ) : (
         <div className="flex flex-col sm:flex-row items-end sm:items-center border-0 sm:border rounded-md bg-transparent sm:bg-slate-50">
           <input
-            className="flex-1 py-3 pl-4 h-11 border sm:border-0 rounded-md bg-slate-50 text-black text-sm focus:outline-none w-full"
+            className="flex-1 py-3 pl-4 h-11 border sm:border-0 rounded-md bg-slate-50 text-sm focus:outline-none w-full"
             {...props}
           />
           {props.suffix ? (

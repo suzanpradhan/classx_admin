@@ -80,3 +80,16 @@ body {
 .react-datepicker__input-container {
   display: none;
 }
+
+.ql-toolbar.ql-snow {
+  padding: 0 12px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  background-color: #f5f8fa;
+}
+
+.ql-container {
+  height: calc(100% - 45px);
+  background-color: #f5f8fa;
+}

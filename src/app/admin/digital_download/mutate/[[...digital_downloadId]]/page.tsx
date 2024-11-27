@@ -24,7 +24,7 @@ const Page = () => {
   // console.log(genresId)
 
   useEffect(() => {
-    dispatch(releaseApi.endpoints.getAllReleases.initiate(1)); 
+    dispatch(releaseApi.endpoints.getAllReleases.initiate(1));
     if (digital_downloadId) {
       dispatch(
         digital_downloadApi.endpoints.getEachDigital.initiate(digital_downloadId)
@@ -37,11 +37,11 @@ const Page = () => {
   );
 
   const releasesData = useAppSelector(
-    (state: RootState) => 
+    (state: RootState) =>
       state.baseApi.queries[`getAllReleases`]
         ?.data as PaginatedResponseType<ReleasesType>
   );
-  
+
 
   const onSubmit = async (values: Digital_DownloadSchemaType) => {
     if (isLoading) {
@@ -51,15 +51,15 @@ const Page = () => {
     try {
       var data = digital_downloadId
         ? await Promise.resolve(
-            dispatch(
-              digital_downloadApi.endpoints.updatedigital.initiate({
-                ...values,
-              })
-            )
+          dispatch(
+            digital_downloadApi.endpoints.updatedigital.initiate({
+              ...values,
+            })
           )
+        )
         : await Promise.resolve(
-            dispatch(digital_downloadApi.endpoints.adddigital.initiate(values))
-          );
+          dispatch(digital_downloadApi.endpoints.adddigital.initiate(values))
+        );
       if (data) router.push('/admin/digital_download/all');
       setIsLoading(false);
     } catch (error) {
@@ -82,8 +82,8 @@ const Page = () => {
     initialValues: {
       id: toMutateDigitalData ? (toMutateDigitalData.id ?? null) : null,
       file: toMutateDigitalData ? null : null,
-      max_downloads: toMutateDigitalData ? toMutateDigitalData.max_downloads : 0 ,
-      release: toMutateDigitalData ? {value: toMutateDigitalData.release.id.toString(), label: toMutateDigitalData.release.title} : {value: '', label: ''},
+      max_downloads: toMutateDigitalData ? toMutateDigitalData.max_downloads : 0,
+      release: toMutateDigitalData ? { value: toMutateDigitalData.release.id.toString(), label: toMutateDigitalData.release.title } : { value: '', label: '' },
     },
     validateOnChange: true,
     validate: validateForm,
@@ -93,18 +93,18 @@ const Page = () => {
   const handleFileChange = (event: any) => {
     const file = event.target.files[0];
     if (file) {
-      formik.setFieldValue("file", file); 
+      formik.setFieldValue("file", file);
     }
   };
 
   // console.log("formik.values.release", formik.values.release)
-  
+
   return (
-    <FormCard onSubmit={formik.handleSubmit}  className="m-4">
+    <FormCard onSubmit={formik.handleSubmit} className="m-4">
       <FormGroup title="Basic Type">
         <div className="flex gap-2 mb-2 max-sm:flex-col">
-        <div className="flex flex-col flex-1">
-        {releasesData && (
+          <div className="flex flex-col flex-1">
+            {releasesData && (
               <Selector
                 id="release"
                 options={releasesData?.results.map(
@@ -124,12 +124,12 @@ const Page = () => {
                     e
                   );
                 }}
-                name="release"  
-                ></Selector>
+                name="release"
+              ></Selector>
             )}
           </div>
           <div className="flex flex-col flex-1">
-          <TextField
+            <TextField
               id="max_downloads"
               type="number"
               label="Max Download"
@@ -139,24 +139,24 @@ const Page = () => {
             {formik.errors.max_downloads && (
               <div className="text-red-500 text-sm">{formik.errors.max_downloads}</div>
             )}
-                </div>
+          </div>
 
 
         </div>
-                <div className="flex flex-col flex-1">
-            <ImageInput
-              id="file"
-              label="File"
-              required
-              className="flex-1 font-normal"
-              value={formik.values.file}
-              onChange={handleFileChange}
-            />
-            {formik.errors.file && (
-              <div className="text-red-500 text-sm">{formik.errors?.file}</div>
-            )}
-          </div>
-       
+        <div className="flex flex-col flex-1">
+          <ImageInput
+            id="file"
+            label="File"
+            required
+            className="flex-1 font-normal"
+            value={formik.values.file}
+            onChange={handleFileChange}
+          />
+          {formik.errors.file && (
+            <div className="text-red-500 text-sm">{formik.errors?.file}</div>
+          )}
+        </div>
+
       </FormGroup>
       <div className="flex justify-end gap-2 m-4">
         <Button

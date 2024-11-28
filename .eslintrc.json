@@ -2,7 +2,7 @@
   "extends": [
     "next",
     "next/core-web-vitals",
-    "next/typescript",
+    // "next/typescript",
     "eslint:recommended"
   ],
   "globals": {

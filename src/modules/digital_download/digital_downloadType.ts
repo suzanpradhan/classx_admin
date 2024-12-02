@@ -14,7 +14,6 @@ const zipFile = z
                 'multipart/x-zip',
                 'application/x-tar',
             ];
-            // console.log("file type", file.type)
             return file.type && acceptedZipTypes.includes(file.type);
         },
         { message: 'Invalid file type. Only ZIP files are allowed.' }

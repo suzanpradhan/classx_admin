@@ -7,7 +7,7 @@ import { Digital_DownloadSchemaType, Digital_DownloadType } from './digital_down
 const digital_downloadApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
         // ADD
-        adddigital: builder.mutation<any, Digital_DownloadSchemaType>({
+        addigital: builder.mutation<any, Digital_DownloadSchemaType>({
             query: (payload) => {
                 const formData = new FormData();
                 formData.append('id', String(payload.id));

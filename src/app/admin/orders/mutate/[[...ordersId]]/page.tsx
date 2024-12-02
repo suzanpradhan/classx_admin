@@ -26,32 +26,34 @@ const Page = () => {
     { value: 'shipped', label: 'Shipped' },
     { value: 'delivered', label: 'Delivered' },
   ];
-  
+
   useEffect(() => {
     if (ordersId) {
       dispatch(ordersApi.endpoints.getEachOrders.initiate(ordersId));
     }
   }, [ordersId, dispatch]);
-  
-    const toMutateOrdersData = useGetApiResponse<OrdersType>(
-      `getEachOrders("${ordersId ?? ''}")`
-    );
+
+  const toMutateOrdersData = useGetApiResponse<OrdersType>(
+    `getEachOrders("${ordersId ?? ''}")`
+  );
 
   const onSubmit = async (values: OrdersSchemaType) => {
-    if (isLoading) return;
+    if (isLoading) {
+      return;
+    }
     setIsLoading(true);
-    
+
     try {
       const data = ordersId
         ? await dispatch(
-            ordersApi.endpoints.updateOrders.initiate({
-              id: Number(ordersId),
-              ...values,
-            })
-          ).unwrap()
+          ordersApi.endpoints.updateOrders.initiate({
+            id: Number(ordersId),
+            ...values,
+          })
+        ).unwrap()
         : await dispatch(
-            ordersApi.endpoints.addOrders.initiate(values)
-          ).unwrap();
+          ordersApi.endpoints.addOrders.initiate(values)
+        ).unwrap();
 
       if (data) router.push('/admin/orders/all');
     } catch (error) {
@@ -76,14 +78,14 @@ const Page = () => {
     enableReinitialize: true,
     initialValues: {
       id: toMutateOrdersData?.id ?? null,
-      billing_address: toMutateOrdersData ? toMutateOrdersData.billing_address: '',
-      billing_city: toMutateOrdersData ? toMutateOrdersData.billing_city: '',
-      billing_country: toMutateOrdersData ? toMutateOrdersData.billing_country: '',
-      billing_postal_code: toMutateOrdersData ? toMutateOrdersData.billing_postal_code: '',
-      status: toMutateOrdersData ? toMutateOrdersData.status: '',
+      billing_address: toMutateOrdersData ? toMutateOrdersData.billing_address : '',
+      billing_city: toMutateOrdersData ? toMutateOrdersData.billing_city : '',
+      billing_country: toMutateOrdersData ? toMutateOrdersData.billing_country : '',
+      billing_postal_code: toMutateOrdersData ? toMutateOrdersData.billing_postal_code : '',
+      status: toMutateOrdersData ? toMutateOrdersData.status : '',
       total_amount: toMutateOrdersData
-      ? (toMutateOrdersData.total_amount.toString() ?? '')
-      : '',
+        ? (toMutateOrdersData.total_amount.toString() ?? '')
+        : '',
     },
     validateOnChange: true,
     validate: validateForm,
@@ -94,7 +96,7 @@ const Page = () => {
     <FormCard onSubmit={formik.handleSubmit} className="m-4">
       <FormGroup title="Basic Type">
         <div className="flex gap-2 mb-2 max-sm:flex-col">
-        {/* <div className="flex flex-col flex-1">
+          {/* <div className="flex flex-col flex-1">
              {artistsData && (
               <Selector
                 id="artist"
@@ -122,31 +124,31 @@ const Page = () => {
           </div> */}
           <div className="flex flex-col flex-1">
             <Selector
-             id="status"
-             label="Status"
-             handleChange={(e) => {
-               formik.setFieldValue(
-                 'status',
-                 (e as SingleValue<{ value: string; label: string }>)?.value
-               );
-             }}
-             options={STATUS_TYPES}
-             placeholder="Select status"
-             value={{
-               label:
-               STATUS_TYPES.find(
-                   (item) => item.value === formik.values.status
-                 )?.label ?? '',
-               value: formik.values.status ?? '',
-             }}
-             
+              id="status"
+              label="Status"
+              handleChange={(e) => {
+                formik.setFieldValue(
+                  'status',
+                  (e as SingleValue<{ value: string; label: string }>)?.value
+                );
+              }}
+              options={STATUS_TYPES}
+              placeholder="Select status"
+              value={{
+                label:
+                  STATUS_TYPES.find(
+                    (item) => item.value === formik.values.status
+                  )?.label ?? '',
+                value: formik.values.status ?? '',
+              }}
+
             ></Selector>
           </div>
 
-         
+
         </div>
         <div className="flex gap-2 mb-2 max-sm:flex-col">
-        <div className="flex flex-col flex-1">
+          <div className="flex flex-col flex-1">
             <TextField
               id="billing_city"
               type="text"
@@ -172,7 +174,7 @@ const Page = () => {
           </div>
         </div>
         <div className="flex gap-2 mb-2 max-sm:flex-col">
-        <div className="flex flex-col flex-1">
+          <div className="flex flex-col flex-1">
             <TextField
               id="billing_postal_code"
               type="text"
@@ -199,7 +201,7 @@ const Page = () => {
         </div>
 
         <div className="flex gap-2 mb-2 max-sm:flex-col">
-        <div className="flex flex-col flex-1">
+          <div className="flex flex-col flex-1">
             <TextField
               id="billing_address"
               type="text"

@@ -21,8 +21,8 @@ export const newsSchema = z.object({
     id: z.number().optional().nullable(),
     title: z.string().pipe(nonempty),
     description: z.string().pipe(nonempty),
-    newsDate: z.date().optional().nullable(),
-    newsTime: z.string().optional().nullable(),
+    date: z.date().optional().nullable(),
+    time: z.string().optional().nullable(),
     content: z.string().pipe(nonempty),
     cover_image: imageFile.optional().nullable(),
 });

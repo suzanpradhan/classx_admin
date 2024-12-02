@@ -26,9 +26,17 @@ const Page = () => {
   useEffect(() => {
     dispatch(releaseApi.endpoints.getAllReleases.initiate(1));
     if (digital_downloadId) {
-      dispatch(
-        digital_downloadApi.endpoints.getEachDigital.initiate(digital_downloadId)
-      );
+      const fetchArtist = async () => {
+        try {
+          await dispatch(
+            digital_downloadApi.endpoints.getEachDigital.initiate(digital_downloadId)
+          );
+        } catch (error) {
+          console.error("Error fetching digital data:", error);
+        }
+      };
+
+      fetchArtist();
     }
   }, [digital_downloadId, dispatch]);
 
@@ -41,31 +49,31 @@ const Page = () => {
       state.baseApi.queries[`getAllReleases`]
         ?.data as PaginatedResponseType<ReleasesType>
   );
-
-
   const onSubmit = async (values: Digital_DownloadSchemaType) => {
-    if (isLoading) {
-      return;
-    }
+    if (isLoading) return;
     setIsLoading(true);
+
     try {
-      var data = digital_downloadId
-        ? await Promise.resolve(
-          dispatch(
-            digital_downloadApi.endpoints.updatedigital.initiate({
-              ...values,
-            })
-          )
-        )
-        : await Promise.resolve(
-          dispatch(digital_downloadApi.endpoints.adddigital.initiate(values))
-        );
+      const data = digital_downloadId
+        ? await dispatch(
+          digital_downloadApi.endpoints.updatedigital.initiate({
+            id: Number(digital_downloadId),
+            ...values,
+          })
+        ).unwrap()
+        : await dispatch(
+          digital_downloadApi.endpoints.addigital.initiate(values)
+        ).unwrap();
+
       if (data) router.push('/admin/digital_download/all');
-      setIsLoading(false);
     } catch (error) {
-      console.log(error);
+      console.error('Failed to submit:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
+
+
   const validateForm = (values: Digital_DownloadSchemaType) => {
     try {
       digital_downloadSchema.parse(values);
@@ -85,7 +93,6 @@ const Page = () => {
       max_downloads: toMutateDigitalData ? toMutateDigitalData.max_downloads : 0,
       release: toMutateDigitalData ? { value: toMutateDigitalData.release.id.toString(), label: toMutateDigitalData.release.title } : { value: '', label: '' },
     },
-    validateOnChange: true,
     validate: validateForm,
     onSubmit,
   });
@@ -97,7 +104,6 @@ const Page = () => {
     }
   };
 
-  // console.log("formik.values.release", formik.values.release)
 
   return (
     <FormCard onSubmit={formik.handleSubmit} className="m-4">
@@ -126,6 +132,9 @@ const Page = () => {
                 }}
                 name="release"
               ></Selector>
+            )}
+            {formik.errors.release && (
+              <div className="text-red-500 text-sm">{formik.errors.release}</div>
             )}
           </div>
           <div className="flex flex-col flex-1">

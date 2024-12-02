@@ -13,72 +13,72 @@ import { useEffect, useState } from 'react';
 
 
 const ProductsTableListing = () => {
-    const dispatch = useAppDispatch();
-    const [pageIndex, setPageIndex] = useState(1);
-    const [deleteModelOpen, toggleDeleteModel] = useState(false);
-    const [onDelete, setOnDelete] = useState<string | undefined>(undefined);
-  
-    useEffect(() => {
-      dispatch(productsApi.endpoints.getAllProducts.initiate(pageIndex));
-    }, [dispatch, pageIndex]);
-  
-    const productsData = useAppSelector(
-      (state: RootState) => 
-        state.baseApi.queries[`getAllProducts`]
-          ?.data as PaginatedResponseType<ProductsType>
-    );
-    // console.log(productsData,'data')
-  
-    return (
+  const dispatch = useAppDispatch();
+  const [pageIndex, setPageIndex] = useState(1);
+  const [deleteModelOpen, toggleDeleteModel] = useState(false);
+  const [onDelete, setOnDelete] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    dispatch(productsApi.endpoints.getAllProducts.initiate(pageIndex));
+  }, [dispatch, pageIndex]);
+
+  const productsData = useAppSelector(
+    (state: RootState) =>
+      state.baseApi.queries[`getAllProducts`]
+        ?.data as PaginatedResponseType<ProductsType>
+  );
+  // console.log(productsData,'data')
+
+  return (
+    <>
       <>
-          <>
-            <AlertDialog
-              isOpen={deleteModelOpen}
-              deleteContent={onDelete}
-              onClickNo={() => {
-                toggleDeleteModel(false);
-              }}
-              onClickYes={async () => {
-                if (onDelete) {
-                  await Promise.resolve(
-                    dispatch(
-                      productsApi.endpoints.deleteProducts.initiate(onDelete as string)
-                    )
-                  );
-                }
-                toggleDeleteModel(false);
-                setOnDelete(undefined);
-              }}
-            />
-            <TableCard
-              footer={
-                  productsData && productsData?.results.length > 0 ?  (
-                  <PaginationNav
-                    gotoPage={setPageIndex}
-                    canPreviousPage={pageIndex > 0}
-                    canNextPage={pageIndex < productsData.pagination.total_page - 1}
-                    pageCount={productsData.pagination.total_page}
-                    pageIndex={productsData.pagination.current_page - 1}
-                  />
-                ) : (
-                  <></>
+        <AlertDialog
+          isOpen={deleteModelOpen}
+          deleteContent={onDelete}
+          onClickNo={() => {
+            toggleDeleteModel(false);
+          }}
+          onClickYes={async () => {
+            if (onDelete) {
+              await Promise.resolve(
+                dispatch(
+                  productsApi.endpoints.deleteProducts.initiate(onDelete as string)
                 )
-              }
-            >
-              <thead>
-                <tr className={tableStyles.table_thead_tr}>
-                  <th className={tableStyles.table_th}>S.N.</th>
-                  <th className={tableStyles.table_th}>Thumbnail</th>
-                  <th className={tableStyles.table_th}>Title</th>
-                  <th className={tableStyles.table_th}>Artists</th>
-                  <th className={tableStyles.table_th}>Price</th>
-                  <th className={tableStyles.table_th}>Stock</th>
-                  <th className={tableStyles.table_th}>Product Type</th>
-                  <th className={tableStyles.table_th}>Action</th>   
-                </tr>
-              </thead>
-              <tbody>
-              {productsData?.results.map((item, index) => (
+              );
+            }
+            toggleDeleteModel(false);
+            setOnDelete(undefined);
+          }}
+        />
+        <TableCard
+          footer={
+            productsData && productsData?.results.length > 0 ? (
+              <PaginationNav
+                gotoPage={setPageIndex}
+                canPreviousPage={pageIndex > 0}
+                canNextPage={pageIndex < productsData.pagination.total_page - 1}
+                pageCount={productsData.pagination.total_page}
+                pageIndex={productsData.pagination.current_page - 1}
+              />
+            ) : (
+              <></>
+            )
+          }
+        >
+          <thead>
+            <tr className={tableStyles.table_thead_tr}>
+              <th className={tableStyles.table_th}>S.N.</th>
+              <th className={tableStyles.table_th}>Thumbnail</th>
+              <th className={tableStyles.table_th}>Title</th>
+              <th className={tableStyles.table_th}>Artists</th>
+              <th className={tableStyles.table_th}>Price</th>
+              <th className={tableStyles.table_th}>Stock</th>
+              <th className={tableStyles.table_th}>Product Type</th>
+              <th className={tableStyles.table_th}>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {productsData?.results.map((item, index) => (
               <tr key={index} className={tableStyles.table_tbody_tr}>
                 <td className={tableStyles.table_td}>{item.id}</td>
                 <td className={tableStyles.table_td}>
@@ -101,26 +101,26 @@ const ProductsTableListing = () => {
                     )}
                   </div>
                 </td>
-                  <td className={tableStyles.table_td}>{item.title}</td>
-                  <td className={tableStyles.table_td}>{item.artist.name}</td>
-                  <td className={tableStyles.table_td}>{item.price}</td>
-                  <td className={tableStyles.table_td}>{item.stock}</td>
-                  <td className={tableStyles.table_td}>{item.product_type}</td>
-  
+                <td className={tableStyles.table_td}>{item.title}</td>
+                <td className={tableStyles.table_td}>{item.artist?.name}</td>
+                <td className={tableStyles.table_td}>{item.price}</td>
+                <td className={tableStyles.table_td}>{item.stock}</td>
+                <td className={tableStyles.table_td}>{item.product_type}</td>
+
                 <td className={tableStyles.table_td + ` flex gap-2 max-w-xs`}>
-                <Button
+                  <Button
                     className="h-8 w-8"
-                     type="link"
-                     href={`/admin/products/${item.slug}`}
+                    type="link"
+                    href={`/admin/products/${item.slug}`}
                     buttonType="bordered"
                     prefix={<Eye size={18} weight="duotone" />}
                   />
                   <Button
-                          className="h-8 w-8"
-                          type="link"
-                          href={`/admin/products/mutate/${item.slug}`}
-                          prefix={<PencilSimpleLine size={15} weight="duotone" />}
-                        />
+                    className="h-8 w-8"
+                    type="link"
+                    href={`/admin/products/mutate/${item.slug}`}
+                    prefix={<PencilSimpleLine size={15} weight="duotone" />}
+                  />
                   <Button
                     className="h-8 w-8"
                     kind="danger"
@@ -129,18 +129,18 @@ const ProductsTableListing = () => {
                       setOnDelete(item.slug?.toString());
                       toggleDeleteModel(true);
                     }}
-                    prefix={<TrashSimple size={18} weight="duotone" />}    
+                    prefix={<TrashSimple size={18} weight="duotone" />}
                   />
                 </td>
               </tr>
             ))}
-               
-                    
-              </tbody>
-            </TableCard>
-          </>
+
+
+          </tbody>
+        </TableCard>
       </>
-    );
-  };
+    </>
+  );
+};
 
 export default ProductsTableListing

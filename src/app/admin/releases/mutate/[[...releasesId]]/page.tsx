@@ -247,31 +247,6 @@ const Page = () => {
                 name="artist"
               ></Selector>
             )}
-            {/* {artistsData && (
-              <Selector
-                id="artist"
-                options={artistsData?.results.map(
-                  (artist) =>
-                    ({
-                      value: artist.id!.toString(),
-                      label: artist.name,
-                    }) as SelectorDataType
-                )}
-                label="Artists"
-                type="Creatable"
-                value={formik.values.artist}
-                placeholder="Select artist"
-                className="flex-1"
-                handleChange={(e) => {
-                  formik.setFieldValue(
-                    'artist',
-                    (e as SingleValue<{ value: string; label: string }>)?.value
-                  );
-                }}
-                name="artist"
-
-              ></Selector>
-            )} */}
           </div>
           <div className="flex flex-col flex-1">
             <Selector

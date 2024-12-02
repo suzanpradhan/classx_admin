@@ -29,7 +29,7 @@ export default function EachDetailPage() {
   }, [dispatch, slug]);
 
   const productsData = useGetApiResponse<ProductsType>(
-    `getEachProducts("${slug ? slug : undefined}")`
+    `getEachProducts("${slug || undefined}")`
   );
 
   return (

@@ -35,6 +35,8 @@ const artistsApi = baseApi.injectEndpoints({
             transformResponse: (response: any) => {
                 return response;
             },
+            invalidatesTags: [{ type: 'Artists', id: 'LIST' }],
+
         }),
 
         // Get All

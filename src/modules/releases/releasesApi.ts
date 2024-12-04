@@ -15,7 +15,7 @@ const releaseApi = baseApi.injectEndpoints({
                 if (payload.release_date)
                     formData.append(
                         'release_date',
-                        `${payload.release_date.getFullYear()}-${payload.release_date.getMonth()}-${payload.release_date.getDate()}`
+                        `${payload.release_date.getFullYear()}-${payload.release_date.getMonth() + 1}-${payload.release_date.getDate()}`
                     );
                 if (payload.cover) formData.append('cover', payload.cover);
                 if (payload.artist) {
@@ -133,7 +133,7 @@ const releaseApi = baseApi.injectEndpoints({
                 if (payload.release_date)
                     formData.append(
                         'release_date',
-                        `${payload.release_date.getFullYear()}-${payload.release_date.getMonth()}-${payload.release_date.getDate()}`
+                        `${payload.release_date.getFullYear()}-${payload.release_date.getMonth() + 1}-${payload.release_date.getDate()}`
                     );
                 if (payload.cover) formData.append('cover', payload.cover);
                 if (payload.artist) {

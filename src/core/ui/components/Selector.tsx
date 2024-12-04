@@ -42,17 +42,17 @@ export interface SelectorProps {
     // eslint-disable-next-line no-unused-vars
     e:
       | SingleValue<{
-          value: string;
-          label: string;
-          extra?: string | undefined;
-          __isNew__?: boolean | undefined;
-        }>
+        value: string;
+        label: string;
+        extra?: string | undefined;
+        __isNew__?: boolean | undefined;
+      }>
       | MultiValue<{
-          value: string;
-          label: string;
-          extra?: string | undefined;
-          __isNew__?: boolean | undefined;
-        }>
+        value: string;
+        label: string;
+        extra?: string | undefined;
+        __isNew__?: boolean | undefined;
+      }>
   ) => void;
   formatOptionLabel?: (data: SelectorDataType) => React.ReactNode;
 }

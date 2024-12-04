@@ -140,6 +140,7 @@ const tracksApi = baseApi.injectEndpoints({
                 if (payload.artist) {
                     formData.append('artist', payload.artist.value);
                 }
+                if (payload.duration) formData.append('duration', payload.duration);
                 if (payload.release)
                     formData.append('release', payload.release.value);
                 payload.genres?.forEach((item, index) => {

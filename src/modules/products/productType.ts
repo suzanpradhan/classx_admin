@@ -34,7 +34,7 @@ export const productsSchema = z.object({
     price: z.string(),
     stock: z.string(),
     product_type: z.string(),
-    release: z.string(),
+    release: selectorDataSchema,
 });
 export type ProductsSchemaType = z.infer<typeof productsSchema>;
 

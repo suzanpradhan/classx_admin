@@ -30,18 +30,28 @@ const Page = () => {
     { value: 'merch', label: 'Merchandise' },
     { value: 'digital', label: 'Digital Audio' },
   ];
+
+  const toMutateProductsData = useGetApiResponse<ProductsType>(
+    `getEachProducts("${slug || undefined}")`
+  );
+
   useEffect(() => {
     dispatch(releaseApi.endpoints.getAllReleases.initiate(1));
     dispatch(artistsApi.endpoints.getAllArtists.initiate(1));
-    dispatch(releaseApi.endpoints.getAllReleases.initiate(1));
+
+  }, [dispatch]);
+
+  useEffect(() => {
     if (slug) {
       dispatch(productsApi.endpoints.getEachProducts.initiate(slug.toString()));
     }
+
   }, [slug, dispatch]);
 
-  const toMutateProductsData = useGetApiResponse<ProductsType>(
-    `getEachProducts("${slug ? slug : undefined}")`
-  );
+  useEffect(() => {
+    if (toMutateProductsData?.release)
+      dispatch(releaseApi.endpoints.getEachReleases.initiate(toMutateProductsData.release.toString()));
+  }, [toMutateProductsData?.release, dispatch]);
 
   const artistsData = useAppSelector(
     (state: RootState) =>
@@ -54,6 +64,11 @@ const Page = () => {
         ?.data as PaginatedResponseType<ReleasesType>
   );
 
+  const eachRealese = useAppSelector(
+    (state: RootState) =>
+      state.baseApi.queries[`getEachReleases("${toMutateProductsData?.release?.toString()}")`]
+        ?.data as ReleasesType
+  );
 
   const onSubmit = async (values: ProductsSchemaType) => {
     if (isLoading) {
@@ -61,7 +76,7 @@ const Page = () => {
     }
     setIsLoading(true);
     try {
-      var data = slug
+      const data = slug
         ? await Promise.resolve(
           dispatch(
             productsApi.endpoints.updateProducts.initiate({
@@ -97,10 +112,9 @@ const Page = () => {
       product_type: toMutateProductsData ? toMutateProductsData.product_type : '',
       description: toMutateProductsData ? toMutateProductsData.description : '',
       slug: toMutateProductsData ? toMutateProductsData.slug : '',
-      release: toMutateProductsData ? toMutateProductsData.release?.toString() ?? "0" : "0",
+      release: toMutateProductsData ? { value: eachRealese?.id.toString() ?? '', label: eachRealese?.title ?? '' } : { value: '', label: '' },
       artist: toMutateProductsData ? { value: toMutateProductsData.artist.id.toString(), label: toMutateProductsData.artist.name } : { value: '', label: '' },
       thumbnail: toMutateProductsData ? null : null,
-      // artist: toMutateProductsData ? toMutateProductsData.artist.toString() ?? "0" : "0",
       price: toMutateProductsData ? toMutateProductsData.price : '',
       stock: toMutateProductsData ? toMutateProductsData.stock.toString() : '',
     },
@@ -118,7 +132,8 @@ const Page = () => {
   const handleRichTextChange = (value: string) => {
     formik.setFieldValue('description', value);
   };
-
+  // console.log(formik.values.release.value, "formik realses value")
+  // console.log(toMutateProductsData?.release, "ToMuted realses value")
 
   return (
     <FormCard onSubmit={formik.handleSubmit} className="m-4">
@@ -254,15 +269,13 @@ const Page = () => {
                 label="Release"
                 placeholder="Select release"
                 className="flex-1"
-
                 handleChange={(e) => {
-                  formik.setFieldValue(
-                    'release',
-                    (e as SingleValue<{ value: string; label: string }>)?.value
-                  );
+                  formik.setFieldValue('release', e as SingleValue<{ value: string; label: string }>);
                 }}
                 name="release"
+                value={formik.values.release}
               />
+
             )}
           </div>
         </div>

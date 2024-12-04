@@ -15,10 +15,10 @@ const newsApi = baseApi.injectEndpoints({
                 if (payload.content) formData.append('content', payload.content);
                 if (payload.cover_image)
                     formData.append('cover_image', payload.cover_image);
-                if (payload.newsDate && payload.newsTime)
+                if (payload.date && payload.time)
                     formData.append(
                         'date',
-                        `${payload.newsDate.getFullYear()}-${payload.newsDate.getMonth()}-${payload.newsDate.getDate()} ${payload.newsTime}`
+                        `${payload.date.getFullYear()}-${payload.date.getMonth() + 1}-${payload.date.getDate()} ${payload.time}`
                     );
                 if (payload.description)
                     formData.append('description', payload.description);
@@ -40,6 +40,8 @@ const newsApi = baseApi.injectEndpoints({
             transformResponse: (response: any) => {
                 return response;
             },
+            invalidatesTags: [{ type: 'News', id: 'LIST' }],
+
         }),
 
 
@@ -129,10 +131,10 @@ const newsApi = baseApi.injectEndpoints({
                 if (payload.content) formData.append('content', payload.content);
                 if (payload.cover_image)
                     formData.append('cover_image', payload.cover_image);
-                if (payload.newsDate && payload.newsTime)
+                if (payload.date && payload.time)
                     formData.append(
                         'date',
-                        `${payload.newsDate.getFullYear()}-${payload.newsDate.getMonth()}-${payload.newsDate.getDate()} ${payload.newsTime}`
+                        `${payload.date.getFullYear()}-${payload.date.getMonth() + 1}-${payload.date.getDate()} ${payload.time}`
                     );
                 if (payload.description)
                     formData.append('description', payload.description);

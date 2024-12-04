@@ -78,7 +78,7 @@ const DigitalDownloadTable = () => {
               <tr key={item.id} className={tableStyles.table_tbody_tr}>
                 <td className={tableStyles.table_td}>{item.id}</td>
                 <td className={tableStyles.table_td}>{item.release?.title || 'N/A'}</td>
-                <td className={tableStyles.table_td}>{item.max_downloads}</td>
+                <td className={tableStyles.table_td}><span className={`text-xs px-2 py-1 rounded-sm capitalize bg-slate-200 text-black flex items-center gap-1 w-max`}>{item.max_downloads}</span></td>
                 <td className={tableStyles.table_td + ` flex gap-2 max-w-xs`}>
                   <Button
                     className="h-8 w-8"

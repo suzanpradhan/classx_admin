@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { apiPaths } from '@/core/api/apiConstants';
 import { baseApi } from '@/core/api/apiQuery';
 import { PaginatedResponseType } from '@/core/types/responseTypes';
@@ -18,7 +19,7 @@ const productsApi = baseApi.injectEndpoints({
                 if (payload.artist) {
                     formData.append('artist', payload.artist.value);
                 }
-                if (payload.release) formData.append('release', payload.release.toString());
+                if (payload.release) formData.append('release', payload.release.value);
                 if (payload.product_type)
                     formData.append('product_type', payload.product_type);
                 if (payload.description)
@@ -41,6 +42,8 @@ const productsApi = baseApi.injectEndpoints({
             transformResponse: (response: any) => {
                 return response;
             },
+            invalidatesTags: [{ type: 'Products', id: 'LIST' }],
+
         }),
 
         // Get All
@@ -80,8 +83,8 @@ const productsApi = baseApi.injectEndpoints({
 
         getEachProducts: builder.query<ProductsType, string>({
             query: (productsSlug) => `${apiPaths.productsUrl}${productsSlug}/`,
-            providesTags: (result, error, productsSlug) => {
-                return [{ type: 'Products', productsSlug }];
+            providesTags: (result, error, id) => {
+                return [{ type: 'Products', id: result?.id ?? 0 }];
             },
             serializeQueryArgs: ({ queryArgs, endpointName }) => {
                 return `${endpointName}("${queryArgs}")`;
@@ -128,11 +131,10 @@ const productsApi = baseApi.injectEndpoints({
                 if (payload.thumbnail) formData.append('thumbnail', payload.thumbnail);
                 if (payload.price) formData.append('price', payload.price);
                 if (payload.stock) formData.append('stock', payload.stock.toString());
-                // if (payload.artist) formData.append('artist', payload.artist);
                 if (payload.artist) {
                     formData.append('release', payload.artist.value);
                 }
-                if (payload.release) formData.append('release', payload.release.toString());
+                if (payload.release) formData.append('release', payload.release.value);
                 if (payload.product_type)
                     formData.append('product_type', payload.product_type);
                 if (payload.description)
@@ -153,7 +155,7 @@ const productsApi = baseApi.injectEndpoints({
                 }
             },
             invalidatesTags: (result, error, { slug }) => [
-                { type: 'Products', id: slug! },
+                { type: 'Products', id: result?.id ?? 0 },
             ],
         }),
 

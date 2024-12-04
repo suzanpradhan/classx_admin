@@ -86,7 +86,7 @@ const OrdersTableLisiting = () => {
                 <td className={tableStyles.table_td}>{item.billing_address}</td>
                 <td className={tableStyles.table_td}>{item.billing_city}</td>
                 <td className={tableStyles.table_td}>{item.billing_country}</td>
-                <td className={tableStyles.table_td}>{item.total_amount}</td>
+                <td className={tableStyles.table_td}> <span className={`text-xs px-2 py-1 rounded-sm capitalize bg-slate-300 text-black flex items-center gap-1 w-max`}>{item.total_amount}</span></td>
                 <td className={tableStyles.table_td}>
                   <span
                     className={`text-white text-xs px-2 py-1 rounded-sm capitalize ${item.status === 'pending'

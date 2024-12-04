@@ -73,20 +73,20 @@ const Page = () => {
       }
     }
   };
-  const dateTiemString = toMutateNewsData?.date
+  const dateTimeString = toMutateNewsData?.date
     ? new Date(toMutateNewsData.date)
     : undefined;
 
-  const hours = dateTiemString
-    ? dateTiemString.getUTCHours().toString().padStart(2, '0')
+  const initialHours = dateTimeString
+    ? dateTimeString.getUTCHours().toString().padStart(2, '0')
     : '';
-  const minutes = dateTiemString
-    ? dateTiemString.getUTCMinutes().toString().padStart(2, '0')
+  const initialMinutes = dateTimeString
+    ? dateTimeString.getUTCMinutes().toString().padStart(2, '0')
     : '';
-  const seconds = dateTiemString
-    ? dateTiemString.getUTCSeconds().toString().padStart(2, '0')
+  const initialSeconds = dateTimeString
+    ? dateTimeString.getUTCSeconds().toString().padStart(2, '0')
     : '';
-  const timeString = `${hours}:${minutes}:${seconds}`;
+  const timeString = `${initialHours}:${initialMinutes}:${initialSeconds}`;
 
 
   const formik = useFormik<NewsSchemaType>({
@@ -97,8 +97,8 @@ const Page = () => {
       description: toMutateNewsData ? toMutateNewsData.description : '',
       cover_image: toMutateNewsData ? null : null,
       content: toMutateNewsData ? toMutateNewsData.content ?? '' : '',
-      newsDate: dateTiemString,
-      newsTime: timeString,
+      date: dateTimeString,
+      time: timeString,
     },
     validate: validateForm,
     onSubmit,
@@ -149,32 +149,28 @@ const Page = () => {
         <div className="flex gap-2 mb-2 max-sm:flex-col">
           <div className="flex flex-col flex-1">
             <DateSelector
-              id="newsDate"
-              label=" Date"
-              onChange={(selectedDay) =>
-                formik.setFieldValue('newsDate', selectedDay)
-              }
+              label="Date"
+              id="date"
+              onChange={(selectedDay) => {
+                const date = selectedDay ? new Date(selectedDay) : null;
+                formik.setFieldValue('date', date);
+              }}
               value={
-                formik.values.newsDate
-                  ? new Date(formik.values.newsDate)
+                formik.values.date
+                  ? new Date(formik.values.date)
                   : undefined
               }
             />
-            {!!formik.errors.newsDate && (
-              <div className="text-red-500 text-sm">
-                {formik.errors.newsDate}
-              </div>
-            )}
           </div>
           <div className="flex flex-col flex-1">
             <TimeInput
-              handleChange={(value) =>
-                formik.setFieldValue('newsTime', value.target.value)
-              }
-              id="newsTime"
-              value={formik.values.newsTime ?? ''}
+              id="time"
               label="Time"
               className="flex-1 font-normal"
+              value={formik.values.time ?? ''}
+              handleChange={(event) => {
+                formik.setFieldValue('time', event.target.value);
+              }}
             />
           </div>
         </div>
@@ -205,6 +201,11 @@ const Page = () => {
             value={formik.values.content}
             onChange={handleRichTextChange}
           />
+          {!!formik.errors.content && (
+            <div className="text-red-500 text-sm">
+              {formik.errors.content}
+            </div>
+          )}
         </div>
       </FormGroup>
 

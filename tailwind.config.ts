@@ -1,5 +1,5 @@
 import type { Config } from 'tailwindcss';
-function generateTemplateGridRowsOrCols(startValue: any, lastValue: any) {
+function generateTemplateGridRowsOrCols(startValue: number, lastValue: number): Record<string, string> {
 	let obj = {};
 	for (let i = startValue; i < lastValue; i++) {
 		(obj as any)[`${i}`] = `repeat(${i}, minmax(0, 1fr))`;

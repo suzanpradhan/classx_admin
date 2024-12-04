@@ -102,9 +102,21 @@ const ReleasesTableListing = () => {
               <td className={tableStyles.table_td}>{item.title}</td>
               <td className={tableStyles.table_td}>{item.artist.name}</td>
               <td className={tableStyles.table_td}>{item.genres && item.genres.length > 0 ? item.genres.map((item, index) => <div key={index} className='inline-block px-1 text-xs bg-slate-300 text-dark-500 rounded-sm mr-1'>{item.name}</div>) : ""}</td>
-              <td className={tableStyles.table_td}>{item.release_type}</td>
-              <td className={tableStyles.table_td}>{item.release_date}</td>
-
+              <td className={tableStyles.table_td}>
+                <span
+                  className={`text-white text-xs px-2 py-1 rounded-sm capitalize ${item.release_type === 'EP'
+                    ? 'bg-blue-500'
+                    : item.release_type === 'ALB'
+                      ? 'bg-green-500'
+                      : item.release_type === 'SNG'
+                        ? 'bg-gray-600'
+                        : 'bg-black'
+                    }`}
+                >
+                  {item.release_type}
+                </span>
+              </td>
+              <td className={tableStyles.table_td}><span className={`text-xs px-2 py-1 rounded-sm capitalize bg-slate-200 text-black flex items-center gap-1 w-max`}>{item.release_date}</span></td>
               <td className={`${tableStyles.table_td} flex gap-2 max-w-xs`}>
                 <Button
                   className="h-8 w-8"

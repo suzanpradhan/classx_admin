@@ -103,9 +103,22 @@ const ProductsTableListing = () => {
                 </td>
                 <td className={tableStyles.table_td}>{item.title}</td>
                 <td className={tableStyles.table_td}>{item.artist?.name}</td>
-                <td className={tableStyles.table_td}>{item.price}</td>
+                <td className={tableStyles.table_td}><span className={`text-xs px-2 py-1 rounded-sm capitalize bg-slate-300 text-black flex items-center gap-1 w-max`}>{item.price}</span></td>
                 <td className={tableStyles.table_td}>{item.stock}</td>
-                <td className={tableStyles.table_td}>{item.product_type}</td>
+                <td className={tableStyles.table_td}>
+                  <span
+                    className={`text-white text-xs px-2 py-1 rounded-sm capitalize ${item.product_type === 'merch'
+                      ? 'bg-blue-500'
+                      : item.product_type === 'digital'
+                        ? 'bg-green-500'
+                        : item.product_type === ''
+                          ? 'bg-gray-600'
+                          : 'bg-black'
+                      }`}
+                  >
+                    {item.product_type}
+                  </span>
+                </td>
 
                 <td className={tableStyles.table_td + ` flex gap-2 max-w-xs`}>
                   <Button

@@ -91,7 +91,7 @@ const Page = () => {
       id: toMutateDigitalData ? (toMutateDigitalData.id ?? null) : null,
       file: toMutateDigitalData ? null : null,
       max_downloads: toMutateDigitalData ? toMutateDigitalData.max_downloads : 0,
-      release: toMutateDigitalData ? { value: toMutateDigitalData.release.id.toString(), label: toMutateDigitalData.release.title } : { value: '', label: '' },
+      release: toMutateDigitalData ? { value: toMutateDigitalData.release?.id.toString(), label: toMutateDigitalData.release?.title } : { value: '', label: '' },
     },
     validate: validateForm,
     onSubmit,

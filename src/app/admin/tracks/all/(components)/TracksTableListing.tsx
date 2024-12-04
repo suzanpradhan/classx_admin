@@ -31,38 +31,38 @@ const TaraclTableListing = () => {
 
   return (
     <>
-    <AlertDialog
-            isOpen={deleteModelOpen}
-            deleteContent={onDelete}
-            onClickNo={() => {
-              toggleDeleteModel(false);
-            }}
-            onClickYes={async () => {
-              if (onDelete) {
-                await Promise.resolve(
-                  dispatch(
-                    tracksApi.endpoints.deleteTracks.initiate(onDelete as string)
-                  )
-                );
-              }
-              toggleDeleteModel(false);
-              setOnDelete(undefined);
-            }}
-          />
+      <AlertDialog
+        isOpen={deleteModelOpen}
+        deleteContent={onDelete}
+        onClickNo={() => {
+          toggleDeleteModel(false);
+        }}
+        onClickYes={async () => {
+          if (onDelete) {
+            await Promise.resolve(
+              dispatch(
+                tracksApi.endpoints.deleteTracks.initiate(onDelete as string)
+              )
+            );
+          }
+          toggleDeleteModel(false);
+          setOnDelete(undefined);
+        }}
+      />
       <TableCard
         footer={
-          trackData && trackData?.results.length > 0 ?  (
-          <PaginationNav
-            gotoPage={setPageIndex}
-            canPreviousPage={pageIndex > 0}
-            canNextPage={pageIndex < trackData.pagination.total_page}
-            pageCount={trackData.pagination.total_page}
-            pageIndex={trackData.pagination.current_page - 1}
-          />
-        ) : (
-          <></>
-        )
-      }
+          trackData && trackData?.results.length > 0 ? (
+            <PaginationNav
+              gotoPage={setPageIndex}
+              canPreviousPage={pageIndex > 0}
+              canNextPage={pageIndex < trackData.pagination.total_page}
+              pageCount={trackData.pagination.total_page}
+              pageIndex={trackData.pagination.current_page - 1}
+            />
+          ) : (
+            <></>
+          )
+        }
       >
         <thead>
           <tr className={tableStyles.table_thead_tr}>
@@ -85,13 +85,13 @@ const TaraclTableListing = () => {
               <td className={tableStyles.table_td}>{item.slug}</td>
               <td className={tableStyles.table_td}>{item.genres && item.genres.length > 0 ? item.genres.map((item, index) => <div key={index} className='inline-block px-1 text-xs bg-slate-300 text-dark-500 rounded-sm mr-1'>{item.name}</div>) : ""}</td>
               <td className={tableStyles.table_td}>{item.release.title}</td>
-              <td className={tableStyles.table_td}>{item.duration}</td>
-             
+              <td className={tableStyles.table_td}><span className={`text-xs px-2 py-1 rounded-sm capitalize bg-slate-200 text-black flex items-center gap-1 w-max`}>{item.duration}</span></td>
+
               <td className={`${tableStyles.table_td} flex gap-2 max-w-xs`}>
-              <Button
+                <Button
                   className="h-8 w-8"
-                   type="link"
-                   href={`/admin/tracks/${item.id}`}
+                  type="link"
+                  href={`/admin/tracks/${item.id}`}
                   buttonType="bordered"
                   prefix={<Eye size={18} weight="duotone" />}
                 />

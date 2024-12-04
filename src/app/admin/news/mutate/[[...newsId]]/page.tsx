@@ -201,6 +201,11 @@ const Page = () => {
             value={formik.values.content}
             onChange={handleRichTextChange}
           />
+          {!!formik.errors.content && (
+            <div className="text-red-500 text-sm">
+              {formik.errors.content}
+            </div>
+          )}
         </div>
       </FormGroup>
 

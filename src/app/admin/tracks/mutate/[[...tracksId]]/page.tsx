@@ -6,6 +6,7 @@ import { PaginatedResponseType } from '@/core/types/responseTypes';
 import { SelectorDataType } from '@/core/types/selectorType';
 import Selector from '@/core/ui/components/Selector';
 import { Button, FormCard, FormGroup, MusicUploader, TextField } from '@/core/ui/zenbuddha/src';
+import DurationInput from '@/core/ui/zenbuddha/src/components/Duration';
 import artistsApi from '@/modules/artists/artistsApi';
 import { ArtistsType } from '@/modules/artists/artistsType';
 import genresApi from '@/modules/genres/genresApi';
@@ -176,16 +177,17 @@ const Page = () => {
         </div>
         <div className="flex gap-2 mb-2 max-sm:flex-col">
           <div className="flex flex-col flex-1">
-            <TextField
+            <DurationInput
               id="duration"
-              type="text"
+              name='duration'
+              required
               label="Duration"
-              className="flex-1"
-              {...formik.getFieldProps('duration')}
+              className="flex-1 font-normal"
+              value={formik.values.duration ?? ''}
+              handleChange={(event) => {
+                formik.setFieldValue('duration', event.target.value);
+              }}
             />
-            {!!formik.errors.title && (
-              <div className="text-red-500 text-sm">{formik.errors.duration}</div>
-            )}
           </div>
           <div className="flex flex-col flex-1">
             {genresData && (
@@ -278,6 +280,7 @@ const Page = () => {
               <div className="text-red-500 text-sm">{formik.errors.intro_track}</div>
             )}
           </div>
+
         </div>
 
       </FormGroup>

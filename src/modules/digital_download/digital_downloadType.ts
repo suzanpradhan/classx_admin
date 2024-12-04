@@ -28,9 +28,11 @@ export const digital_downloadSchema = z.object({
     id: z.number().optional().nullable(),
     release: selectorDataSchema.optional(),
     file: zipFile.optional().nullable(),
-    max_downloads: z.number(),
-
+    max_downloads: z
+        .number({ required_error: "This field cannot be empty" })
+        .min(1, "Max downloads cannot be empty"),
 });
+
 
 export type Digital_DownloadSchemaType = z.infer<typeof digital_downloadSchema>;
 

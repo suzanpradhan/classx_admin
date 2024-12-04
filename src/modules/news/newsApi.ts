@@ -40,6 +40,8 @@ const newsApi = baseApi.injectEndpoints({
             transformResponse: (response: any) => {
                 return response;
             },
+            invalidatesTags: [{ type: 'News', id: 'LIST' }],
+
         }),
 
 

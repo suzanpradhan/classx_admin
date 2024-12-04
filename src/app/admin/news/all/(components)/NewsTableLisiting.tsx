@@ -80,7 +80,7 @@ const NewsTableLisiting = () => {
 
             return (
               <tr key={index} className={tableStyles.table_tbody_tr}>
-                <td className={tableStyles.table_td}>{index + 1}</td>
+                <td className={tableStyles.table_td}>{item.id}</td>
                 <td className={tableStyles.table_td}>
                   <div className="relative w-20 h-20 overflow-hidden rounded-md">
                     {item.cover_image && (

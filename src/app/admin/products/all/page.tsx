@@ -1,3 +1,5 @@
+'use client'
+
 import ProductsTableListing from "./(components)/ProductsTableListing";
 
 const page = () => {

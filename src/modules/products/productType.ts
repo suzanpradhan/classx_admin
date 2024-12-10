@@ -60,3 +60,11 @@ export type ArtistType = {
     bio: string,
     profile_picture: string,
 }
+
+export const searchSchema = z.object({
+    page: z.number().optional(),
+    search: z.string().optional(),
+    product_type: z.string().optional(),
+});
+
+export type SearchSchemaType = z.infer<typeof searchSchema>;

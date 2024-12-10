@@ -3,7 +3,7 @@ import { apiPaths } from '@/core/api/apiConstants';
 import { baseApi } from '@/core/api/apiQuery';
 import { PaginatedResponseType } from '@/core/types/responseTypes';
 import { toast } from 'react-toastify';
-import { ProductsSchemaType, ProductsType } from './productType';
+import { ProductsSchemaType, ProductsType, SearchSchemaType } from './productType';
 
 const productsApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -49,10 +49,13 @@ const productsApi = baseApi.injectEndpoints({
         // Get All
         getAllProducts: builder.query<
             PaginatedResponseType<ProductsType>,
-            number
+            SearchSchemaType
         >({
-            query: (pageNumber) =>
-                `${apiPaths.productsUrl}?page=${pageNumber}`,
+            query: (props) => {
+                const searchParam = props.search ? `&search=${props.search}` : '';
+                const products_typeParam = props.product_type ? `&product_type=${props.product_type}` : '';
+                return `${apiPaths.productsUrl}?page=${products_typeParam}${searchParam}`;
+            },
             providesTags: (response) =>
                 response?.results
                     ? [
@@ -63,6 +66,7 @@ const productsApi = baseApi.injectEndpoints({
                         { type: 'Products', id: 'LIST' },
                     ]
                     : [{ type: 'Products', id: 'LIST' }],
+
             serializeQueryArgs: ({ endpointName }) => {
                 return endpointName;
             },
@@ -70,11 +74,14 @@ const productsApi = baseApi.injectEndpoints({
                 try {
                     await queryFulfilled;
                 } catch (err) {
-                    console.error(err);
+                    console.log(err);
                 }
             },
             forceRefetch({ currentArg, previousArg }) {
                 return currentArg !== previousArg;
+            },
+            transformResponse: (response: any) => {
+                return response as PaginatedResponseType<ProductsType>;
             },
         }),
 

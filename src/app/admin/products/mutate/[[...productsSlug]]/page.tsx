@@ -238,10 +238,12 @@ const Page = () => {
               id="product_type"
               label="Products Type"
               handleChange={(e) => {
-                formik.setFieldValue(
-                  'product_type',
-                  (e as SingleValue<{ value: string; label: string }>)?.value
-                );
+                const selectedValue = (e as SingleValue<{ value: string; label: string }>)?.value;
+                formik.setFieldValue('product_type', selectedValue);
+
+                if (selectedValue === 'merch') {
+                  formik.setFieldValue('release', { value: '', label: '' });
+                }
               }}
               options={Product_type}
               placeholder="Select source"
@@ -252,33 +254,35 @@ const Page = () => {
                   )?.label ?? '',
                 value: formik.values.product_type ?? '',
               }}
+            />
 
-            ></Selector>
           </div>
-          <div className="flex flex-col flex-1">
-            {releasesData && (
-              <Selector
-                id="release"
-                options={releasesData?.results.map(
-                  (release) =>
-                    ({
-                      value: release.id!.toString(),
-                      label: release.title,
-                    }) as SelectorDataType
-                )}
-                label="Release"
-                placeholder="Select release"
-                className="flex-1"
-                handleChange={(e) => {
-                  formik.setFieldValue('release', e as SingleValue<{ value: string; label: string }>);
-                }}
-                name="release"
-                value={formik.values.release}
-              />
-
-            )}
-          </div>
+          {formik.values.product_type === 'digital' && (
+            <div className="flex flex-col flex-1">
+              {releasesData && (
+                <Selector
+                  id="release"
+                  options={releasesData?.results.map(
+                    (release) =>
+                      ({
+                        value: release.id!.toString(),
+                        label: release.title,
+                      }) as SelectorDataType
+                  )}
+                  label="Release"
+                  placeholder="Select release"
+                  className="flex-1"
+                  handleChange={(e) => {
+                    formik.setFieldValue('release', e as SingleValue<{ value: string; label: string }>);
+                  }}
+                  name="release"
+                  value={formik.values.release}
+                />
+              )}
+            </div>
+          )}
         </div>
+
 
         <div className='mt-3 gap-2'>
           <label htmlFor="description" className="block text-sm mb-2 font-medium text-gray-700">

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 'use client'
 
 import { SelectorDataType } from '@/core/types/selectorType';

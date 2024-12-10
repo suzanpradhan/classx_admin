@@ -46,6 +46,7 @@ const releaseApi = baseApi.injectEndpoints({
                 }
             },
             transformResponse: (response: any) => {
+                console.log("Release add response", response)
                 return response;
             },
         }),

@@ -1,6 +1,7 @@
 export { default as AppBar } from './AppBar';
 export { default as Button } from './Button';
 export { default as Checkbox } from './Checkbox';
+export { default as ColorSelector } from './ColorSelector';
 export { default as FormCard } from './Forms/FormCard';
 export { default as FormGroup } from './Forms/FormGroup';
 export { default as GridHidden } from './GridHidden';

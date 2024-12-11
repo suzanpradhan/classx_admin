@@ -11,7 +11,6 @@ import { ArtistsType } from '@/modules/artists/artistsType';
 import productsApi from '@/modules/products/productsApi';
 import { productsSchema, ProductsSchemaType, ProductsType } from '@/modules/products/productType';
 import releaseApi from '@/modules/releases/releasesApi';
-import { ReleasesType } from '@/modules/releases/releasesType';
 import { useFormik } from 'formik';
 import { useParams, useRouter } from 'next/navigation';
 import { ChangeEvent, useEffect, useState } from 'react';
@@ -58,17 +57,17 @@ const Page = () => {
       state.baseApi.queries[`getAllArtists`]
         ?.data as PaginatedResponseType<ArtistsType>
   );
-  const releasesData = useAppSelector(
-    (state: RootState) =>
-      state.baseApi.queries[`getAllReleases`]
-        ?.data as PaginatedResponseType<ReleasesType>
-  );
+  // const releasesData = useAppSelector(
+  //   (state: RootState) =>
+  //     state.baseApi.queries[`getAllReleases`]
+  //       ?.data as PaginatedResponseType<ReleasesType>
+  // );
 
-  const eachRealese = useAppSelector(
-    (state: RootState) =>
-      state.baseApi.queries[`getEachReleases("${toMutateProductsData?.release?.toString()}")`]
-        ?.data as ReleasesType
-  );
+  // const eachRealese = useAppSelector(
+  //   (state: RootState) =>
+  //     state.baseApi.queries[`getEachReleases("${toMutateProductsData?.release?.toString()}")`]
+  //       ?.data as ReleasesType
+  // );
 
   const onSubmit = async (values: ProductsSchemaType) => {
     if (isLoading) {
@@ -112,7 +111,7 @@ const Page = () => {
       product_type: toMutateProductsData ? toMutateProductsData.product_type : '',
       description: toMutateProductsData ? toMutateProductsData.description : '',
       slug: toMutateProductsData ? toMutateProductsData.slug : '',
-      release: toMutateProductsData ? { value: eachRealese?.id.toString() ?? '', label: eachRealese?.title ?? '' } : { value: '', label: '' },
+      // release: toMutateProductsData ? { value: eachRealese?.id.toString() ?? '', label: eachRealese?.title ?? '' } : { value: '', label: '' },
       artist: toMutateProductsData ? { value: toMutateProductsData.artist.id.toString(), label: toMutateProductsData.artist.name } : { value: '', label: '' },
       thumbnail: toMutateProductsData ? null : null,
       price: toMutateProductsData ? toMutateProductsData.price : '',
@@ -152,7 +151,7 @@ const Page = () => {
               <div className="text-red-500 text-sm">{formik.errors.title}</div>
             )}
           </div>
-          <div className="flex flex-col flex-1">
+          {/* <div className="flex flex-col flex-1">
             <TextField
               id="slug"
               type="text"
@@ -163,7 +162,7 @@ const Page = () => {
             {formik.errors.slug && (
               <div className="text-red-500 text-sm">{formik.errors.slug}</div>
             )}
-          </div>
+          </div> */}
         </div>
 
         <div className="flex gap-2 mb-2 max-sm:flex-col">
@@ -257,7 +256,7 @@ const Page = () => {
             />
 
           </div>
-          {formik.values.product_type === 'digital' && (
+          {/* {formik.values.product_type === 'digital' && (
             <div className="flex flex-col flex-1">
               {releasesData && (
                 <Selector
@@ -280,7 +279,7 @@ const Page = () => {
                 />
               )}
             </div>
-          )}
+          )} */}
         </div>
 
 
@@ -290,6 +289,20 @@ const Page = () => {
           </label>
           <ReactQuill theme="snow" className='h-60' value={formik.values.description} onChange={handleRichTextChange}
           />
+        </div>
+
+        <div className='flex gap-2 mb-2 max-sm:flex-col'>
+          {/* <div className='flex flex-col flex-1'>
+            <ColorSelector
+              id="colorPicker"
+              type="color"
+              label="Choose a Color"
+              required
+              className="mb-4"
+            />
+
+          </div> */}
+
         </div>
 
       </FormGroup>

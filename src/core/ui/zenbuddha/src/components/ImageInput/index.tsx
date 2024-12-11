@@ -35,7 +35,7 @@ const ImageInput = ({ className, ...props }: ImageInputProps) => {
         </label>
         <input
           onChange={(e) => props.onChange?.(e)}
-          className="hidden"
+          className="hidden py-3"
           type="file"
           id={props.id}
           name={props.name}

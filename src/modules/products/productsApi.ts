@@ -9,6 +9,7 @@ const productsApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
         addProducts: builder.mutation<any, ProductsSchemaType>({
             query: (payload) => {
+                console.log("payload",)
                 const formData = new FormData();
                 formData.append('id', String(payload.id));
                 formData.append('title', String(payload.title));
@@ -19,7 +20,7 @@ const productsApi = baseApi.injectEndpoints({
                 if (payload.artist) {
                     formData.append('artist', payload.artist.value);
                 }
-                if (payload.release) formData.append('release', payload.release.value);
+                // if (payload.release) formData.append('release', payload.release);
                 if (payload.product_type)
                     formData.append('product_type', payload.product_type);
                 if (payload.description)
@@ -141,7 +142,7 @@ const productsApi = baseApi.injectEndpoints({
                 if (payload.artist) {
                     formData.append('release', payload.artist.value);
                 }
-                if (payload.release) formData.append('release', payload.release.value);
+                if (payload.release) formData.append('release', payload.release);
                 if (payload.product_type)
                     formData.append('product_type', payload.product_type);
                 if (payload.description)

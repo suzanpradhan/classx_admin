@@ -28,13 +28,13 @@ export const productsSchema = z.object({
     artist: selectorDataSchema,
     deleted: z.string().optional().nullable(),
     title: z.string().pipe(nonempty),
-    slug: z.string(),
+    slug: z.string().optional(),
     description: z.string(),
     thumbnail: imageFile.optional().nullable(),
     price: z.string(),
     stock: z.string(),
     product_type: z.string(),
-    release: selectorDataSchema,
+    release: z.string().optional(),
 });
 export type ProductsSchemaType = z.infer<typeof productsSchema>;
 

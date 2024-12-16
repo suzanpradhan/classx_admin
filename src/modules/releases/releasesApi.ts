@@ -49,6 +49,8 @@ const releaseApi = baseApi.injectEndpoints({
                 console.log("Release add response", response)
                 return response;
             },
+            invalidatesTags: [{ type: 'Releases', id: 'LIST' }],
+
         }),
 
         // Get All

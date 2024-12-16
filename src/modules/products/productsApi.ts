@@ -3,7 +3,7 @@ import { apiPaths } from '@/core/api/apiConstants';
 import { baseApi } from '@/core/api/apiQuery';
 import { PaginatedResponseType } from '@/core/types/responseTypes';
 import { toast } from 'react-toastify';
-import { ProductsSchemaType, ProductsType, SearchSchemaType } from './productType';
+import { ProductsSchemaType, ProductsType } from './productType';
 
 const productsApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -18,9 +18,9 @@ const productsApi = baseApi.injectEndpoints({
                 if (payload.price) formData.append('price', payload.price);
                 if (payload.stock) formData.append('stock', payload.stock.toString());
                 if (payload.artist) {
-                    formData.append('artist', payload.artist.value);
+                    formData.append('artist', payload.artist);
                 }
-                // if (payload.release) formData.append('release', payload.release);
+                if (payload.release) formData.append('release', payload.release);
                 if (payload.product_type)
                     formData.append('product_type', payload.product_type);
                 if (payload.description)
@@ -50,13 +50,10 @@ const productsApi = baseApi.injectEndpoints({
         // Get All
         getAllProducts: builder.query<
             PaginatedResponseType<ProductsType>,
-            SearchSchemaType
+            number
         >({
-            query: (props) => {
-                const searchParam = props.search ? `&search=${props.search}` : '';
-                const products_typeParam = props.product_type ? `&product_type=${props.product_type}` : '';
-                return `${apiPaths.productsUrl}?page=${products_typeParam}${searchParam}`;
-            },
+            query: (pageNumber) =>
+                `${apiPaths.productsUrl}?page=${pageNumber}`,
             providesTags: (response) =>
                 response?.results
                     ? [
@@ -67,7 +64,6 @@ const productsApi = baseApi.injectEndpoints({
                         { type: 'Products', id: 'LIST' },
                     ]
                     : [{ type: 'Products', id: 'LIST' }],
-
             serializeQueryArgs: ({ endpointName }) => {
                 return endpointName;
             },
@@ -80,9 +76,6 @@ const productsApi = baseApi.injectEndpoints({
             },
             forceRefetch({ currentArg, previousArg }) {
                 return currentArg !== previousArg;
-            },
-            transformResponse: (response: any) => {
-                return response as PaginatedResponseType<ProductsType>;
             },
         }),
 
@@ -135,14 +128,14 @@ const productsApi = baseApi.injectEndpoints({
             query: ({ slug, ...payload }) => {
                 const formData = new FormData();
                 formData.append('title', String(payload.title));
+
                 // formData.append('slug', String(payload.slug));
                 if (payload.thumbnail) formData.append('thumbnail', payload.thumbnail);
                 if (payload.price) formData.append('price', payload.price);
                 if (payload.stock) formData.append('stock', payload.stock.toString());
                 if (payload.artist) {
-                    formData.append('release', payload.artist.value);
+                    formData.append('artist', payload.artist);
                 }
-                if (payload.release) formData.append('release', payload.release);
                 if (payload.product_type)
                     formData.append('product_type', payload.product_type);
                 if (payload.description)

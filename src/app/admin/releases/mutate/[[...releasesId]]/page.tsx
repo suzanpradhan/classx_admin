@@ -17,6 +17,7 @@ import { ProductsSchemaType, ProductsType } from '@/modules/products/productType
 import releaseApi from '@/modules/releases/releasesApi';
 import { ReleasesRequestType, releasesSchema, ReleasesSchemaType, ReleasesType } from '@/modules/releases/releasesType';
 import { useFormik } from 'formik';
+import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import { ChangeEvent, useEffect, useState } from 'react';
 import ReactQuill from 'react-quill-new';
@@ -28,9 +29,12 @@ const Page = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const param = useParams();
-  const [uploadedImage, setUploadedImage] = useState("");
   const releasesId = param.releasesId && param.releasesId[0];
+  const productSlug = param.releasesId && param.releasesId[1];
   const dispatch = useAppDispatch();
+
+  // console.log(productId, "product price id")
+
 
   const Releases_TYPES: Array<SelectorDataType> = [
     { value: 'ALB', label: 'Album' },
@@ -41,7 +45,6 @@ const Page = () => {
   useEffect(() => {
     dispatch(genresApi.endpoints.getAllGenres.initiate('1'));
     dispatch(artistsApi.endpoints.getAllArtists.initiate(1));
-    dispatch(productsApi.endpoints.getAllProducts.initiate({}));
     if (releasesId) {
       dispatch(
         releaseApi.endpoints.getEachReleases.initiate(
@@ -50,6 +53,14 @@ const Page = () => {
       );
     }
   }, [releasesId, dispatch]);
+
+  // console.log(releasesId, "releaseId ID")
+
+  useEffect(() => {
+    if (productSlug) {
+      dispatch(productsApi.endpoints.getEachProducts.initiate(productSlug));
+    }
+  }, [productSlug, dispatch])
 
   const toMutateReleasesData = useGetApiResponse<ReleasesType>(
     `getEachReleases("${releasesId ? releasesId : undefined}")`
@@ -69,9 +80,11 @@ const Page = () => {
 
   const productData = useAppSelector(
     (state: RootState) =>
-      state.baseApi.queries[`getAllProducts`]
+      state.baseApi.queries[`getEachProducts("${productSlug}")`]
         ?.data as ProductsType
   )
+
+
   const validateForm = (values: ReleasesSchemaType) => {
     try {
       releasesSchema.parse(values);
@@ -98,6 +111,7 @@ const Page = () => {
     setIsLoading(true);
     try {
       var releaseData;
+
       if (param.releasesId && param.releasesId[0]) {
         releaseData = await Promise.resolve(
           dispatch(
@@ -107,23 +121,50 @@ const Page = () => {
             })
           )
         );
+
+        if (releaseData && releaseData.data) {
+          const productData: ProductsSchemaType = {
+            title: values.title!,
+            thumbnail: values.cover!,
+            price: values.price!,
+            slug: values.slug!,
+            description: values.description ?? '',
+            product_type: "digital",
+            stock: '',
+            artist: values.artist.value,
+            release: releasesId,
+          };
+
+          const productResponse = await Promise.resolve(
+            dispatch(productsApi.endpoints.updateProducts.initiate({
+              id: productSlug ? parseInt(productSlug) : undefined,
+              ...productData,
+            }))
+          );
+
+          if (productResponse) {
+            console.log("Product updated successfully:", productResponse);
+          }
+        }
       } else {
         releaseData = await Promise.resolve(
           dispatch(releaseApi.endpoints.addReleases.initiate(finalRequestData))
         );
-        // console.log(releaseData.data, "After submitting form")
+
         if (releaseData && releaseData.data != undefined) {
           const productData: ProductsSchemaType = {
             title: values.title!,
             thumbnail: values.cover!,
             price: values.price!,
+            slug: values.slug!,
             description: values.description ?? '',
             product_type: "digital",
             stock: '',
-            artist: values.artist,
-            release: releaseData.data.id
+            artist: values.artist.value,
+            release: releaseData.data.id,
           };
-          console.log("productData", productData)
+
+          console.log("realsjd data", releaseData.data)
           const productResponse = await Promise.resolve(
             dispatch(productsApi.endpoints.addProducts.initiate(productData))
           );
@@ -134,15 +175,13 @@ const Page = () => {
         }
       }
 
-      router.push('/admin/releases/all');
+      if (releaseData) router.push('/admin/releases/all');
     } catch (error) {
       console.error('Failed to submit:', error);
     } finally {
       setIsLoading(false);
     }
   };
-
-
 
   const dateTiemString = toMutateReleasesData?.release_date
     ? new Date(toMutateReleasesData.release_date)
@@ -158,7 +197,8 @@ const Page = () => {
       release_type: toMutateReleasesData ? toMutateReleasesData.release_type : '',
       artist: toMutateReleasesData ? { value: toMutateReleasesData.artist.id.toString(), label: toMutateReleasesData.artist.name } : { value: '', label: '' },
       release_date: dateTiemString,
-      price: toMutateReleasesData ? toMutateReleasesData.price : '',
+      price: productData ? productData.price : '',
+      slug: productData ? productData.slug : '',
       description: toMutateReleasesData ? toMutateReleasesData.description : '',
       cover_url: toMutateReleasesData?.cover,
       genres:
@@ -181,6 +221,7 @@ const Page = () => {
   const handleRichTextChange = (value: string) => {
     formik.setFieldValue('description', value);
   };
+
 
 
 
@@ -315,30 +356,40 @@ const Page = () => {
                 <div className="text-red-500 text-sm">{formik.errors.price}</div>
               )}
 
-              <div className=''>
+              <div className="">
                 <ImageInput
                   id="cover"
                   label="Cover"
                   required
-                  className="flex-1  gap-3 py-3 font-normal"
+                  className="flex-1 gap-2 font-normal"
                   value={formik.values.cover}
                   onChange={handleImageChange}
                 />
                 {!!formik.errors.cover && (
                   <div className="text-red-500 text-sm">{formik.errors.cover}</div>
                 )}
-                <div
-                  className={`flex-1 h-64 border rounded-md bg-slate-50 text-sm focus:outline-none w-full ${formik.values.cover_url ? "border-gray-300" : "border-gray-300"
-                    }`}
-                  style={{
-                    backgroundImage: formik.values.cover ? `url(${URL.createObjectURL(formik.values.cover)})` : `url(${formik.values.cover_url})`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-
-                  }}
-                >
+                <div className="bg-blueWhite border mt-3 border-primaryGray-300 rounded-lg overflow-hidden max-w-xl relative aspect-video">
+                  {formik.values.cover || formik.values.cover_url ? (
+                    <Image
+                      src={
+                        formik.values.cover
+                          ? URL.createObjectURL(formik.values.cover)
+                          : formik.values.cover_url ?? "/default-placeholder.png"
+                      }
+                      alt="Cover Preview"
+                      layout="fill"
+                      objectFit="contain"
+                      quality={85}
+                    />
+                  ) : (
+                    <div className="flex items-center justify-center w-full h-full text-gray-400">
+                      No Image Selected
+                    </div>
+                  )}
                 </div>
               </div>
+
+
 
             </div>
           </FormGroup>

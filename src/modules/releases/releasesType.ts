@@ -31,6 +31,7 @@ export const releasesSchema = z.object({
     cover_small: imageFile.optional().nullable(),
     // product validation
     price: z.string(),
+    slug: z.string()
 });
 
 export const genresSchema = z.object({

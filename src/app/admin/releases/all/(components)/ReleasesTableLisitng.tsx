@@ -6,6 +6,7 @@ import { PaginatedResponseType } from '@/core/types/responseTypes';
 import AlertDialog from '@/core/ui/components/AlertDialog';
 import PaginationNav from '@/core/ui/components/Pagination';
 import { Button, TableCard, tableStyles } from '@/core/ui/zenbuddha/src';
+import productsApi from '@/modules/products/productsApi';
 import releaseApi from '@/modules/releases/releasesApi';
 import { ReleasesType } from '@/modules/releases/releasesType';
 import Image from 'next/image';
@@ -20,14 +21,18 @@ const ReleasesTableListing = () => {
 
   useEffect(() => {
     dispatch(releaseApi.endpoints.getAllReleases.initiate(pageIndex));
+    // dispatch(productsApi.endpoints.getAllProducts.initiate(pageIndex));
   }, [dispatch, pageIndex]);
   const releaseData = useAppSelector(
     (state: RootState) =>
       state.baseApi.queries[`getAllReleases`]?.data as PaginatedResponseType<ReleasesType>
   );
-
-
-  // console.log(releaseData, "data");
+  // const productsData = useAppSelector(
+  //   (state: RootState) =>
+  //     state.baseApi.queries[`getAllProducts`]?.data as PaginatedResponseType<ProductsType>
+  // );
+  // console.log("productsData", productsData);
+  // console.log(releaseData, "releasedata hooooo")
 
   return (
     <>
@@ -39,16 +44,21 @@ const ReleasesTableListing = () => {
         }}
         onClickYes={async () => {
           if (onDelete) {
-            await Promise.resolve(
-              dispatch(
-                releaseApi.endpoints.deleteReleases.initiate(onDelete as string)
-              )
-            );
+            try {
+              await Promise.all([
+                dispatch(productsApi.endpoints.deleteProducts.initiate(onDelete)),
+                dispatch(releaseApi.endpoints.deleteReleases.initiate(onDelete)),
+              ]);
+            } catch (error) {
+              console.error("Error deleting release or product:", error);
+            }
           }
           toggleDeleteModel(false);
           setOnDelete(undefined);
         }}
       />
+
+
       <TableCard
         footer={
           releaseData && releaseData?.results.length > 0 ? (
@@ -109,7 +119,7 @@ const ReleasesTableListing = () => {
                     : item.release_type === 'ALB'
                       ? 'bg-green-500'
                       : item.release_type === 'SNG'
-                        ? 'bg-gray-600'
+                        ? 'bg-yellow-500'
                         : 'bg-black'
                     }`}
                 >
@@ -128,9 +138,11 @@ const ReleasesTableListing = () => {
                 <Button
                   className="h-8 w-8"
                   type="link"
-                  href={`/admin/releases/mutate/${item.id}`}
+                  // href={`/admin/releases/mutate/${item.id}/${productsData?.results[index + 1]?.slug}`}
+                  href={`/admin/releases/mutate/${item.id}/${item?.product_slug}`}
                   prefix={<PencilSimpleLine size={15} weight="duotone" />}
                 />
+
                 <Button
                   className="h-8 w-8"
                   kind="danger"

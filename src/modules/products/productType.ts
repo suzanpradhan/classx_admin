@@ -1,4 +1,3 @@
-import { selectorDataSchema } from "@/core/types/selectorType";
 import { nonempty } from "@/core/utils/formUtlis";
 import { z } from "zod";
 
@@ -25,14 +24,14 @@ export const artistSchema = z.object({
 })
 export const productsSchema = z.object({
     id: z.number().optional().nullable(),
-    artist: selectorDataSchema,
+    artist: z.string().optional(),
     deleted: z.string().optional().nullable(),
     title: z.string().pipe(nonempty),
     slug: z.string().optional(),
     description: z.string(),
     thumbnail: imageFile.optional().nullable(),
     price: z.string(),
-    stock: z.string(),
+    stock: z.string().optional(),
     product_type: z.string(),
     release: z.string().optional(),
 });

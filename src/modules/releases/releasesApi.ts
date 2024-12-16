@@ -119,13 +119,16 @@ const releaseApi = baseApi.injectEndpoints({
                     await queryFulfilled;
                     toast.success('Releases has been deleted.');
                 } catch (err) {
-                    console.error('Delete Releases Type Error:', err);
+                    console.log('Delete Releases Type Error:', err);
                     toast.error(
                         'Failed to delete the Releases Type. Please check if the ID is correct.'
                     );
                 }
             },
-            invalidatesTags: (result, error, id) => [{ type: 'Releases', id }],
+            // invalidatesTags: (result, error, id) => [{ type: 'Releases', id }],
+            invalidatesTags: (result, error, id) => [
+                { type: 'Releases', id: id! },
+            ],
         }),
 
         // Update

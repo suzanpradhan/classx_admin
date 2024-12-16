@@ -70,7 +70,7 @@ const ProductsTableListing = () => {
               <th className={tableStyles.table_th}>S.N.</th>
               <th className={tableStyles.table_th}>Thumbnail</th>
               <th className={tableStyles.table_th}>Title</th>
-              <th className={tableStyles.table_th}>Artists</th>
+              {/* <th className={tableStyles.table_th}>Artists</th> */}
               <th className={tableStyles.table_th}>Price</th>
               <th className={tableStyles.table_th}>Stock</th>
               <th className={tableStyles.table_th}>Product Type</th>
@@ -78,75 +78,78 @@ const ProductsTableListing = () => {
             </tr>
           </thead>
           <tbody>
-            {productsData?.results.map((item, index) => (
-              <tr key={index} className={tableStyles.table_tbody_tr}>
-                <td className={tableStyles.table_td}>{item.id}</td>
-                <td className={tableStyles.table_td}>
-                  <div className="relative w-20 h-20 overflow-hidden rounded-md">
-                    {item.thumbnail && (
-                      <Image
-                        src={item.thumbnail}
-                        alt={item.thumbnail ?? ''}
-                        onError={(e) => {
-                          const target = e.currentTarget as HTMLImageElement;
-                          target.src = '/images/errors/placeholder.webp';
-                        }}
-                        fill
-                        placeholder="blur"
-                        blurDataURL={item.thumbnail}
-                        quality={75}
-                        sizes="(max-width: 768px) 75vw, 33vw"
-                        className="object-cover"
-                      />
-                    )}
-                  </div>
-                </td>
-                <td className={tableStyles.table_td}>{item.title}</td>
-                <td className={tableStyles.table_td}>{item.artist?.name}</td>
-                <td className={tableStyles.table_td}><span className={`text-xs px-2 py-1 rounded-sm capitalize bg-slate-300 text-black flex items-center gap-1 w-max`}>{item.price}</span></td>
-                <td className={tableStyles.table_td}>{item.stock}</td>
-                <td className={tableStyles.table_td}>
-                  <span
-                    className={`text-white text-xs px-2 py-1 rounded-sm capitalize ${item.product_type === 'merch'
-                      ? 'bg-blue-500'
-                      : item.product_type === 'digital'
-                        ? 'bg-green-500'
-                        : item.product_type === ''
-                          ? 'bg-gray-600'
-                          : 'bg-black'
-                      }`}
-                  >
-                    {item.product_type}
-                  </span>
-                </td>
+            {
+              productsData?.results
+                .filter((item) => item.product_type === 'merch')
+                .map((item, index) => (
+                  <tr key={index} className={tableStyles.table_tbody_tr}>
+                    <td className={tableStyles.table_td}>{item.id}</td>
+                    <td className={tableStyles.table_td}>
+                      <div className="relative w-20 h-20 overflow-hidden rounded-md">
+                        {item.thumbnail && (
+                          <Image
+                            src={item.thumbnail}
+                            alt={item.thumbnail ?? ''}
+                            onError={(e) => {
+                              const target = e.currentTarget as HTMLImageElement;
+                              target.src = '/images/errors/placeholder.webp';
+                            }}
+                            fill
+                            placeholder="blur"
+                            blurDataURL={item.thumbnail}
+                            quality={75}
+                            sizes="(max-width: 768px) 75vw, 33vw"
+                            className="object-cover"
+                          />
+                        )}
+                      </div>
+                    </td>
+                    <td className={tableStyles.table_td}>{item.title}</td>
+                    {/* <td className={tableStyles.table_td}>{item.artist?.name}</td> */}
+                    <td className={tableStyles.table_td}><span className={`text-xs px-2 py-1 rounded-sm capitalize bg-slate-300 text-black flex items-center gap-1 w-max`}>{item.price}</span></td>
+                    <td className={tableStyles.table_td}>{item.stock}</td>
+                    <td className={tableStyles.table_td}>
+                      <span
+                        className={`text-white text-xs px-2 py-1 rounded-sm capitalize ${item.product_type === 'merch'
+                          ? 'bg-blue-500'
+                          : item.product_type === 'digital'
+                            ? 'bg-green-500'
+                            : item.product_type === ''
+                              ? 'bg-gray-600'
+                              : 'bg-black'
+                          }`}
+                      >
+                        {item.product_type}
+                      </span>
+                    </td>
 
-                <td className={tableStyles.table_td + ` flex gap-2 max-w-xs`}>
-                  <Button
-                    className="h-8 w-8"
-                    type="link"
-                    href={`/admin/products/${item.slug}`}
-                    buttonType="bordered"
-                    prefix={<Eye size={18} weight="duotone" />}
-                  />
-                  <Button
-                    className="h-8 w-8"
-                    type="link"
-                    href={`/admin/products/mutate/${item.slug}`}
-                    prefix={<PencilSimpleLine size={15} weight="duotone" />}
-                  />
-                  <Button
-                    className="h-8 w-8"
-                    kind="danger"
-                    type="button"
-                    onClick={() => {
-                      setOnDelete(item.slug?.toString());
-                      toggleDeleteModel(true);
-                    }}
-                    prefix={<TrashSimple size={18} weight="duotone" />}
-                  />
-                </td>
-              </tr>
-            ))}
+                    <td className={tableStyles.table_td + ` flex gap-2 max-w-xs`}>
+                      <Button
+                        className="h-8 w-8"
+                        type="link"
+                        href={`/admin/products/${item.slug}`}
+                        buttonType="bordered"
+                        prefix={<Eye size={18} weight="duotone" />}
+                      />
+                      <Button
+                        className="h-8 w-8"
+                        type="link"
+                        href={`/admin/products/mutate/${item.slug}`}
+                        prefix={<PencilSimpleLine size={15} weight="duotone" />}
+                      />
+                      <Button
+                        className="h-8 w-8"
+                        kind="danger"
+                        type="button"
+                        onClick={() => {
+                          setOnDelete(item.slug?.toString());
+                          toggleDeleteModel(true);
+                        }}
+                        prefix={<TrashSimple size={18} weight="duotone" />}
+                      />
+                    </td>
+                  </tr>
+                ))}
 
 
           </tbody>

@@ -33,9 +33,6 @@ const Page = () => {
   const productSlug = param.releasesId && param.releasesId[1];
   const dispatch = useAppDispatch();
 
-  // console.log(productId, "product price id")
-
-
   const Releases_TYPES: Array<SelectorDataType> = [
     { value: 'ALB', label: 'Album' },
     { value: 'EP', label: 'EP' },
@@ -54,7 +51,6 @@ const Page = () => {
     }
   }, [releasesId, dispatch]);
 
-  // console.log(releasesId, "releaseId ID")
 
   useEffect(() => {
     if (productSlug) {
@@ -164,7 +160,6 @@ const Page = () => {
             release: releaseData.data.id,
           };
 
-          console.log("realsjd data", releaseData.data)
           const productResponse = await Promise.resolve(
             dispatch(productsApi.endpoints.addProducts.initiate(productData))
           );
@@ -175,7 +170,12 @@ const Page = () => {
         }
       }
 
-      if (releaseData) router.push('/admin/releases/all');
+      // if (releaseData) router.push('/admin/releases/all');
+
+      if (releaseData) {
+        window.location.href = '/admin/releases/all';
+      }
+
     } catch (error) {
       console.error('Failed to submit:', error);
     } finally {
@@ -221,8 +221,6 @@ const Page = () => {
   const handleRichTextChange = (value: string) => {
     formik.setFieldValue('description', value);
   };
-
-
 
 
   return (

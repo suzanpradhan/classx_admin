@@ -28,6 +28,8 @@ const DigitalDownloadTable = () => {
         ?.data as PaginatedResponseType<Digital_DownloadType>
   );
 
+
+  console.log(digitalData, "digitaldata all")
   return (
     <>
       <>

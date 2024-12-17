@@ -20,7 +20,9 @@ const productsApi = baseApi.injectEndpoints({
                 if (payload.artist) {
                     formData.append('artist', payload.artist);
                 }
-                if (payload.release) formData.append('release', payload.release);
+                if (payload.release) {
+                    formData.append('release', payload.release);
+                }
                 if (payload.product_type)
                     formData.append('product_type', payload.product_type);
                 if (payload.description)

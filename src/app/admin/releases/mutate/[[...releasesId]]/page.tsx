@@ -106,7 +106,7 @@ const Page = () => {
     }
     setIsLoading(true);
     try {
-      var releaseData;
+      let releaseData;
 
       if (param.releasesId && param.releasesId[0]) {
         releaseData = await Promise.resolve(
@@ -378,6 +378,9 @@ const Page = () => {
                       layout="fill"
                       objectFit="contain"
                       quality={85}
+                      onError={(e) => {
+                        e.currentTarget.src = "/default-placeholder.png";
+                      }}
                     />
                   ) : (
                     <div className="flex items-center justify-center w-full h-full text-gray-400">

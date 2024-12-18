@@ -54,8 +54,8 @@ const releaseApi = baseApi.injectEndpoints({
         }),
 
         // Get All
-        getAllReleases: builder.query<PaginatedResponseType<ReleasesType>, number>({
-            query: (pageNumber) => `${apiPaths.releasesUrl}?page=${pageNumber}`,
+        getAllReleases: builder.query<PaginatedResponseType<ReleasesType>, { pageNumber: string, searchString?: string }>({
+            query: ({ pageNumber, searchString }) => `${apiPaths.releasesUrl}?page=${pageNumber}${searchString ? `&search=${searchString}` : ''}`,
             providesTags: (response) =>
                 response?.results
                     ? [

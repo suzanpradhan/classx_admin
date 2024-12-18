@@ -40,8 +40,8 @@ const Page = () => {
   ];
 
   useEffect(() => {
-    dispatch(genresApi.endpoints.getAllGenres.initiate('1'));
-    dispatch(artistsApi.endpoints.getAllArtists.initiate(1));
+    dispatch(genresApi.endpoints.getAllGenres.initiate({ pageNumber: '1' }));
+    dispatch(artistsApi.endpoints.getAllArtists.initiate({ pageNumber: '1' }));
     if (releasesId) {
       dispatch(
         releaseApi.endpoints.getEachReleases.initiate(
@@ -62,17 +62,21 @@ const Page = () => {
     `getEachReleases("${releasesId ? releasesId : undefined}")`
   );
 
-  const genresData = useAppSelector(
+  const allGenres = useAppSelector(
     (state: RootState) =>
       state.baseApi.queries[`getAllGenres`]
         ?.data as PaginatedResponseType<GenresType>
   );
+  const allGenresMod = allGenres?.results.map((item) => { return { label: item.name, value: item.id.toString() } })
 
-  const artistsData = useAppSelector(
+
+  const allArtists = useAppSelector(
     (state: RootState) =>
       state.baseApi.queries[`getAllArtists`]
         ?.data as PaginatedResponseType<ArtistsType>
   );
+
+  const allArtitstMod = allArtists?.results.map((item) => { return { label: item.name, value: item.id.toString() } })
 
   const productData = useAppSelector(
     (state: RootState) =>
@@ -218,10 +222,54 @@ const Page = () => {
       formik.setFieldValue('cover', file);
     }
   };
+
   const handleRichTextChange = (value: string) => {
     formik.setFieldValue('description', value);
   };
 
+  const loadPaginatedOptions = async (
+    searchQuery: any,
+    loadedOptions: any,
+    { page }: any
+  ) => {
+    dispatch(
+      genresApi.endpoints.getAllGenres.initiate(
+        { pageNumber: (allGenres.pagination.current_page + 1).toString(), searchString: searchQuery as string }
+      )
+    );
+
+    return {
+      options: allGenresMod,
+      hasMore:
+        allGenres?.pagination.next != null,
+    };
+  };
+
+  const loadPaginatedArtists = async (
+    searchQuery: any,
+    loadedOptions: any,
+    { page }: any
+  ) => {
+    dispatch(
+      artistsApi.endpoints.getAllArtists.initiate(
+        { pageNumber: (allArtists.pagination.current_page + 1).toString(), searchString: searchQuery as string }
+      )
+    );
+    return {
+      options: allArtitstMod,
+      hasMore:
+        allArtists?.pagination.next != null,
+    };
+  };
+
+  const handleCreateGenre = async (inputValue: string) => {
+    dispatch(
+      genresApi.endpoints.addGenres.initiate({
+        name: inputValue
+      })
+    );
+
+  }
 
   return (
     <FormCard onSubmit={formik.handleSubmit} className="m-4 !max-w-full">
@@ -261,19 +309,15 @@ const Page = () => {
                 )}
               </div>
               <div className="flex flex-col flex-1">
-                {genresData && (
+                {allGenres && (
                   <Selector
                     id="genres"
-                    options={genresData?.results.map(
-                      (genres) =>
-                        ({
-                          value: genres.id!.toString(),
-                          label: genres.name,
-                        }) as SelectorDataType
-                    )}
+                    options={allGenresMod}
+                    loadPaginatedOptions={loadPaginatedOptions}
+                    onCreateOption={handleCreateGenre}
                     label="Genres"
                     isMulti
-                    type="Creatable"
+                    type="AsyncPaginateCreatable"
                     placeholder="Select genres"
                     className="flex-1"
                     handleChange={(selectedOptions) => formik.setFieldValue('genres', selectedOptions)}
@@ -285,16 +329,12 @@ const Page = () => {
             </div>
             <div className="flex gap-2 mb-2 max-sm:flex-col">
               <div className="flex flex-col flex-1">
-                {artistsData && (
+                {allArtists && (
                   <Selector
                     id="artist"
-                    options={artistsData?.results.map(
-                      (artist) =>
-                        ({
-                          value: artist.id!.toString(),
-                          label: artist.name,
-                        }) as SelectorDataType
-                    )}
+                    options={allArtitstMod}
+                    loadPaginatedOptions={loadPaginatedArtists}
+                    type='AsyncPaginate'
                     label="Artist"
                     value={formik.values.artist}
                     placeholder="Select artist"

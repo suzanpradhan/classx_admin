@@ -41,34 +41,31 @@ const artistsApi = baseApi.injectEndpoints({
 
         // Get All
         getAllArtists: builder.query<
-            PaginatedResponseType<ArtistsType>,
-            number
-        >({
-            query: (pageNumber) =>
-                `${apiPaths.artistsUrl}?page=${pageNumber}`,
-            providesTags: (response) =>
-                response?.results
-                    ? [
-                        ...response.results.map(
-                            ({ id }) => ({ type: 'Artists', id }) as const
-                        ),
-                        { type: 'Artists', id: 'LIST' },
-                    ]
-                    : [{ type: 'Artists', id: 'LIST' }],
-            serializeQueryArgs: ({ endpointName }) => {
-                return endpointName;
-            },
-            async onQueryStarted(payload, { queryFulfilled }) {
-                try {
-                    await queryFulfilled;
-                } catch (err) {
-                    console.log(err);
-                }
-            },
-            forceRefetch({ currentArg, previousArg }) {
-                return currentArg !== previousArg;
-            },
-        }),
+            PaginatedResponseType<ArtistsType>, { pageNumber: string, searchString?: string }>({
+                query: ({ pageNumber, searchString }) => `${apiPaths.artistsUrl}?page=${pageNumber}${searchString ? `&search=${searchString}` : ''}`,
+                providesTags: (response) =>
+                    response?.results
+                        ? [
+                            ...response.results.map(
+                                ({ id }) => ({ type: 'Artists', id }) as const
+                            ),
+                            { type: 'Artists', id: 'LIST' },
+                        ]
+                        : [{ type: 'Artists', id: 'LIST' }],
+                serializeQueryArgs: ({ endpointName }) => {
+                    return endpointName;
+                },
+                async onQueryStarted(payload, { queryFulfilled }) {
+                    try {
+                        await queryFulfilled;
+                    } catch (err) {
+                        console.log(err);
+                    }
+                },
+                forceRefetch({ currentArg, previousArg }) {
+                    return currentArg !== previousArg;
+                },
+            }),
 
         // Get Each
 

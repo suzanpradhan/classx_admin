@@ -3,20 +3,21 @@
 
 import { SelectorDataType } from '@/core/types/selectorType';
 import { cn } from '@/lib/utils';
-import React from 'react';
+import React, { ReactElement } from 'react';
 import Select, {
   GroupBase,
   MultiValue,
   SingleValue,
   components,
 } from 'react-select';
-import { AsyncPaginate, LoadOptions } from 'react-select-async-paginate';
+import { AsyncPaginate, ComponentProps, LoadOptions, UseAsyncPaginateParams, withAsyncPaginate } from 'react-select-async-paginate';
 import AsyncSelect from 'react-select/async';
-import Creatable from 'react-select/creatable';
+import Creatable, { CreatableProps } from 'react-select/creatable';
 
 export interface SelectorProps {
   label?: string;
   placeholder?: string;
+  onCreateOption?: (inputValue: string) => void;
   id: string;
   name?: string;
   isMulti?: boolean;
@@ -38,7 +39,7 @@ export interface SelectorProps {
   onChange?: any;
   suffix?: React.ReactNode;
   value?: SingleValue<SelectorDataType> | MultiValue<SelectorDataType>;
-  type?: 'Creatable' | 'Select' | 'Async' | 'AsyncPaginate';
+  type?: 'Creatable' | 'Select' | 'Async' | 'AsyncPaginate' | 'AsyncPaginateCreatable';
   loadOptions?: (inputValue: string) => void;
   handleChange?: (
     // eslint-disable-next-line no-unused-vars
@@ -58,6 +59,28 @@ export interface SelectorProps {
   ) => void;
   formatOptionLabel?: (data: SelectorDataType) => React.ReactNode;
 }
+
+type AsyncPaginateCreatableProps<
+  OptionType,
+  Group extends GroupBase<OptionType>,
+  Additional,
+  IsMulti extends boolean
+> = CreatableProps<OptionType, IsMulti, Group> &
+  UseAsyncPaginateParams<OptionType, Group, Additional> &
+  ComponentProps<OptionType, Group, IsMulti>
+
+type AsyncPaginateCreatableType = <
+  OptionType,
+  Group extends GroupBase<OptionType>,
+  Additional,
+  IsMulti extends boolean = false
+>(
+  props: AsyncPaginateCreatableProps<OptionType, Group, Additional, IsMulti>
+) => ReactElement;
+
+const CreatableAsyncPaginate = withAsyncPaginate(
+  Creatable
+) as AsyncPaginateCreatableType;
 
 const Selector = ({ className, suffix, ...props }: SelectorProps) => {
   const customStyles = {
@@ -223,7 +246,54 @@ const Selector = ({ className, suffix, ...props }: SelectorProps) => {
                 borderRadius: 0,
                 colors: {
                   ...theme.colors,
-                  primary25: '#F2F3F5',
+                  primary25: '#EAB308',
+                  primary: '#2560AA',
+                },
+              };
+            }}
+          />
+        ) : (
+          <></>
+        )
+      ) : props.type == 'AsyncPaginateCreatable' ? (
+        props.loadPaginatedOptions ? (
+          <CreatableAsyncPaginate
+            id={props.id}
+            isDisabled={props.isDisabled}
+            loadOptions={props.loadPaginatedOptions}
+            value={props.value}
+            getOptionValue={(option: any) => option.value}
+            getOptionLabel={(option: any) => option.label}
+            onChange={props.handleChange}
+            onCreateOption={props.onCreateOption}
+            className={`w-full border rounded-md bg-transparent text-sm focus:outline-none custom-scrollbar `}
+            additional={{
+              page: 1,
+            }}
+            isMulti={props.isMulti}
+            isClearable={false}
+            isSearchable={true}
+            placeholder="Select an option"
+            debounceTimeout={500}
+            styles={{
+              control: (base) => ({
+                ...base,
+                minHeight: props.isCompact ? 34 : 44,
+                maxHeight: props.isCompact ? 34 : 44,
+                border: 'none',
+                outline: 'none',
+                borderRadius: 6,
+                backgroundColor: '#F5F8FA',
+                flexWrap: 'wrap',
+              }),
+            }}
+            theme={(theme) => {
+              return {
+                ...theme,
+                borderRadius: 0,
+                colors: {
+                  ...theme.colors,
+                  primary25: '#EAB308',
                   primary: '#2560AA',
                 },
               };

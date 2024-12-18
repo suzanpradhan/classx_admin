@@ -9,6 +9,7 @@ const productsApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
         addProducts: builder.mutation<any, ProductsSchemaType>({
             query: (payload) => {
+                console.log("payload",)
                 const formData = new FormData();
                 formData.append('id', String(payload.id));
                 formData.append('title', String(payload.title));
@@ -17,9 +18,11 @@ const productsApi = baseApi.injectEndpoints({
                 if (payload.price) formData.append('price', payload.price);
                 if (payload.stock) formData.append('stock', payload.stock.toString());
                 if (payload.artist) {
-                    formData.append('artist', payload.artist.value);
+                    formData.append('artist', payload.artist);
                 }
-                if (payload.release) formData.append('release', payload.release.value);
+                if (payload.release) {
+                    formData.append('release', payload.release);
+                }
                 if (payload.product_type)
                     formData.append('product_type', payload.product_type);
                 if (payload.description)
@@ -70,7 +73,7 @@ const productsApi = baseApi.injectEndpoints({
                 try {
                     await queryFulfilled;
                 } catch (err) {
-                    console.error(err);
+                    console.log(err);
                 }
             },
             forceRefetch({ currentArg, previousArg }) {
@@ -112,7 +115,7 @@ const productsApi = baseApi.injectEndpoints({
                     await queryFulfilled;
                     toast.success('Products has been deleted.');
                 } catch (err) {
-                    console.error('Delete Products Error:', err);
+                    console.log('Delete Products Error:', err);
                     toast.error(
                         'Failed to delete the Products. Please check if the ID is correct.'
                     );
@@ -127,14 +130,14 @@ const productsApi = baseApi.injectEndpoints({
             query: ({ slug, ...payload }) => {
                 const formData = new FormData();
                 formData.append('title', String(payload.title));
+
                 // formData.append('slug', String(payload.slug));
                 if (payload.thumbnail) formData.append('thumbnail', payload.thumbnail);
                 if (payload.price) formData.append('price', payload.price);
                 if (payload.stock) formData.append('stock', payload.stock.toString());
                 if (payload.artist) {
-                    formData.append('release', payload.artist.value);
+                    formData.append('artist', payload.artist);
                 }
-                if (payload.release) formData.append('release', payload.release.value);
                 if (payload.product_type)
                     formData.append('product_type', payload.product_type);
                 if (payload.description)

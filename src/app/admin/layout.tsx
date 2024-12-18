@@ -35,12 +35,12 @@ export default function TestLayout({
         }
       >
         <button className="flex h-9 w-9 items-center justify-center rounded-md bg-white/5">
-          <Bell className="text-white"  size={20} />
+          <Bell className="text-white" size={20} />
         </button>
         <button className="flex h-9 w-9 items-center justify-center rounded-md bg-white/5"
-         onClick={() => {
-          signOut({ callbackUrl: '/login', redirect: true });
-        }}
+          onClick={() => {
+            signOut({ callbackUrl: '/login', redirect: true });
+          }}
         >
           <LogOut className="text-white" />
         </button>
@@ -57,78 +57,78 @@ export default function TestLayout({
             link="/admin/dashboard"
           />
           <div className="my-2 border-t border-white/5"></div>
-          
-          <SideBarNavGroup title='News' segment='admin/news'>
-          <SideBarNavLink
-            title="All News"
-            link="/admin/news/all"
-            linkExact
-          />
-          <SideBarNavLink
-            title="Add News"
-            link="/admin/news/mutate"
-            linkExact
 
-          />
+          <SideBarNavGroup title='News' segment='admin/news'>
+            <SideBarNavLink
+              title="All News"
+              link="/admin/news/all"
+              linkExact
+            />
+            <SideBarNavLink
+              title="Add News"
+              link="/admin/news/mutate"
+              linkExact
+
+            />
           </SideBarNavGroup>
           <SideBarNavGroup title='Artists' segment='admin/artists'>
-          <SideBarNavLink
-            title="All Artists"
-            link="/admin/artists/all"
-            linkExact
+            <SideBarNavLink
+              title="All Artists"
+              link="/admin/artists/all"
+              linkExact
 
-          />
-          <SideBarNavLink
-            title="Add New Artists"
-            link="/admin/artists/mutate"
-            linkExact
+            />
+            <SideBarNavLink
+              title="Add New Artists"
+              link="/admin/artists/mutate"
+              linkExact
 
-          />
+            />
           </SideBarNavGroup>
           <SideBarNavTitle title="Music" />
-         
+
           <SideBarNavGroup title='Genres' segment='admin/genres'>
-          <SideBarNavLink
-            title="All Genres"
-            link="/admin/genres/all"
-          />
-          <SideBarNavLink
-            title="Add New Genres"
-            link="/admin/genres/mutate"
-          />
+            <SideBarNavLink
+              title="All Genres"
+              link="/admin/genres/all"
+            />
+            <SideBarNavLink
+              title="Add New Genres"
+              link="/admin/genres/mutate"
+            />
           </SideBarNavGroup>
           <SideBarNavGroup title='Releases' segment='admin/releases'>
-          <SideBarNavLink
-            title="All Releases"
-            link="/admin/releases/all"
-          />
-          <SideBarNavLink
-            title="Add New Releases"
-            link="/admin/releases/mutate"
-          />
+            <SideBarNavLink
+              title="All Releases"
+              link="/admin/releases/all"
+            />
+            <SideBarNavLink
+              title="Add New Releases"
+              link="/admin/releases/mutate"
+            />
           </SideBarNavGroup>
-        
+
           <SideBarNavGroup title="Tracks" segment="admin/tracks">
             <SideBarNavLink title="All Tracks" link="/admin/tracks/all" />
             <SideBarNavLink title="Add New Tracks" link="/admin/tracks/mutate" />
-    
+
           </SideBarNavGroup>
           <div className="my-2 border-t border-white/5"></div>
           <SideBarNavTitle title="SHOP" />
           <SideBarNavGroup title="Orders" segment="admin/orders">
             <SideBarNavLink title="All Orders" link="/admin/orders/all" />
           </SideBarNavGroup>
-           <SideBarNavGroup title="Products" segment="admin/products">
+          <SideBarNavGroup title="Products" segment="admin/products">
             <SideBarNavLink title="All Products" link="/admin/products/all" />
             <SideBarNavLink title="Add New Products" link="/admin/products/mutate" />
           </SideBarNavGroup>
-           <SideBarNavGroup title="Digital Download" segment="admin/digital_download">
+          <SideBarNavGroup title="Digital Download" segment="admin/digital_download">
             <SideBarNavLink title="All Digital Download" link="/admin/digital_download/all" />
             <SideBarNavLink title="Add New Digital Download" link="/admin/digital_download/mutate" />
           </SideBarNavGroup>
-            
+
           <div className="my-2 border-t border-white/5"></div>
-          <SideBarNavTitle title="Settings" />
+          {/* <SideBarNavTitle title="Settings" />
           <SideBarNavGroup title="Accounts" segment="admin/accounts">
             <div className="w-full border-t border-white/5"></div>
             <SideBarNavLink
@@ -139,7 +139,7 @@ export default function TestLayout({
           <SideBarNavGroup title="General" segment="admin/settings">
             <div className="w-full border-t border-white/5"></div>
             <SideBarNavLink title="Manage site" link="/admin/settings" />
-          </SideBarNavGroup>
+          </SideBarNavGroup> */}
         </div>
         <div
           className={

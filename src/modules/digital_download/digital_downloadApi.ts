@@ -104,7 +104,7 @@ const digital_downloadApi = baseApi.injectEndpoints({
                     await queryFulfilled;
                     toast.success('Digital Download has been deleted.');
                 } catch (err) {
-                    console.error('Delete Digital Download Error:', err);
+                    console.log('Delete Digital Download Error:', err);
                     toast.error(
                         'Failed to delete the Digital Download Type. Please check if the ID is correct.'
                     );

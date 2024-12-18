@@ -27,7 +27,11 @@ export const releasesSchema = z.object({
     release_type: z.string(),
     release_date: z.date().optional(),
     cover: imageFile.optional().nullable(),
+    cover_url: z.string().optional().nullable(),
     cover_small: imageFile.optional().nullable(),
+    // product validation
+    price: z.string(),
+    slug: z.string()
 });
 
 export const genresSchema = z.object({
@@ -53,6 +57,7 @@ export type ReleasesType = {
     release_date: string;
     cover_small?: string;
     cover?: string;
+    price: string;
 };
 
 export type GenreType = {

@@ -162,7 +162,7 @@ const Page = () => {
               <div className="text-red-500 text-sm">{formik.errors.title}</div>
             )}
           </div>
-          <div className="flex flex-col flex-1">
+          {/* <div className="flex flex-col flex-1">
             <TextField
               id="slug"
               type="text"
@@ -173,7 +173,7 @@ const Page = () => {
             {!!formik.errors.title && (
               <div className="text-red-500 text-sm">{formik.errors.slug}</div>
             )}
-          </div>
+          </div> */}
         </div>
         <div className="flex gap-2 mb-2 max-sm:flex-col">
           <div className="flex flex-col flex-1">
@@ -287,7 +287,7 @@ const Page = () => {
       <div className="flex justify-end gap-2 m-4">
         <Button
           text="Submit"
-          kind="default"
+          kind="warning"
           className="h-8 w-fit"
           type="submit"
           isLoading={isLoading}

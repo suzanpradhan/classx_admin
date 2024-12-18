@@ -19,7 +19,7 @@ const ArtistsTableLisiting = () => {
   const [onDelete, setOnDelete] = useState<string | undefined>(undefined);
 
   useEffect(() => {
-    dispatch(artistsApi.endpoints.getAllArtists.initiate(pageIndex));
+    dispatch(artistsApi.endpoints.getAllArtists.initiate({ pageNumber: pageIndex.toString() }));
   }, [dispatch, pageIndex]);
 
   const artistsData = useAppSelector(

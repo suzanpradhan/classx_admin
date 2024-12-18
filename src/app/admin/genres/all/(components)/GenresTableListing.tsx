@@ -19,7 +19,7 @@ const GenresTableLisiting = () => {
 
 
   useEffect(() => {
-    dispatch(genresApi.endpoints.getAllGenres.initiate(pageIndex.toString()));
+    dispatch(genresApi.endpoints.getAllGenres.initiate({ pageNumber: pageIndex.toString() }));
   }, [dispatch, pageIndex]);
 
   const genresData = useAppSelector(

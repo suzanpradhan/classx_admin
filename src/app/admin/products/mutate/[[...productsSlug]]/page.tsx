@@ -28,7 +28,7 @@ const Page = () => {
 
   useEffect(() => {
     // dispatch(releaseApi.endpoints.getAllReleases.initiate(1));
-    dispatch(artistsApi.endpoints.getAllArtists.initiate(1));
+    dispatch(artistsApi.endpoints.getAllArtists.initiate({ pageNumber: '1' }));
 
   }, [dispatch]);
 

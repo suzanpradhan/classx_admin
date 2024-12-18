@@ -117,6 +117,7 @@ const OrdersTableLisiting = () => {
                   />
                   <Button
                     className="h-8 w-8"
+                    kind='warning'
                     type="link"
                     href={`/admin/orders/mutate/${item.id}`}
                     prefix={<PencilSimpleLine size={15} weight="duotone" />}

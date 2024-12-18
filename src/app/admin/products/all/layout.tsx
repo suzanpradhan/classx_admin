@@ -16,6 +16,7 @@ export default function AddNewLayout({
         <div className="flex">
           <Button
             text="Add New Products"
+            kind='warning'
             className="h-8"
             type="link"
             href="/admin/products/mutate"

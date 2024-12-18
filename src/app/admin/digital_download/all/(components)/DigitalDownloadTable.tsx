@@ -84,6 +84,7 @@ const DigitalDownloadTable = () => {
                 <td className={tableStyles.table_td + ` flex gap-2 max-w-xs`}>
                   <Button
                     className="h-8 w-8"
+                    kind='warning'
                     type="link"
                     href={`/admin/digital_download/mutate/${item.id}`}
                     prefix={<PencilSimpleLine size={18} weight="duotone" />}

@@ -1,4 +1,4 @@
-import { ArrowLeft2, ArrowRight2 } from 'iconsax-react';
+import { CaretLeft, CaretRight } from 'phosphor-react';
 import { useCallback } from 'react';
 
 interface ButtonProps {
@@ -12,10 +12,9 @@ function Button({ content, onClick, active, disabled }: ButtonProps) {
   return (
     <button
       className={`flex flex-col cursor-pointer items-center justify-center w-8 h-8 shadow-[0_4px_10px_rgba(0,0,0,0.03)] text-sm font-normal transition-colors rounded-md
-        ${
-          !disabled
-            ? 'hover:bg-primaryGray-300'
-            : 'text-primaryGray-500 cursor-not-allowed'
+        ${!disabled
+          ? 'hover:bg-gray-400 hover:text-white'
+          : 'text-black cursor-not-allowed'
         }
         ${active ? 'bg-accentBlue-500 text-white hover:bg-accentBlue-300' : 'text-dark-500/30'}
         `}
@@ -79,9 +78,8 @@ export default function PaginationNav({
         <li>
           <Button
             content={
-              <div className="flex ml-1">
-                <ArrowLeft2 size="0.6rem" />
-                {/* <FaChevronLeft size="0.6rem" className="-translate-x-1/2" /> */}
+              <div className="flex ml-1 ">
+                <CaretLeft size={15} />
               </div>
             }
             onClick={() => gotoPage(0)}
@@ -92,9 +90,8 @@ export default function PaginationNav({
         <li>
           <Button
             content={
-              <div className="flex ml-1">
-                <ArrowRight2 size="0.6rem" />
-                {/* <FaChevronRight size="0.6rem" className="-translate-x-1/2" /> */}
+              <div className="flex ml-1 ">
+                <CaretRight size={15} />
               </div>
             }
             onClick={() => gotoPage(pageCount - 1)}

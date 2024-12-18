@@ -120,6 +120,7 @@ const NewsTableLisiting = () => {
                   />
                   <Button
                     className="h-8 w-8"
+                    kind='warning'
                     type="link"
                     href={`/admin/news/mutate/${item.id}`}
                     prefix={<PencilSimpleLine size={15} weight="duotone" />}

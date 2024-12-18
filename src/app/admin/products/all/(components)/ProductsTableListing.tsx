@@ -133,6 +133,7 @@ const ProductsTableListing = () => {
                       />
                       <Button
                         className="h-8 w-8"
+                        kind='warning'
                         type="link"
                         href={`/admin/products/mutate/${item.slug}`}
                         prefix={<PencilSimpleLine size={15} weight="duotone" />}

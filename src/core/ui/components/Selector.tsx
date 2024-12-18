@@ -129,7 +129,7 @@ const Selector = ({ className, suffix, ...props }: SelectorProps) => {
               borderRadius: 0,
               colors: {
                 ...theme.colors,
-                primary25: '#F2F3F5',
+                primary25: '#EAB308',
                 primary: '#2560AA',
               },
             };
@@ -179,7 +179,7 @@ const Selector = ({ className, suffix, ...props }: SelectorProps) => {
               borderRadius: 0,
               colors: {
                 ...theme.colors,
-                primary25: '#F2F3F5',
+                primary25: '#EAB308',
                 primary: '#2560AA',
               },
             };
@@ -273,8 +273,10 @@ const Selector = ({ className, suffix, ...props }: SelectorProps) => {
               borderRadius: 0,
               colors: {
                 ...theme.colors,
-                primary25: '#F2F3F5',
+                primary25: '#EAB308',
                 primary: '#2560AA',
+                // primary: '#060708',
+
               },
             };
           }}

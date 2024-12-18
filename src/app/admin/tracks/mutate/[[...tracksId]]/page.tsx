@@ -287,7 +287,7 @@ const Page = () => {
       <div className="flex justify-end gap-2 m-4">
         <Button
           text="Submit"
-          kind="default"
+          kind="warning"
           className="h-8 w-fit"
           type="submit"
           isLoading={isLoading}

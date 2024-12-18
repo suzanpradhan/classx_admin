@@ -34,10 +34,10 @@ const Button = ({ buttonType = 'flat', kind, ...props }: ButtonProps) => {
         color = 'bg-green-400 text-white';
         break;
       case 'danger':
-        color = 'bg-red-200 text-red-500';
+        color = 'bg-red-500 text-white';
         break;
       case 'warning':
-        color = 'bg-yellow-200 text-yellow-500';
+        color = 'bg-yellow-500 text-black';
         break;
       default:
         break;
@@ -49,8 +49,7 @@ const Button = ({ buttonType = 'flat', kind, ...props }: ButtonProps) => {
       <Link
         title={props.tooltip}
         className={
-          `${
-            buttonType == 'bordered' ? 'border' : ''
+          `${buttonType == 'bordered' ? 'border' : ''
           } ${color} rounded-md h-12 text-sm font-normal flex justify-center items-center hover:opacity-95 px-3 whitespace-nowrap ` +
           props.className
         }
@@ -75,8 +74,7 @@ const Button = ({ buttonType = 'flat', kind, ...props }: ButtonProps) => {
       title={props.tooltip}
       type={props.type ?? 'button'}
       className={
-        `${
-          buttonType == 'bordered' ? 'border' : ''
+        `${buttonType == 'bordered' ? 'border' : ''
         } ${color} rounded-md h-12 text-sm font-normal flex justify-center items-center hover:opacity-95 px-3 whitespace-nowrap ` +
         props.className
       }

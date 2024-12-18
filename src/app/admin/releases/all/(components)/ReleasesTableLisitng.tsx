@@ -148,6 +148,7 @@ const ReleasesTableListing = () => {
                 <Button
                   className="h-8 w-8"
                   type="link"
+                  kind='warning'
                   href={`/admin/releases/mutate/${item.id}/${item.product_slug}`}
                   prefix={<PencilSimpleLine size={15} weight="duotone" />}
                 />

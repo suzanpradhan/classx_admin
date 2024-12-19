@@ -82,7 +82,7 @@ export default function PaginationNav({
                 <CaretLeft size={15} />
               </div>
             }
-            onClick={() => gotoPage(0)}
+            onClick={() => gotoPage(pageCount - 1)}
             disabled={!canPreviousPage}
           />
         </li>
@@ -94,7 +94,7 @@ export default function PaginationNav({
                 <CaretRight size={15} />
               </div>
             }
-            onClick={() => gotoPage(pageCount - 1)}
+            onClick={() => gotoPage(pageCount + 1)}
             disabled={!canNextPage}
           />
         </li>

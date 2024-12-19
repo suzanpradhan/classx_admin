@@ -107,7 +107,7 @@ const ProductsTableListing = () => {
                     <td className={tableStyles.table_td}>{item.title}</td>
                     {/* <td className={tableStyles.table_td}>{item.artist?.name}</td> */}
                     <td className={tableStyles.table_td}><span className={`text-xs px-2 py-1 rounded-sm capitalize bg-slate-300 text-black flex items-center gap-1 w-max`}>{item.price}</span></td>
-                    <td className={tableStyles.table_td}>{item.stock}</td>
+                    <td className={tableStyles.table_td}><span className={`text-xs px-2 py-1 rounded-sm capitalize bg-green-400 text-black flex items-center gap-1 w-max`}>{item.stock}</span></td>
                     <td className={tableStyles.table_td}>
                       <span
                         className={`text-white text-xs px-2 py-1 rounded-sm capitalize ${item.product_type === 'merch'
@@ -123,31 +123,33 @@ const ProductsTableListing = () => {
                       </span>
                     </td>
 
-                    <td className={tableStyles.table_td + ` flex gap-2 max-w-xs`}>
-                      <Button
-                        className="h-8 w-8"
-                        type="link"
-                        href={`/admin/products/${item.slug}`}
-                        buttonType="bordered"
-                        prefix={<Eye size={18} weight="duotone" />}
-                      />
-                      <Button
-                        className="h-8 w-8"
-                        kind='warning'
-                        type="link"
-                        href={`/admin/products/mutate/${item.slug}`}
-                        prefix={<PencilSimpleLine size={15} weight="duotone" />}
-                      />
-                      <Button
-                        className="h-8 w-8"
-                        kind="danger"
-                        type="button"
-                        onClick={() => {
-                          setOnDelete(item.slug?.toString());
-                          toggleDeleteModel(true);
-                        }}
-                        prefix={<TrashSimple size={18} weight="duotone" />}
-                      />
+                    <td className={tableStyles.table_td}>
+                      <div className={`flex items-stretch h-full gap-2 max-w-xs`}>
+                        <Button
+                          className="h-8 w-8"
+                          type="link"
+                          href={`/admin/products/${item.slug}`}
+                          buttonType="bordered"
+                          prefix={<Eye size={18} weight="duotone" />}
+                        />
+                        <Button
+                          className="h-8 w-8"
+                          kind='warning'
+                          type="link"
+                          href={`/admin/products/mutate/${item.slug}`}
+                          prefix={<PencilSimpleLine size={15} weight="duotone" />}
+                        />
+                        <Button
+                          className="h-8 w-8"
+                          kind="danger"
+                          type="button"
+                          onClick={() => {
+                            setOnDelete(item.slug?.toString());
+                            toggleDeleteModel(true);
+                          }}
+                          prefix={<TrashSimple size={18} weight="duotone" />}
+                        />
+                      </div>
                     </td>
                   </tr>
                 ))}

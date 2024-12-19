@@ -101,33 +101,35 @@ const ArtistsTableLisiting = () => {
                 <td className={tableStyles.table_td}>{item.name}</td>
                 <td className={tableStyles.table_td}>{parse(item.bio)}</td>
 
-                <td className={tableStyles.table_td + ` flex gap-2 max-w-xs`}>
-                  <Button
-                    className="h-8 w-8"
-                    type="link"
-                    href={`/admin/artists/${item.id}`}
-                    buttonType="bordered"
-                    prefix={<Eye size={18} weight="duotone" />}
+                <td className={tableStyles.table_td}>
+                  <div className={`flex items-stretch h-full gap-2 max-w-xs`}>
+                    <Button
+                      className="h-8 w-8"
+                      type="link"
+                      href={`/admin/artists/${item.id}`}
+                      buttonType="bordered"
+                      prefix={<Eye size={18} weight="duotone" />}
 
-                  />
-                  <Button
-                    className="h-8 w-8"
-                    kind='warning'
-                    type="link"
-                    href={`/admin/artists/mutate/${item.id}`}
-                    prefix={<PencilSimpleLine size={15} weight="duotone" />}
-                  />
-                  <Button
-                    className="h-8 w-8"
-                    kind="danger"
-                    type="button"
-                    onClick={() => {
-                      setOnDelete(item.id?.toString());
-                      toggleDeleteModel(true);
-                    }}
-                    prefix={<TrashSimple size={18} weight="duotone" />}
+                    />
+                    <Button
+                      className="h-8 w-8"
+                      kind='warning'
+                      type="link"
+                      href={`/admin/artists/mutate/${item.id}`}
+                      prefix={<PencilSimpleLine size={15} weight="duotone" />}
+                    />
+                    <Button
+                      className="h-8 w-8"
+                      kind="danger"
+                      type="button"
+                      onClick={() => {
+                        setOnDelete(item.id?.toString());
+                        toggleDeleteModel(true);
+                      }}
+                      prefix={<TrashSimple size={18} weight="duotone" />}
 
-                  />
+                    />
+                  </div>
                 </td>
               </tr>
             ))}

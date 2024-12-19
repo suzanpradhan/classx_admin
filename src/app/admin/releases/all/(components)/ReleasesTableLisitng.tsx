@@ -53,7 +53,7 @@ const ReleasesTableListing = () => {
 
       <TableCard
         footer={
-          releaseData && releaseData?.results.length > 0 ? (
+          releaseData && releaseData?.results.length ? (
             <PaginationNav
               gotoPage={setPageIndex}
               canPreviousPage={pageIndex > 1}
@@ -83,7 +83,7 @@ const ReleasesTableListing = () => {
             <tr key={index} className={tableStyles.table_tbody_tr}>
               <td className={tableStyles.table_td}>{item.id}</td>
               <td className={tableStyles.table_td}>
-                <div className="relative w-20 h-20 overflow-hidden rounded-md">
+                <div className="relative w-20 aspect-square overflow-hidden rounded-md">
                   {item.cover && (
                     <Image
                       src={item.cover}
@@ -137,31 +137,33 @@ const ReleasesTableListing = () => {
                   {item.release_date}
                 </span>
               </td>
-              <td className={`${tableStyles.table_td} flex gap-2 max-w-xs`}>
-                <Button
-                  className="h-8 w-8"
-                  type="link"
-                  href={`/admin/releases/${item.id}`}
-                  buttonType="bordered"
-                  prefix={<Eye size={18} weight="duotone" />}
-                />
-                <Button
-                  className="h-8 w-8"
-                  type="link"
-                  kind='warning'
-                  href={`/admin/releases/mutate/${item.id}/${item.product_slug}`}
-                  prefix={<PencilSimpleLine size={15} weight="duotone" />}
-                />
-                <Button
-                  className="h-8 w-8"
-                  kind="danger"
-                  type="button"
-                  onClick={() => {
-                    setOnDelete({ releaseId: item.id.toString(), productSlug: item.product_slug });
-                    toggleDeleteModel(true);
-                  }}
-                  prefix={<TrashSimple size={18} weight="duotone" />}
-                />
+              <td className={tableStyles.table_td}>
+                <div className={`flex items-stretch h-full gap-2 max-w-xs`}>
+                  <Button
+                    className="h-8 w-8"
+                    type="link"
+                    href={`/admin/releases/${item.id}`}
+                    buttonType="bordered"
+                    prefix={<Eye size={18} weight="duotone" />}
+                  />
+                  <Button
+                    className="h-8 w-8"
+                    type="link"
+                    kind='warning'
+                    href={`/admin/releases/mutate/${item.id}/${item.product_slug}`}
+                    prefix={<PencilSimpleLine size={15} weight="duotone" />}
+                  />
+                  <Button
+                    className="h-8 w-8"
+                    kind="danger"
+                    type="button"
+                    onClick={() => {
+                      setOnDelete({ releaseId: item.id.toString(), productSlug: item.product_slug });
+                      toggleDeleteModel(true);
+                    }}
+                    prefix={<TrashSimple size={18} weight="duotone" />}
+                  />
+                </div>
               </td>
             </tr>
           ))}

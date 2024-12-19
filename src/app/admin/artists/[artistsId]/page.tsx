@@ -18,12 +18,12 @@ export default function EachDetailPage() {
   const [tab, setTab] = useState(0);
   const [modalIsOpen, setIsOpen] = useState(false);
   const param = useParams();
-  const artistsId = param.artistsId && param.artistsId[0];
+  const artistsId = param.artistsId;
   const [onDelete, setOnDelete] = useState<any>(undefined);
 
   useEffect(() => {
     if (artistsId) {
-      dispatch(artistsApi.endpoints.getEachArtists.initiate(artistsId));
+      dispatch(artistsApi.endpoints.getEachArtists.initiate(artistsId as string));
     }
   }, [dispatch, artistsId]);
 

@@ -18,12 +18,12 @@ export default function EachDetailPage() {
   const [tab, setTab] = useState(0);
   const [modalIsOpen, setIsOpen] = useState(false);
   const param = useParams();
-  const newsId = param.newsId && param.newsId[0];
+  const newsId = param.newsId;
   const [onDelete, setOnDelete] = useState<any>(undefined);
 
   useEffect(() => {
     if (newsId) {
-      dispatch(newsApi.endpoints.getEachNews.initiate(newsId));
+      dispatch(newsApi.endpoints.getEachNews.initiate(newsId as string));
     }
   }, [dispatch, newsId]);
 

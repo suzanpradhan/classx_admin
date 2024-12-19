@@ -49,14 +49,15 @@ const NewsTableLisiting = () => {
       />
       <TableCard
         footer={
-          newsData && newsData?.results.length > 0 ? (
+          newsData && newsData?.results.length ? (
             <PaginationNav
               gotoPage={setPageIndex}
               canPreviousPage={pageIndex > 0}
-              canNextPage={pageIndex < newsData.pagination.total_page}
+              canNextPage={pageIndex < newsData.pagination.total_page - 1}
               pageCount={newsData.pagination.total_page}
               pageIndex={newsData.pagination.current_page - 1}
             />
+
           ) : (
             <></>
           )
@@ -110,31 +111,33 @@ const NewsTableLisiting = () => {
                     {formattedDate}
                   </span>
                 </td>
-                <td className={tableStyles.table_td + ` flex gap-2 max-w-xs`}>
-                  <Button
-                    className="h-8 w-8"
-                    type="link"
-                    href={`/admin/news/${item.id}`}
-                    buttonType="bordered"
-                    prefix={<Eye size={18} weight="duotone" />}
-                  />
-                  <Button
-                    className="h-8 w-8"
-                    kind='warning'
-                    type="link"
-                    href={`/admin/news/mutate/${item.id}`}
-                    prefix={<PencilSimpleLine size={15} weight="duotone" />}
-                  />
-                  <Button
-                    className="h-8 w-8"
-                    kind="danger"
-                    type="button"
-                    onClick={() => {
-                      setOnDelete(item.id?.toString());
-                      toggleDeleteModel(true);
-                    }}
-                    prefix={<TrashSimple size={18} weight="duotone" />}
-                  />
+                <td className={tableStyles.table_td}>
+                  <div className={`flex items-stretch h-full gap-2 max-w-xs`}>
+                    <Button
+                      className="h-8 w-8"
+                      type="link"
+                      href={`/admin/news/${item.id}`}
+                      buttonType="bordered"
+                      prefix={<Eye size={18} weight="duotone" />}
+                    />
+                    <Button
+                      className="h-8 w-8"
+                      kind='warning'
+                      type="link"
+                      href={`/admin/news/mutate/${item.id}`}
+                      prefix={<PencilSimpleLine size={15} weight="duotone" />}
+                    />
+                    <Button
+                      className="h-8 w-8"
+                      kind="danger"
+                      type="button"
+                      onClick={() => {
+                        setOnDelete(item.id?.toString());
+                        toggleDeleteModel(true);
+                      }}
+                      prefix={<TrashSimple size={18} weight="duotone" />}
+                    />
+                  </div>
                 </td>
               </tr>
             );

@@ -54,7 +54,7 @@ const GenresTableLisiting = () => {
             genresData?.results.length ? (
               <PaginationNav
                 gotoPage={setPageIndex}
-                canPreviousPage={pageIndex > 0}
+                canPreviousPage={pageIndex > 1}
                 canNextPage={pageIndex < genresData.pagination.total_page}
                 pageCount={genresData.pagination.total_page}
                 pageIndex={genresData.pagination.current_page - 1}

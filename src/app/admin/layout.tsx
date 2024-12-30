@@ -48,7 +48,7 @@ export default function TestLayout({
       <div className="min-h-[calc(100vh-3.75rem)] gap-2 overflow-hidden">
         <div
           className={
-            `custom-scrollbar absolute left-0 top-[3.75rem] flex h-[calc(100vh-3.25rem)] w-full max-w-[15rem] flex-col overflow-y-auto bg-blackPrimary/95 px-4 pt-1 pb-5 ` +
+            `custom-scrollbar absolute left-0 top-[60px] flex h-[calc(100vh-3.25rem)] w-full max-w-[15rem] flex-col overflow-y-auto bg-blackPrimary/95 px-4 pt-1 pb-5 ` +
             (toggle ? '' : '')
           }
         >

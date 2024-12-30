@@ -56,7 +56,7 @@ const DigitalDownloadTable = () => {
             digitalData?.results.length ? (
               <PaginationNav
                 gotoPage={setPageIndex}
-                canPreviousPage={pageIndex > 0}
+                canPreviousPage={pageIndex > 1}
                 canNextPage={pageIndex < digitalData.pagination.total_page}
                 pageCount={digitalData.pagination.total_page}
                 pageIndex={digitalData.pagination.current_page - 1}

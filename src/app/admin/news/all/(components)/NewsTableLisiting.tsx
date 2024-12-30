@@ -52,8 +52,8 @@ const NewsTableLisiting = () => {
           newsData && newsData?.results.length ? (
             <PaginationNav
               gotoPage={setPageIndex}
-              canPreviousPage={pageIndex > 0}
-              canNextPage={pageIndex < newsData.pagination.total_page - 1}
+              canPreviousPage={pageIndex > 1}
+              canNextPage={pageIndex < newsData.pagination.total_page}
               pageCount={newsData.pagination.total_page}
               pageIndex={newsData.pagination.current_page - 1}
             />

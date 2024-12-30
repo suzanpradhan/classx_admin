@@ -52,10 +52,16 @@ const productsApi = baseApi.injectEndpoints({
         // Get All
         getAllProducts: builder.query<
             PaginatedResponseType<ProductsType>,
-            number
+            { pageNumber: number; productType?: string }
         >({
-            query: (pageNumber) =>
-                `${apiPaths.productsUrl}?page=${pageNumber}`,
+            query: ({ pageNumber, productType }) => {
+                const params = new URLSearchParams();
+                params.append('page', pageNumber.toString());
+                if (productType) {
+                    params.append('product_type', productType);
+                }
+                return `${apiPaths.productsUrl}?${params.toString()}`;
+            },
             providesTags: (response) =>
                 response?.results
                     ? [
@@ -80,6 +86,7 @@ const productsApi = baseApi.injectEndpoints({
                 return currentArg !== previousArg;
             },
         }),
+
 
 
         // Get Each

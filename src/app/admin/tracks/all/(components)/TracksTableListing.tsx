@@ -51,24 +51,15 @@ const TaraclTableListing = () => {
       />
       <TableCard
         footer={
-          trackData && trackData?.results.length > 0 ? (
+          trackData && trackData?.results.length ? (
             <PaginationNav
               gotoPage={setPageIndex}
-              canPreviousPage={pageIndex > 0}
-              canNextPage={pageIndex < trackData.pagination.total_page - 1}
+              canPreviousPage={pageIndex > 1}
+              canNextPage={pageIndex < trackData.pagination.total_page}
               pageCount={trackData.pagination.total_page}
               pageIndex={trackData.pagination.current_page - 1}
             />
-            // <PaginationNav
-            //   gotoPage={(newPage: number) => {
-            //     // console.log("Goto Page:", newPage + 1);
-            //     setPageIndex(newPage + 1);
-            //   }}
-            //   canPreviousPage={pageIndex > 1}
-            //   canNextPage={pageIndex < trackData.pagination.total_page}
-            //   pageCount={trackData.pagination.total_page}
-            //   pageIndex={pageIndex - 1}
-            // />
+
           ) : (
             <></>
           )

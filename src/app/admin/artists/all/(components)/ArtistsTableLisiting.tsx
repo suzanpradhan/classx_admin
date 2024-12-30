@@ -51,10 +51,10 @@ const ArtistsTableLisiting = () => {
         />
         <TableCard
           footer={
-            artistsData && artistsData?.results.length > 0 ? (
+            artistsData && artistsData?.results.length ? (
               <PaginationNav
                 gotoPage={setPageIndex}
-                canPreviousPage={pageIndex > 0}
+                canPreviousPage={pageIndex > 1}
                 canNextPage={pageIndex < artistsData.pagination.total_page}
                 pageCount={artistsData.pagination.total_page}
                 pageIndex={artistsData.pagination.current_page - 1}

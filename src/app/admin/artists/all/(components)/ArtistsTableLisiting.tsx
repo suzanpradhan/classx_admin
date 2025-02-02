@@ -17,6 +17,8 @@ const ArtistsTableLisiting = () => {
   const [pageIndex, setPageIndex] = useState(1);
   const [deleteModelOpen, toggleDeleteModel] = useState(false);
   const [onDelete, setOnDelete] = useState<string | undefined>(undefined);
+  const [showMore, setShowMore] = useState<string | undefined>(undefined);
+
 
   useEffect(() => {
     dispatch(artistsApi.endpoints.getAllArtists.initiate({ pageNumber: pageIndex.toString() }));
@@ -27,6 +29,10 @@ const ArtistsTableLisiting = () => {
       state.baseApi.queries[`getAllArtists`]
         ?.data as PaginatedResponseType<ArtistsType>
   );
+
+  const handleBioToggle = (id: string) => {
+    setShowMore((prev) => (prev === id ? undefined : id));
+  };
 
   return (
     <>
@@ -99,7 +105,27 @@ const ArtistsTableLisiting = () => {
                   </div>
                 </td>
                 <td className={tableStyles.table_td}>{item.name}</td>
-                <td className={tableStyles.table_td}>{parse(item.bio)}</td>
+                <td className={tableStyles.table_td}>
+                  <div>
+                    {showMore === item.id.toString() ? (
+                      <span>{parse(item.bio)}</span>
+                    ) : (
+                      <span>{parse(item.bio.substring(0, 190))}...</span>
+                    )}
+                    {item.bio.length > 100 && (
+                      <span
+                        onClick={() => handleBioToggle(item.id.toString())}
+                        style={{
+                          cursor: 'pointer',
+                          marginLeft: '4px',
+                          color: 'blue',
+                        }}
+                      >
+                        {showMore === item.id.toString() ? ' See Less' : ' See More'}
+                      </span>
+                    )}
+                  </div>
+                </td>
 
                 <td className={tableStyles.table_td}>
                   <div className={`flex items-stretch h-full gap-2 max-w-xs`}>

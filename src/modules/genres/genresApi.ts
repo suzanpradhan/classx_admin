@@ -34,8 +34,8 @@ const genresApi = baseApi.injectEndpoints({
         }),
 
         // Get All
-        getAllGenres: builder.query<PaginatedResponseType<GenresType>, string>({
-            query: (pageNumber) => `${apiPaths.genresUrl}?page=${pageNumber}`,
+        getAllGenres: builder.query<PaginatedResponseType<GenresType>, { pageNumber: string, searchString?: string }>({
+            query: ({ pageNumber, searchString }) => `${apiPaths.genresUrl}?page=${pageNumber}${searchString ? `&search=${searchString}` : ''}`,
             providesTags: (response) =>
                 response?.results
                     ? [

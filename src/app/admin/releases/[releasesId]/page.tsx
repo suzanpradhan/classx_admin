@@ -22,7 +22,6 @@ export default function EachDetailPage() {
   const releasesId = param.releasesId;
   const [onDelete, setOnDelete] = useState<any>(undefined);
 
-  console.log("release id", releasesId)
 
   useEffect(() => {
     if (releasesId) {

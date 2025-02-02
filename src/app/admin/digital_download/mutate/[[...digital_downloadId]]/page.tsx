@@ -1,9 +1,9 @@
+/* eslint-disable no-unused-vars */
 'use client';
 import { useGetApiResponse } from '@/core/api/getApiResponse';
 import { useAppDispatch, useAppSelector } from '@/core/redux/clientStore';
 import { RootState } from '@/core/redux/store';
 import { PaginatedResponseType } from '@/core/types/responseTypes';
-import { SelectorDataType } from '@/core/types/selectorType';
 import Selector from '@/core/ui/components/Selector';
 import { Button, FormCard, FormGroup, ImageInput, TextField } from '@/core/ui/zenbuddha/src';
 import digital_downloadApi from '@/modules/digital_download/digital_downloadApi';
@@ -24,7 +24,7 @@ const Page = () => {
   // console.log(genresId)
 
   useEffect(() => {
-    dispatch(releaseApi.endpoints.getAllReleases.initiate(1));
+    dispatch(releaseApi.endpoints.getAllReleases.initiate({ pageNumber: '1' }));
     if (digital_downloadId) {
       const fetchArtist = async () => {
         try {
@@ -44,11 +44,13 @@ const Page = () => {
     `getEachDigital("${digital_downloadId ? digital_downloadId : undefined}")`
   );
 
-  const releasesData = useAppSelector(
+  const allRelease = useAppSelector(
     (state: RootState) =>
       state.baseApi.queries[`getAllReleases`]
         ?.data as PaginatedResponseType<ReleasesType>
   );
+  const allReleaseMod = allRelease?.results.map((item) => { return { label: item.title, value: item.id.toString() } })
+
   const onSubmit = async (values: Digital_DownloadSchemaType) => {
     if (isLoading) return;
     setIsLoading(true);
@@ -104,22 +106,36 @@ const Page = () => {
     }
   };
 
+  const loadPaginatedRelease = async (
+    searchQuery: any,
+    loadedOptions: any,
+    { page }: any
+  ) => {
+    dispatch(
+      releaseApi.endpoints.getAllReleases.initiate(
+        { pageNumber: (allRelease.pagination.current_page + 1).toString(), searchString: searchQuery as string }
+      )
+    );
+    return {
+      options: allReleaseMod,
+      hasMore:
+        allRelease?.pagination.next != null,
+    };
+  };
+
+
 
   return (
     <FormCard onSubmit={formik.handleSubmit} className="m-4">
       <FormGroup title="Basic Type">
         <div className="flex gap-2 mb-2 max-sm:flex-col">
           <div className="flex flex-col flex-1">
-            {releasesData && (
+            {allRelease && (
               <Selector
                 id="release"
-                options={releasesData?.results.map(
-                  (release) =>
-                    ({
-                      value: release.id!.toString(),
-                      label: release.title,
-                    }) as SelectorDataType
-                )}
+                options={allReleaseMod}
+                loadPaginatedOptions={loadPaginatedRelease}
+                type='AsyncPaginate'
                 label="Release"
                 value={formik.values.release}
                 placeholder="Select release"
@@ -170,7 +186,7 @@ const Page = () => {
       <div className="flex justify-end gap-2 m-4">
         <Button
           text="Submit"
-          kind="default"
+          kind="warning"
           className="h-8 w-fit"
           type="submit"
           isLoading={isLoading}

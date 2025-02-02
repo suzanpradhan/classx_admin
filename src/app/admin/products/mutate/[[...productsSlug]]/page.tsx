@@ -1,22 +1,14 @@
 'use client';
 import { useGetApiResponse } from '@/core/api/getApiResponse';
-import { useAppDispatch, useAppSelector } from '@/core/redux/clientStore';
-import { RootState } from '@/core/redux/store';
-import { PaginatedResponseType } from '@/core/types/responseTypes';
-import { SelectorDataType } from '@/core/types/selectorType';
-import Selector from '@/core/ui/components/Selector';
+import { useAppDispatch } from '@/core/redux/clientStore';
 import { Button, FormCard, FormGroup, ImageInput, TextField } from '@/core/ui/zenbuddha/src';
 import artistsApi from '@/modules/artists/artistsApi';
-import { ArtistsType } from '@/modules/artists/artistsType';
 import productsApi from '@/modules/products/productsApi';
 import { productsSchema, ProductsSchemaType, ProductsType } from '@/modules/products/productType';
-import releaseApi from '@/modules/releases/releasesApi';
-import { ReleasesType } from '@/modules/releases/releasesType';
 import { useFormik } from 'formik';
 import { useParams, useRouter } from 'next/navigation';
 import { ChangeEvent, useEffect, useState } from 'react';
 import ReactQuill from 'react-quill-new';
-import { SingleValue } from 'react-select';
 import { ZodError } from 'zod';
 
 const Page = () => {
@@ -26,18 +18,17 @@ const Page = () => {
   const slug = params.productsSlug;
   const dispatch = useAppDispatch();
 
-  const Product_type: Array<SelectorDataType> = [
-    { value: 'merch', label: 'Merchandise' },
-    { value: 'digital', label: 'Digital Audio' },
-  ];
+  // const Product_type: Array<SelectorDataType> = [
+  //   { value: 'merch', label: 'Merchandise' },
+  // ];
 
   const toMutateProductsData = useGetApiResponse<ProductsType>(
     `getEachProducts("${slug || undefined}")`
   );
 
   useEffect(() => {
-    dispatch(releaseApi.endpoints.getAllReleases.initiate(1));
-    dispatch(artistsApi.endpoints.getAllArtists.initiate(1));
+    // dispatch(releaseApi.endpoints.getAllReleases.initiate(1));
+    dispatch(artistsApi.endpoints.getAllArtists.initiate({ pageNumber: '1' }));
 
   }, [dispatch]);
 
@@ -48,27 +39,27 @@ const Page = () => {
 
   }, [slug, dispatch]);
 
-  useEffect(() => {
-    if (toMutateProductsData?.release)
-      dispatch(releaseApi.endpoints.getEachReleases.initiate(toMutateProductsData.release.toString()));
-  }, [toMutateProductsData?.release, dispatch]);
+  // useEffect(() => {
+  //   if (toMutateProductsData?.release)
+  //     dispatch(releaseApi.endpoints.getEachReleases.initiate(toMutateProductsData.release.toString()));
+  // }, [toMutateProductsData?.release, dispatch]);
 
-  const artistsData = useAppSelector(
-    (state: RootState) =>
-      state.baseApi.queries[`getAllArtists`]
-        ?.data as PaginatedResponseType<ArtistsType>
-  );
-  const releasesData = useAppSelector(
-    (state: RootState) =>
-      state.baseApi.queries[`getAllReleases`]
-        ?.data as PaginatedResponseType<ReleasesType>
-  );
+  // const artistsData = useAppSelector(
+  //   (state: RootState) =>
+  //     state.baseApi.queries[`getAllArtists`]
+  //       ?.data as PaginatedResponseType<ArtistsType>
+  // );
+  // const releasesData = useAppSelector(
+  //   (state: RootState) =>
+  //     state.baseApi.queries[`getAllReleases`]
+  //       ?.data as PaginatedResponseType<ReleasesType>
+  // );
 
-  const eachRealese = useAppSelector(
-    (state: RootState) =>
-      state.baseApi.queries[`getEachReleases("${toMutateProductsData?.release?.toString()}")`]
-        ?.data as ReleasesType
-  );
+  // const eachRealese = useAppSelector(
+  //   (state: RootState) =>
+  //     state.baseApi.queries[`getEachReleases("${toMutateProductsData?.release?.toString()}")`]
+  //       ?.data as ReleasesType
+  // );
 
   const onSubmit = async (values: ProductsSchemaType) => {
     if (isLoading) {
@@ -109,11 +100,11 @@ const Page = () => {
     initialValues: {
       id: toMutateProductsData?.id ?? null,
       title: toMutateProductsData ? toMutateProductsData.title : '',
-      product_type: toMutateProductsData ? toMutateProductsData.product_type : '',
+      product_type: 'merch',
       description: toMutateProductsData ? toMutateProductsData.description : '',
       slug: toMutateProductsData ? toMutateProductsData.slug : '',
-      release: toMutateProductsData ? { value: eachRealese?.id.toString() ?? '', label: eachRealese?.title ?? '' } : { value: '', label: '' },
-      artist: toMutateProductsData ? { value: toMutateProductsData.artist.id.toString(), label: toMutateProductsData.artist.name } : { value: '', label: '' },
+      release: '',
+      artist: '',
       thumbnail: toMutateProductsData ? null : null,
       price: toMutateProductsData ? toMutateProductsData.price : '',
       stock: toMutateProductsData ? toMutateProductsData.stock.toString() : '',
@@ -152,7 +143,7 @@ const Page = () => {
               <div className="text-red-500 text-sm">{formik.errors.title}</div>
             )}
           </div>
-          <div className="flex flex-col flex-1">
+          {/* <div className="flex flex-col flex-1">
             <TextField
               id="slug"
               type="text"
@@ -163,7 +154,7 @@ const Page = () => {
             {formik.errors.slug && (
               <div className="text-red-500 text-sm">{formik.errors.slug}</div>
             )}
-          </div>
+          </div> */}
         </div>
 
         <div className="flex gap-2 mb-2 max-sm:flex-col">
@@ -206,7 +197,7 @@ const Page = () => {
               <div className="text-red-500 text-sm">{formik.errors.stock}</div>
             )}
           </div>
-          <div className="flex flex-col flex-1">
+          {/* <div className="flex flex-col flex-1">
             {artistsData && (
               <Selector
                 id="artist"
@@ -230,18 +221,20 @@ const Page = () => {
                 name="artist"
               ></Selector>
             )}
-          </div>
+          </div> */}
         </div>
         <div className="flex gap-2 mb-2 max-sm:flex-col">
-          <div className="flex flex-col flex-1">
+          {/* <div className="flex flex-col flex-1">
             <Selector
               id="product_type"
               label="Products Type"
               handleChange={(e) => {
-                formik.setFieldValue(
-                  'product_type',
-                  (e as SingleValue<{ value: string; label: string }>)?.value
-                );
+                const selectedValue = (e as SingleValue<{ value: string; label: string }>)?.value;
+                formik.setFieldValue('product_type', selectedValue);
+
+                if (selectedValue === 'merch') {
+                  formik.setFieldValue('release', { value: '', label: '' });
+                }
               }}
               options={Product_type}
               placeholder="Select source"
@@ -252,33 +245,35 @@ const Page = () => {
                   )?.label ?? '',
                 value: formik.values.product_type ?? '',
               }}
+            />
 
-            ></Selector>
-          </div>
-          <div className="flex flex-col flex-1">
-            {releasesData && (
-              <Selector
-                id="release"
-                options={releasesData?.results.map(
-                  (release) =>
-                    ({
-                      value: release.id!.toString(),
-                      label: release.title,
-                    }) as SelectorDataType
-                )}
-                label="Release"
-                placeholder="Select release"
-                className="flex-1"
-                handleChange={(e) => {
-                  formik.setFieldValue('release', e as SingleValue<{ value: string; label: string }>);
-                }}
-                name="release"
-                value={formik.values.release}
-              />
-
-            )}
-          </div>
+          </div> */}
+          {/* {formik.values.product_type === 'digital' && (
+            <div className="flex flex-col flex-1">
+              {releasesData && (
+                <Selector
+                  id="release"
+                  options={releasesData?.results.map(
+                    (release) =>
+                      ({
+                        value: release.id!.toString(),
+                        label: release.title,
+                      }) as SelectorDataType
+                  )}
+                  label="Release"
+                  placeholder="Select release"
+                  className="flex-1"
+                  handleChange={(e) => {
+                    formik.setFieldValue('release', e as SingleValue<{ value: string; label: string }>);
+                  }}
+                  name="release"
+                  value={formik.values.release}
+                />
+              )}
+            </div>
+          )} */}
         </div>
+
 
         <div className='mt-3 gap-2'>
           <label htmlFor="description" className="block text-sm mb-2 font-medium text-gray-700">
@@ -288,12 +283,26 @@ const Page = () => {
           />
         </div>
 
+        <div className='flex gap-2 mb-2 max-sm:flex-col'>
+          {/* <div className='flex flex-col flex-1'>
+            <ColorSelector
+              id="colorPicker"
+              type="color"
+              label="Choose a Color"
+              required
+              className="mb-4"
+            />
+
+          </div> */}
+
+        </div>
+
       </FormGroup>
 
       <div className="flex justify-end gap-2 m-4">
         <Button
           text="Submit"
-          kind="default"
+          kind="warning"
           className="h-8 w-fit"
           type="submit"
           isLoading={isLoading}

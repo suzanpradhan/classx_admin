@@ -13,16 +13,17 @@ export default function AddNewLayout({
       <PageBar
         leading={<div className="text-base font-bold text-dark-500">Artists</div>}
       >
-          <div className="flex">
-            <Button
-              text="Add New Artists"
-              className="h-8"
-              type="link"
-              href="/admin/artists/mutate"
-              prefix={<CirclePlus size={18} className="mr-1" />}
-            />
-          </div>
-      
+        <div className="flex">
+          <Button
+            text="Add New Artists"
+            kind='warning'
+            className="h-8"
+            type="link"
+            href="/admin/artists/mutate"
+            prefix={<CirclePlus size={18} className="mr-1" />}
+          />
+        </div>
+
       </PageBar>
       {children}
     </div>

@@ -28,7 +28,7 @@ const OrdersTableLisiting = () => {
   );
 
 
-  console.log(orderseData, "data")
+  // console.log(orderseData, "data")
   return (
     <>
       <>
@@ -52,10 +52,10 @@ const OrdersTableLisiting = () => {
         />
         <TableCard
           footer={
-            orderseData && orderseData?.results.length > 0 ? (
+            orderseData && orderseData?.results.length ? (
               <PaginationNav
                 gotoPage={setPageIndex}
-                canPreviousPage={pageIndex > 0}
+                canPreviousPage={pageIndex > 1}
                 canNextPage={pageIndex < orderseData.pagination.total_page}
                 pageCount={orderseData.pagination.total_page}
                 pageIndex={orderseData.pagination.current_page - 1}
@@ -117,6 +117,7 @@ const OrdersTableLisiting = () => {
                   />
                   <Button
                     className="h-8 w-8"
+                    kind='warning'
                     type="link"
                     href={`/admin/orders/mutate/${item.id}`}
                     prefix={<PencilSimpleLine size={15} weight="duotone" />}

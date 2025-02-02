@@ -19,66 +19,66 @@ const ArtistsTableLisiting = () => {
   const [onDelete, setOnDelete] = useState<string | undefined>(undefined);
 
   useEffect(() => {
-    dispatch(artistsApi.endpoints.getAllArtists.initiate(pageIndex));
+    dispatch(artistsApi.endpoints.getAllArtists.initiate({ pageNumber: pageIndex.toString() }));
   }, [dispatch, pageIndex]);
 
   const artistsData = useAppSelector(
-    (state: RootState) => 
+    (state: RootState) =>
       state.baseApi.queries[`getAllArtists`]
         ?.data as PaginatedResponseType<ArtistsType>
   );
 
   return (
     <>
-        <>
-          <AlertDialog
-            isOpen={deleteModelOpen}
-            deleteContent={onDelete}
-            onClickNo={() => {
-              toggleDeleteModel(false);
-            }}
-            onClickYes={async () => {
-              if (onDelete) {
-                await Promise.resolve(
-                  dispatch(
-                    artistsApi.endpoints.deleteArtists.initiate(onDelete as string)
-                  )
-                );
-              }
-              toggleDeleteModel(false);
-              setOnDelete(undefined);
-            }}
-          />
-          <TableCard
-            footer={
-                artistsData && artistsData?.results.length > 0 ?  (
-                <PaginationNav
-                  gotoPage={setPageIndex}
-                  canPreviousPage={pageIndex > 0}
-                  canNextPage={pageIndex < artistsData.pagination.total_page}
-                  pageCount={artistsData.pagination.total_page}
-                  pageIndex={artistsData.pagination.current_page - 1}
-                />
-              ) : (
-                <></>
-              )
+      <>
+        <AlertDialog
+          isOpen={deleteModelOpen}
+          deleteContent={onDelete}
+          onClickNo={() => {
+            toggleDeleteModel(false);
+          }}
+          onClickYes={async () => {
+            if (onDelete) {
+              await Promise.resolve(
+                dispatch(
+                  artistsApi.endpoints.deleteArtists.initiate(onDelete as string)
+                )
+              );
             }
-          >
-            <thead>
-              <tr className={tableStyles.table_thead_tr}>
-                <th className={tableStyles.table_th}>S.N.</th>
-                <th className={tableStyles.table_th}>Profile</th>
-                <th className={tableStyles.table_th}>Name</th>
-                <th className={tableStyles.table_th}>Bio</th>
-                <th className={tableStyles.table_th}>Action</th>
-                
-              </tr>
-            </thead>
-            <tbody>
+            toggleDeleteModel(false);
+            setOnDelete(undefined);
+          }}
+        />
+        <TableCard
+          footer={
+            artistsData && artistsData?.results.length ? (
+              <PaginationNav
+                gotoPage={setPageIndex}
+                canPreviousPage={pageIndex > 1}
+                canNextPage={pageIndex < artistsData.pagination.total_page}
+                pageCount={artistsData.pagination.total_page}
+                pageIndex={artistsData.pagination.current_page - 1}
+              />
+            ) : (
+              <></>
+            )
+          }
+        >
+          <thead>
+            <tr className={tableStyles.table_thead_tr}>
+              <th className={tableStyles.table_th}>S.N.</th>
+              <th className={tableStyles.table_th}>Profile</th>
+              <th className={tableStyles.table_th}>Name</th>
+              <th className={tableStyles.table_th}>Bio</th>
+              <th className={tableStyles.table_th}>Action</th>
+
+            </tr>
+          </thead>
+          <tbody>
             {artistsData?.results.map((item, index) => (
-            <tr key={index} className={tableStyles.table_tbody_tr}>
-              <td className={tableStyles.table_td}>{item.id}</td>
-              <td className={tableStyles.table_td}>
+              <tr key={index} className={tableStyles.table_tbody_tr}>
+                <td className={tableStyles.table_td}>{item.id}</td>
+                <td className={tableStyles.table_td}>
                   <div className="relative w-20 h-20 overflow-hidden rounded-md">
                     {item.profile_picture && (
                       <Image
@@ -101,39 +101,42 @@ const ArtistsTableLisiting = () => {
                 <td className={tableStyles.table_td}>{item.name}</td>
                 <td className={tableStyles.table_td}>{parse(item.bio)}</td>
 
-              <td className={tableStyles.table_td + ` flex gap-2 max-w-xs`}>
-              <Button
-                  className="h-8 w-8"
-                   type="link"
-                   href={`/admin/artists/${item.id}`}
-                  buttonType="bordered"
-                  prefix={<Eye size={18} weight="duotone" />}
+                <td className={tableStyles.table_td}>
+                  <div className={`flex items-stretch h-full gap-2 max-w-xs`}>
+                    <Button
+                      className="h-8 w-8"
+                      type="link"
+                      href={`/admin/artists/${item.id}`}
+                      buttonType="bordered"
+                      prefix={<Eye size={18} weight="duotone" />}
 
-                />
-                <Button
-                        className="h-8 w-8"
-                        type="link"
-                        href={`/admin/artists/mutate/${item.id}`}
-                        prefix={<PencilSimpleLine size={15} weight="duotone" />}
-                      />
-                <Button
-                  className="h-8 w-8"
-                  kind="danger"
-                  type="button"
-                  onClick={() => {
-                    setOnDelete(item.id?.toString());
-                    toggleDeleteModel(true);
-                  }}
-                  prefix={<TrashSimple size={18} weight="duotone" />}
-                 
-                />
-              </td>
-            </tr>
-          ))}    
-                  
-            </tbody>
-          </TableCard>
-        </>
+                    />
+                    <Button
+                      className="h-8 w-8"
+                      kind='warning'
+                      type="link"
+                      href={`/admin/artists/mutate/${item.id}`}
+                      prefix={<PencilSimpleLine size={15} weight="duotone" />}
+                    />
+                    <Button
+                      className="h-8 w-8"
+                      kind="danger"
+                      type="button"
+                      onClick={() => {
+                        setOnDelete(item.id?.toString());
+                        toggleDeleteModel(true);
+                      }}
+                      prefix={<TrashSimple size={18} weight="duotone" />}
+
+                    />
+                  </div>
+                </td>
+              </tr>
+            ))}
+
+          </tbody>
+        </TableCard>
+      </>
     </>
   );
 };

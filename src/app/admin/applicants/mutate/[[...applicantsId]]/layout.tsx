@@ -1,18 +1,20 @@
+
 import { PageBar } from "@/core/ui/zenbuddha/src";
 
-export default function AddFooterLayout({
+export default async function AddApplicantsLayout({
     children,
     params,
 }: {
     children: React.ReactNode;
-    params: { applicantsId: string | string[] | undefined };
+    params: Promise<{ applicantsId: string }>;
 }) {
+    const resolvedParams = await params;
     return (
-        <div className="flex flex-col ">
+        <div className="flex flex-col">
             <PageBar
                 leading={
                     <div className="text-base font-bold text-dark-500">
-                        {params?.applicantsId ? 'Update' : 'Add New '} Applicants
+                        {resolvedParams ? ' Add New' : 'Update'} Applicants
                     </div>
                 }
             ></PageBar>

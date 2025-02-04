@@ -5,15 +5,15 @@ export default async function AddGenresLayout({
   params,
 }: {
   children: React.ReactNode;
-  params: { genresId: string }
+  params: Promise<{ genresId: string }>;
 }) {
+  const resolvedParams = await params;
   return (
     <div className="flex flex-col">
       <PageBar
         leading={
           <div className="text-base font-bold text-dark-500">
-            {params.genresId ? 'Update' : 'Add New '} Genres
-
+            {resolvedParams ? ' Add New' : 'Update'} Genres
           </div>
         }
       ></PageBar>
@@ -21,3 +21,4 @@ export default async function AddGenresLayout({
     </div>
   );
 }
+

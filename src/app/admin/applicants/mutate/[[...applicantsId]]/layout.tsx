@@ -5,14 +5,14 @@ export default function AddFooterLayout({
     params,
 }: {
     children: React.ReactNode;
-    params: { applicantsId: string };
+    params: { applicantsId: string | string[] | undefined };
 }) {
     return (
         <div className="flex flex-col ">
             <PageBar
                 leading={
                     <div className="text-base font-bold text-dark-500">
-                        {params.applicantsId ? 'Update' : 'Add New '} Applicants
+                        {params?.applicantsId ? 'Update' : 'Add New '} Applicants
                     </div>
                 }
             ></PageBar>

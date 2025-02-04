@@ -1,11 +1,11 @@
-import { PageBar } from "@/core/ui/zenbuddha/src";
+import { PageBar } from '@/core/ui/zenbuddha/src';
 
-export default async function AddGenresLayout({
+export default async function AddApplicantsLayout({
   children,
   params,
 }: {
   children: React.ReactNode;
-  params: Promise<{ genresId: string }>;
+  params: Promise<{ applicantsId: string }>;
 }) {
   const resolvedParams = await params;
   return (
@@ -13,7 +13,7 @@ export default async function AddGenresLayout({
       <PageBar
         leading={
           <div className="text-base font-bold text-dark-500">
-            {resolvedParams ? ' Add New' : 'Update'} Genres
+            {resolvedParams ? ' Add New' : 'Update'} Applicants
           </div>
         }
       ></PageBar>
@@ -21,4 +21,3 @@ export default async function AddGenresLayout({
     </div>
   );
 }
-

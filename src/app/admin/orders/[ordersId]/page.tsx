@@ -18,12 +18,12 @@ export default function EachDetailPage() {
   const [tab, setTab] = useState(0);
   const [modalIsOpen, setIsOpen] = useState(false);
   const param = useParams();
-  const ordersId = param.ordersId && param.ordersId[0];
+  const ordersId = param.ordersId;
   const [onDelete, setOnDelete] = useState<any>(undefined);
 
   useEffect(() => {
     if (ordersId) {
-      dispatch(ordersApi.endpoints.getEachOrders.initiate(ordersId));
+      dispatch(ordersApi.endpoints.getEachOrders.initiate(ordersId as string));
     }
   }, [dispatch, ordersId]);
 
@@ -62,7 +62,7 @@ export default function EachDetailPage() {
                   <div className="text-base font-bold text-dark-500">
                     {/* {OrdersData.customer} */}
                   </div>
-                 
+
                 </div>
               }
               bottom={

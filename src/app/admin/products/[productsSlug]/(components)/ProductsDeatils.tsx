@@ -24,14 +24,6 @@ const ProductsDeatils = ({ products }: { products: ProductsType }) => {
           <div className="text-sm text-black">Slug</div>
           <div className="text-base text-black">{products.slug}</div>
         </div>
-        {/* <div className="grid grid-cols-2 md:grid-cols-none md:grid-rows-2">
-              <div className="text-sm text-black">Artist</div>
-              <div className="text-base text-black">{products.artist.name}</div>
-            </div>  */}
-        <div className="grid grid-cols-2 md:grid-cols-none md:grid-rows-2">
-          <div className="text-sm text-black">Release</div>
-          <div className="text-base text-black">{products.release}</div>
-        </div>
         <div className="grid grid-cols-2 md:grid-cols-none md:grid-rows-2">
           <div className="text-sm text-black">Price</div>
           <div className="text-base text-black">{products.price}</div>

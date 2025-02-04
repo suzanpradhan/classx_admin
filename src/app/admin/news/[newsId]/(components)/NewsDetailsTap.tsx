@@ -15,7 +15,7 @@ const NewsDetailsTap = ({ news }: { news: NewsType }) => {
         />
       </div>
       <div
-        className={`h-fit grid md:grid-rows-none grid-rows-3 md:grid-cols-2 mt-4 gap-2`}
+        className={`h-fit grid md:grid-rows-none grid-rows-3 md:grid-cols-2 mt-4 gap-4`}
       >
         <div className="grid grid-cols-2 md:grid-cols-none md:grid-rows-2 ">
           <div className="text-sm text-black">Name</div>
@@ -25,15 +25,16 @@ const NewsDetailsTap = ({ news }: { news: NewsType }) => {
           <div className="text-sm text-black">Date</div>
           <div className="text-base capitalize text-black">{news.date}</div>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-1 ">
-          <div className="text-sm text-black">Description</div>
-          <div className="text-base text-black ">{parse(news.description)}</div>
-        </div>
         <div className="grid grid-cols-2 md:grid-cols-1">
           <div className="text-sm text-black">Content</div>
           <div className="text-base capitalize text-black">{parse(news.content)}</div>
         </div>
-
+        <div>
+          <div className="grid grid-cols-2 md:grid-cols-1 ">
+            <div className="text-sm text-black">Description</div>
+            <div className="text-base text-black ">{parse(news.description)}</div>
+          </div>
+        </div>
       </div>
 
 

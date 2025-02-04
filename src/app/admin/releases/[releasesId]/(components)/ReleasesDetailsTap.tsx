@@ -26,13 +26,25 @@ const ReleasesInfosTab = ({ releases }: { releases: ReleasesType }) => {
           <div className="text-sm text-black">Releases Date</div>
           <div className="text-base capitalize text-black">{releases.release_date}</div>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-none  ">
-          <div className="text-sm text-black">Releases Type</div>
-          <div className="text-base capitalize text-black">{releases.release_type}</div>
+        <div className="grid grid-cols-2 md:grid-cols-none md:grid-rows-2">
+          <div className="text-sm text-black">Artist</div>
+          <div className="text-base capitalize text-black">{releases.artist.name}</div>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-none md:grid-rows-2">
+          <div className="text-sm text-black">Genres</div>
+          <div className="text-base capitalize text-black">{releases.genres.map((genre, index) => (
+            <span key={index}>{genre.name}</span>
+          ))}</div>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-none">
           <div className="text-sm text-black">Description</div>
           <div className="text-base text-black">{parse(releases.description)}</div>
+        </div>
+        <div>
+          <div className="grid grid-cols-2 md:grid-cols-none  ">
+            <div className="text-sm text-black">Releases Type</div>
+            <div className="text-base capitalize text-black">{releases.release_type}</div>
+          </div>
         </div>
       </div>
 

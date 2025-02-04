@@ -7,7 +7,7 @@ import PaginationNav from '@/core/ui/components/Pagination';
 import { Button, TableCard, tableStyles } from '@/core/ui/zenbuddha/src';
 import artistsApi from '@/modules/artists/artistsApi';
 import { ArtistsType } from '@/modules/artists/artistsType';
-import parse from "html-react-parser";
+import parse from 'html-react-parser';
 import Image from 'next/image';
 import { Eye, PencilSimpleLine, TrashSimple } from 'phosphor-react';
 import { useEffect, useState } from 'react';
@@ -19,7 +19,11 @@ const ArtistsTableLisiting = () => {
   const [onDelete, setOnDelete] = useState<string | undefined>(undefined);
 
   useEffect(() => {
-    dispatch(artistsApi.endpoints.getAllArtists.initiate({ pageNumber: pageIndex.toString() }));
+    dispatch(
+      artistsApi.endpoints.getAllArtists.initiate({
+        pageNumber: pageIndex.toString(),
+      })
+    );
   }, [dispatch, pageIndex]);
 
   const artistsData = useAppSelector(
@@ -41,7 +45,9 @@ const ArtistsTableLisiting = () => {
             if (onDelete) {
               await Promise.resolve(
                 dispatch(
-                  artistsApi.endpoints.deleteArtists.initiate(onDelete as string)
+                  artistsApi.endpoints.deleteArtists.initiate(
+                    onDelete as string
+                  )
                 )
               );
             }
@@ -71,7 +77,6 @@ const ArtistsTableLisiting = () => {
               <th className={tableStyles.table_th}>Name</th>
               <th className={tableStyles.table_th}>Bio</th>
               <th className={tableStyles.table_th}>Action</th>
-
             </tr>
           </thead>
           <tbody>
@@ -99,7 +104,9 @@ const ArtistsTableLisiting = () => {
                   </div>
                 </td>
                 <td className={tableStyles.table_td}>{item.name}</td>
-                <td className={tableStyles.table_td}>{parse(item.bio)}</td>
+                <td className={tableStyles.table_td}>
+                  <span>{parse(item.bio)}...</span>
+                </td>
 
                 <td className={tableStyles.table_td}>
                   <div className={`flex items-stretch h-full gap-2 max-w-xs`}>
@@ -109,11 +116,10 @@ const ArtistsTableLisiting = () => {
                       href={`/admin/artists/${item.id}`}
                       buttonType="bordered"
                       prefix={<Eye size={18} weight="duotone" />}
-
                     />
                     <Button
                       className="h-8 w-8"
-                      kind='warning'
+                      kind="warning"
                       type="link"
                       href={`/admin/artists/mutate/${item.id}`}
                       prefix={<PencilSimpleLine size={15} weight="duotone" />}
@@ -127,13 +133,11 @@ const ArtistsTableLisiting = () => {
                         toggleDeleteModel(true);
                       }}
                       prefix={<TrashSimple size={18} weight="duotone" />}
-
                     />
                   </div>
                 </td>
               </tr>
             ))}
-
           </tbody>
         </TableCard>
       </>

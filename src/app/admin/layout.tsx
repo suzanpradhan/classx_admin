@@ -58,6 +58,19 @@ export default function TestLayout({
           />
           <div className="my-2 border-t border-white/5"></div>
 
+          <SideBarNavGroup title='Applicants' segment='admin/applicants'>
+            <SideBarNavLink
+              title="All Applicants"
+              link="/admin/applicants/all"
+              linkExact
+            />
+            <SideBarNavLink
+              title="Add New Applicant"
+              link="/admin/applicants/mutate"
+              linkExact
+
+            />
+          </SideBarNavGroup>
           <SideBarNavGroup title='News' segment='admin/news'>
             <SideBarNavLink
               title="All News"

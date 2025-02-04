@@ -25,7 +25,7 @@ const Page = () => {
 
   useEffect(() => {
     if (newsId) {
-      const fetchArtist = async () => {
+      const fetchnews = async () => {
         try {
           await dispatch(
             newsApi.endpoints.getEachNews.initiate(newsId)
@@ -35,7 +35,7 @@ const Page = () => {
         }
       };
 
-      fetchArtist();
+      fetchnews();
     }
   }, [newsId, dispatch]);
 

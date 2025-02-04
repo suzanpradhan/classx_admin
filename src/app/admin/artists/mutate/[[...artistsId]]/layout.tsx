@@ -5,15 +5,15 @@ export default async function AddArtistsLayout({
   params,
 }: {
   children: React.ReactNode;
-  params: Promise<{ artitstId: string }>;
+  params: { artitstId: string };
 }) {
-  const resolvedParams = await params;
   return (
     <div className="flex flex-col">
       <PageBar
         leading={
           <div className="text-base font-bold text-dark-500">
-            {resolvedParams ? ' Add New' : 'Update'} Artists
+            {params.artitstId ? 'Update' : 'Add New '} Artists
+
           </div>
         }
       ></PageBar>

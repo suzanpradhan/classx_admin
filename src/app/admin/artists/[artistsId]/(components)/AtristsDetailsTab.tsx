@@ -1,13 +1,13 @@
 import { ArtistsType } from '@/modules/artists/artistsType';
-import parse from "html-react-parser";
+import parse from 'html-react-parser';
 import Image from 'next/image';
 
-const ArtistsInfosTab = ({ Artists }: { Artists: ArtistsType }) => {
+const ArtistsInfosTab = ({ artists }: { artists: ArtistsType }) => {
   return (
     <div className="m-4 flex flex-col max-w-5xl">
       <div className="bg-blueWhite border border-primaryGray-300 rounded-lg overflow-hidden max-w-xl relative aspect-video">
         <Image
-          src={Artists.profile_picture ?? '/default-profile-picture.jpg'}
+          src={artists.profile_picture ?? '/default-profile-picture.jpg'}
           alt="cover image"
           fill
           objectFit="cover"
@@ -20,16 +20,16 @@ const ArtistsInfosTab = ({ Artists }: { Artists: ArtistsType }) => {
         <div>
           <div className="grid grid-cols-2 md:grid-cols-none md:mt-2 ">
             <div className="text-sm text-black">Name</div>
-            <div className="text-base capitalize text-black">{Artists.name}</div>
+            <div className="text-base capitalize text-black">
+              {artists.name}
+            </div>
           </div>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-none">
           <div className="text-sm text-black">Bio</div>
-          <div className="text-base text-black">{parse(Artists.bio)}</div>
+          <div className="text-base text-black">{parse(artists.bio)}</div>
         </div>
       </div>
-
-
     </div>
   );
 };

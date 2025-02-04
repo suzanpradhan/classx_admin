@@ -43,7 +43,7 @@ export const applicantsSchema = z.object({
     perm_address: z.string().pipe(nonempty),
     current_address: z.string().pipe(nonempty),
     why_classx: z.string(),
-    email: z.string(),
+    email: z.string().email({ message: "Invalid email format" }),
     carrer_plan: z.string(),
     applicant_type: z.string(),
     photo: imageFile.optional().nullable(),

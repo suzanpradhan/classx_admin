@@ -12,10 +12,18 @@ const applicantsApi = baseApi.injectEndpoints({
             query: (payload) => {
                 var formData = new FormData();
                 if (payload.full_name) formData.append('full_name', payload.full_name);
-                if (payload.age) formData.append('max_downloads', payload.age.toString())
-                if (payload.current_address) formData.append('current_address', payload.current_address);
-                if (payload.perm_address) formData.append('perm_address', payload.perm_address);
-                if (payload.applicant_type) formData.append('applicant_type', payload.applicant_type);
+                if (payload.age) {
+                    formData.append('age', payload.age.toString());
+                }
+                if (payload.current_address) {
+                    formData.append('current_address', payload.current_address);
+                }
+                if (payload.perm_address) {
+                    formData.append('perm_address', payload.perm_address);
+                }
+                if (payload.applicant_type) {
+                    formData.append('applicant_type', payload.applicant_type);
+                }
                 if (payload.prev_work_link) formData.append('prev_work_link', payload.prev_work_link);
                 if (payload.email) formData.append('email', payload.email);
                 if (payload.document) formData.append('document', payload.document);

@@ -7,7 +7,7 @@ import PaginationNav from '@/core/ui/components/Pagination';
 import { Button, TableCard, tableStyles } from '@/core/ui/zenbuddha/src';
 import artistsApi from '@/modules/artists/artistsApi';
 import { ArtistsType } from '@/modules/artists/artistsType';
-import parse from "html-react-parser";
+import parse from 'html-react-parser';
 import Image from 'next/image';
 import { Eye, PencilSimpleLine, TrashSimple } from 'phosphor-react';
 import { useEffect, useState } from 'react';
@@ -17,11 +17,13 @@ const ArtistsTableLisiting = () => {
   const [pageIndex, setPageIndex] = useState(1);
   const [deleteModelOpen, toggleDeleteModel] = useState(false);
   const [onDelete, setOnDelete] = useState<string | undefined>(undefined);
-  const [showMore, setShowMore] = useState<string | undefined>(undefined);
-
 
   useEffect(() => {
-    dispatch(artistsApi.endpoints.getAllArtists.initiate({ pageNumber: pageIndex.toString() }));
+    dispatch(
+      artistsApi.endpoints.getAllArtists.initiate({
+        pageNumber: pageIndex.toString(),
+      })
+    );
   }, [dispatch, pageIndex]);
 
   const artistsData = useAppSelector(
@@ -29,10 +31,6 @@ const ArtistsTableLisiting = () => {
       state.baseApi.queries[`getAllArtists`]
         ?.data as PaginatedResponseType<ArtistsType>
   );
-
-  const handleBioToggle = (id: string) => {
-    setShowMore((prev) => (prev === id ? undefined : id));
-  };
 
   return (
     <>
@@ -47,7 +45,9 @@ const ArtistsTableLisiting = () => {
             if (onDelete) {
               await Promise.resolve(
                 dispatch(
-                  artistsApi.endpoints.deleteArtists.initiate(onDelete as string)
+                  artistsApi.endpoints.deleteArtists.initiate(
+                    onDelete as string
+                  )
                 )
               );
             }
@@ -77,7 +77,6 @@ const ArtistsTableLisiting = () => {
               <th className={tableStyles.table_th}>Name</th>
               <th className={tableStyles.table_th}>Bio</th>
               <th className={tableStyles.table_th}>Action</th>
-
             </tr>
           </thead>
           <tbody>
@@ -106,25 +105,7 @@ const ArtistsTableLisiting = () => {
                 </td>
                 <td className={tableStyles.table_td}>{item.name}</td>
                 <td className={tableStyles.table_td}>
-                  <div>
-                    {showMore === item.id.toString() ? (
-                      <span>{parse(item.bio)}</span>
-                    ) : (
-                      <span>{parse(item.bio.substring(0, 190))}...</span>
-                    )}
-                    {item.bio.length > 100 && (
-                      <span
-                        onClick={() => handleBioToggle(item.id.toString())}
-                        style={{
-                          cursor: 'pointer',
-                          marginLeft: '4px',
-                          color: 'blue',
-                        }}
-                      >
-                        {showMore === item.id.toString() ? ' See Less' : ' See More'}
-                      </span>
-                    )}
-                  </div>
+                  <span>{parse(item.bio)}...</span>
                 </td>
 
                 <td className={tableStyles.table_td}>
@@ -135,11 +116,10 @@ const ArtistsTableLisiting = () => {
                       href={`/admin/artists/${item.id}`}
                       buttonType="bordered"
                       prefix={<Eye size={18} weight="duotone" />}
-
                     />
                     <Button
                       className="h-8 w-8"
-                      kind='warning'
+                      kind="warning"
                       type="link"
                       href={`/admin/artists/mutate/${item.id}`}
                       prefix={<PencilSimpleLine size={15} weight="duotone" />}
@@ -153,13 +133,11 @@ const ArtistsTableLisiting = () => {
                         toggleDeleteModel(true);
                       }}
                       prefix={<TrashSimple size={18} weight="duotone" />}
-
                     />
                   </div>
                 </td>
               </tr>
             ))}
-
           </tbody>
         </TableCard>
       </>

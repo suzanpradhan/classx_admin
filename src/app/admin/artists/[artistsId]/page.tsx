@@ -23,7 +23,9 @@ export default function EachDetailPage() {
 
   useEffect(() => {
     if (artistsId) {
-      dispatch(artistsApi.endpoints.getEachArtists.initiate(artistsId as string));
+      dispatch(
+        artistsApi.endpoints.getEachArtists.initiate(artistsId as string)
+      );
     }
   }, [dispatch, artistsId]);
 
@@ -62,12 +64,10 @@ export default function EachDetailPage() {
                   <div className="text-base font-bold text-dark-500">
                     {ArtistsData.name}
                   </div>
-
                 </div>
               }
               bottom={
                 <div className="flex gap-4 text-base font-normal text-primaryGray-500 pb-2">
-
                   <button
                     className={
                       tab == 1
@@ -118,7 +118,7 @@ export default function EachDetailPage() {
                 />
               </div>
             </PageBar>
-            {tab == 0 ? <ArtistsInfosTab Artists={ArtistsData} /> : <></>}
+            {tab == 0 ? <ArtistsInfosTab artists={ArtistsData} /> : <></>}
           </>
         ) : (
           <div className="flex justify-center items-center min-h-[calc(100vh-3.25rem)]">

@@ -121,7 +121,7 @@ export default function EachDetailPage() {
                 />
               </div>
             </PageBar>
-            {tab == 0 ? <ApplicantsTab Applicants={ApplicantsData} /> : <></>}
+            {tab == 0 ? <ApplicantsTab applicants={ApplicantsData} /> : <></>}
           </>
         ) : (
           <div className="flex justify-center items-center min-h-[calc(100vh-3.25rem)]">

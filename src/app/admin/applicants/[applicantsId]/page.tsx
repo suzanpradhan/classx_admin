@@ -5,12 +5,13 @@ import { useAppDispatch } from '@/core/redux/clientStore';
 import AlertDialog from '@/core/ui/components/AlertDialog';
 import { Button, PageBar, Spinner } from '@/core/ui/zenbuddha/src';
 import artistsApi from '@/modules/artists/artistsApi';
-import { ArtistsType } from '@/modules/artists/artistsType';
 import { PencilSimpleLine, TrashSimple, X } from 'phosphor-react';
 
+import applicantsApi from '@/modules/applicants/applicantsApi';
+import { ApplicantsType } from '@/modules/applicants/applicantsType';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import ArtistsInfosTab from './(components)/AtristsDetailsTab';
+import ApplicantsTab from './(components)/ApplicantsTab';
 
 export default function EachDetailPage() {
   const navigator = useRouter();
@@ -18,19 +19,21 @@ export default function EachDetailPage() {
   const [tab, setTab] = useState(0);
   const [modalIsOpen, setIsOpen] = useState(false);
   const param = useParams();
-  const artistsId = param.artistsId;
+  const applicantsId = param.applicantsId && param.applicantsId[0];
   const [onDelete, setOnDelete] = useState<any>(undefined);
 
   useEffect(() => {
-    if (artistsId) {
+    if (applicantsId) {
       dispatch(
-        artistsApi.endpoints.getEachArtists.initiate(artistsId as string)
+        applicantsApi.endpoints.getEachApplicants.initiate(
+          applicantsId as string
+        )
       );
     }
-  }, [dispatch, artistsId]);
+  }, [dispatch, applicantsId]);
 
-  const ArtistsData = useGetApiResponse<ArtistsType>(
-    `getEachArtists("${artistsId ? artistsId : undefined}")`
+  const ApplicantsData = useGetApiResponse<ApplicantsType>(
+    `getEachApplicants("${applicantsId ? applicantsId : undefined}")`
   );
 
   return (
@@ -53,16 +56,16 @@ export default function EachDetailPage() {
         }}
       />
       <div className="flex flex-col">
-        {ArtistsData ? (
+        {ApplicantsData ? (
           <>
             <PageBar
               leading={
                 <div className="flex flex-col pt-4 pb-4">
                   <div className="text-sm font-medium text-primaryGray-500">
-                    #{ArtistsData.id} Artists
+                    #{ApplicantsData.id} Applicants
                   </div>
                   <div className="text-base font-bold text-dark-500">
-                    {ArtistsData.name}
+                    {ApplicantsData.full_name}
                   </div>
                 </div>
               }
@@ -78,7 +81,7 @@ export default function EachDetailPage() {
                       setTab(0);
                     }}
                   >
-                    ARTISTS TAB
+                    APPLICANTS TAB
                     {tab == 1 ? (
                       <div className="absolute top-[calc(100%+6px)] h-[2px] w-full bg-dark-500 rounded-md"></div>
                     ) : (
@@ -94,8 +97,8 @@ export default function EachDetailPage() {
                   buttonType="bordered"
                   prefix={<TrashSimple size={20} weight="duotone" />}
                   onClick={() => {
-                    if (param.artistsId) {
-                      setOnDelete(param.artistsId);
+                    if (param.applicantsId) {
+                      setOnDelete(param.applicantsId);
                       setIsOpen(true);
                     }
                   }}
@@ -105,20 +108,20 @@ export default function EachDetailPage() {
                   buttonType="bordered"
                   prefix={<PencilSimpleLine size={20} weight="duotone" />}
                   type="link"
-                  href={`/admin/artists/mutate/${param.artistsId}`}
+                  href={`/admin/applicants/mutate/${param.applicantsId}`}
                 />
                 <Button
                   className="w-9 h-9"
                   buttonType="bordered"
                   type="button"
                   onClick={() => {
-                    navigator.push('/admin/artists/all');
+                    navigator.push('/admin/applicants/all');
                   }}
                   suffix={<X size={20} weight="duotone" />}
                 />
               </div>
             </PageBar>
-            {tab == 0 ? <ArtistsInfosTab artists={ArtistsData} /> : <></>}
+            {tab == 0 ? <ApplicantsTab applicants={ApplicantsData} /> : <></>}
           </>
         ) : (
           <div className="flex justify-center items-center min-h-[calc(100vh-3.25rem)]">

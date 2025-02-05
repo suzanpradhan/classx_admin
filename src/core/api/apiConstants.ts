@@ -33,5 +33,6 @@ export const apiPaths = {
     productsUrl: 'products/',
     newsUrl: 'blogs/',
     digital_downloadUrl: 'digital_files/',
+    applicantsUrl: 'applicants/',
 
 };

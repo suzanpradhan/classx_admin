@@ -1,6 +1,6 @@
 import { PageBar } from "@/core/ui/zenbuddha/src";
 
-export default async function AddArtistsLayout({
+export default async function AddNewsLayout({
   children,
   params,
 }: {

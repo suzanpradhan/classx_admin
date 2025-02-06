@@ -2,7 +2,7 @@ import { ArtitstBookingType } from '@/modules/artist_booking/artist_bookingType'
 import { format, parseISO } from 'date-fns';
 import { toZonedTime } from 'date-fns-tz';
 
-const ArtitsBookingTab = ({
+const ArtistBookingTab = ({
   artitsBooking,
 }: {
   artitsBooking: ArtitstBookingType;
@@ -61,4 +61,4 @@ const ArtitsBookingTab = ({
   );
 };
 
-export default ArtitsBookingTab;
+export default ArtistBookingTab;

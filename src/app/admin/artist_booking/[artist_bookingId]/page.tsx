@@ -33,7 +33,7 @@ export default function EachDetailPage() {
   }, [dispatch, artist_bookingId]);
 
   const artitsBookingData = useGetApiResponse<ApplicantsType>(
-    `getEachArtistBooking("${artist_bookingId ? artist_bookingId : undefined}")`
+    `getEachArtistBooking("${artist_bookingId || undefined}")`
   );
 
   return (

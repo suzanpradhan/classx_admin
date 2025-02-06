@@ -57,7 +57,7 @@ const Page = () => {
   }, [artist_bookingId, dispatch]);
 
   const toMutateArtistBookingata = useGetApiResponse<ArtitstBookingType>(
-    `getEachArtistBooking("${artist_bookingId ? artist_bookingId : undefined}")`
+    `getEachArtistBooking("${artist_bookingId || undefined}")`
   );
 
   const allArtits = useAppSelector(

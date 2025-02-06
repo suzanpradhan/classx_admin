@@ -23,12 +23,21 @@ const applicantsApi = baseApi.injectEndpoints({
         if (payload.applicant_type) {
           formData.append('applicant_type', payload.applicant_type);
         }
-        if (payload.prev_work_link)
+        if (payload.prev_work_link) {
           formData.append('prev_work_link', payload.prev_work_link);
-        if (payload.email) formData.append('email', payload.email);
-        if (payload.document) formData.append('document', payload.document);
-        if (payload.photo) formData.append('photo', payload.photo);
-        if (payload.genre) formData.append('genre', payload.genre.value);
+        }
+        if (payload.email) {
+          formData.append('email', payload.email);
+        }
+        if (payload.document) {
+          formData.append('document', payload.document);
+        }
+        if (payload.photo) {
+          formData.append('photo', payload.photo);
+        }
+        if (payload.genre) {
+          formData.append('genre', payload.genre.value);
+        }
         if (payload.why_classx)
           formData.append('why_classx', payload.why_classx);
         if (payload.carrer_plan)

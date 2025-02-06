@@ -1,19 +1,20 @@
+'use client';
 import { PageBar } from '@/core/ui/zenbuddha/src';
+import { useParams } from 'next/navigation';
 
-export default async function AddArtistBookingLayout({
+export default function AddArtistBookingLayout({
   children,
-  params,
 }: {
   children: React.ReactNode;
-  params: Promise<{ artist_bookingId: string }>;
 }) {
-  const resolvedParams = await params;
+  const { artist_bookingId } = useParams<{ artist_bookingId: string }>();
+
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col ">
       <PageBar
         leading={
           <div className="text-base font-bold text-dark-500">
-            {resolvedParams ? ' Add New' : 'Update'} Artist Booking
+            {artist_bookingId ? 'Update' : 'Add  '} Artist Booking
           </div>
         }
       ></PageBar>

@@ -1,19 +1,20 @@
-import { PageBar } from "@/core/ui/zenbuddha/src";
+'use client';
+import { PageBar } from '@/core/ui/zenbuddha/src';
+import { useParams } from 'next/navigation';
 
-export default async function AddNewsLayout({
+export default function AddNewsLayout({
   children,
-  params,
 }: {
   children: React.ReactNode;
-  params: Promise<{ newsId: string }>;
 }) {
-  const resolvedParams = await params;
+  const { newsId } = useParams<{ newsId: string }>();
+
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col ">
       <PageBar
         leading={
           <div className="text-base font-bold text-dark-500">
-            {resolvedParams ? ' Add New' : 'Update'} News
+            {newsId ? 'Update' : 'Add  '} News
           </div>
         }
       ></PageBar>

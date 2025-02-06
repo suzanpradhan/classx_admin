@@ -108,9 +108,12 @@ const Page = () => {
       full_name: toMutateAppliacantsData?.full_name || '',
       why_classx: toMutateAppliacantsData?.why_classx || '',
       photo: toMutateAppliacantsData ? null : null,
-      genre: toMutateAppliacantsData
-        ? (toMutateAppliacantsData.genre?.toString() ?? null)
-        : null,
+      genre: toMutateAppliacantsData?.genre
+        ? {
+            label: toMutateAppliacantsData.genre.name,
+            value: toMutateAppliacantsData.genre.id.toString(),
+          }
+        : { value: '', label: '' },
       age: toMutateAppliacantsData ? toMutateAppliacantsData.age : 0,
       applicant_type: toMutateAppliacantsData?.applicant_type || '',
       carrer_plan: toMutateAppliacantsData?.carrer_plan || '',
@@ -185,7 +188,7 @@ const Page = () => {
           <div className="flex flex-col flex-1">
             <TextField
               id="age"
-              type="text"
+              type="number"
               label="Age"
               required
               className="flex-1"
@@ -282,28 +285,22 @@ const Page = () => {
 
           <div className="flex flex-col flex-1">
             <div className="flex flex-col flex-1">
-              <Selector
-                id="genre"
-                label="Genre"
-                type="AsyncPaginate"
-                onCreateOption={handleCreateGenre}
-                loadPaginatedOptions={loadPaginatedOptions}
-                options={allGenresMod}
-                handleChange={(e) => {
-                  const value =
-                    (e as SingleValue<{ value: string; label: string }>)
-                      ?.value || '';
-                  formik.setFieldValue('genre', value);
-                }}
-                isMulti={false}
-                value={
-                  formik.values.genre && allGenresMod
-                    ? allGenresMod.find(
-                        (genre) => genre.value === formik.values.genre
-                      )
-                    : null
-                }
-              />
+              {allGenres && (
+                <Selector
+                  id="genre"
+                  options={allGenresMod}
+                  loadPaginatedOptions={loadPaginatedOptions}
+                  type="AsyncPaginate"
+                  label="genre"
+                  value={formik.values.genre}
+                  placeholder="Select genre"
+                  className="flex-1"
+                  handleChange={(e) => {
+                    formik.setFieldValue('genre', e);
+                  }}
+                  name="genre"
+                ></Selector>
+              )}
             </div>
           </div>
         </div>

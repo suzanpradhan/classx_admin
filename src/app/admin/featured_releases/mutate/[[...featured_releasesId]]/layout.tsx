@@ -1,19 +1,20 @@
+'use client';
 import { PageBar } from '@/core/ui/zenbuddha/src';
+import { useParams } from 'next/navigation';
 
-export default async function AddFeaturedReleaseLayout({
+export default function AddFeaturedLayout({
   children,
-  params,
 }: {
   children: React.ReactNode;
-  params: Promise<{ featured_releasesId: string }>;
 }) {
-  const resolvedParams = await params;
+  const { featured_releasesId } = useParams<{ featured_releasesId: string }>();
+
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col ">
       <PageBar
         leading={
           <div className="text-base font-bold text-dark-500">
-            {resolvedParams ? ' Add New' : 'Update'} Featured Release
+            {featured_releasesId ? 'Update' : 'Add  '} Featured Release
           </div>
         }
       ></PageBar>

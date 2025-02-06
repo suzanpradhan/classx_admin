@@ -1,19 +1,20 @@
-import { PageBar } from "@/core/ui/zenbuddha/src";
+'use client';
+import { PageBar } from '@/core/ui/zenbuddha/src';
+import { useParams } from 'next/navigation';
 
-export default async function AddArtistsLayout({
+export default function AddArtistsLayout({
   children,
-  params,
 }: {
   children: React.ReactNode;
-  params: Promise<{ artitstId: string }>;
 }) {
-  const resolvedParams = await params;
+  const { artistsSlug } = useParams<{ artistsSlug: string }>();
+
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col ">
       <PageBar
         leading={
           <div className="text-base font-bold text-dark-500">
-            {resolvedParams ? ' Add New' : 'Update'} Artists
+            {artistsSlug ? 'Update' : 'Add  '} Artists
           </div>
         }
       ></PageBar>

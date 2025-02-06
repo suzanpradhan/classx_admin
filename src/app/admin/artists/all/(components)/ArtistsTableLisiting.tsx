@@ -113,7 +113,7 @@ const ArtistsTableLisiting = () => {
                     <Button
                       className="h-8 w-8"
                       type="link"
-                      href={`/admin/artists/${item.id}`}
+                      href={`/admin/artists/${item.slug}`}
                       buttonType="bordered"
                       prefix={<Eye size={18} weight="duotone" />}
                     />
@@ -121,7 +121,7 @@ const ArtistsTableLisiting = () => {
                       className="h-8 w-8"
                       kind="warning"
                       type="link"
-                      href={`/admin/artists/mutate/${item.id}`}
+                      href={`/admin/artists/mutate/${item.slug}`}
                       prefix={<PencilSimpleLine size={15} weight="duotone" />}
                     />
                     <Button
@@ -129,7 +129,7 @@ const ArtistsTableLisiting = () => {
                       kind="danger"
                       type="button"
                       onClick={() => {
-                        setOnDelete(item.id?.toString());
+                        setOnDelete(item.slug?.toString());
                         toggleDeleteModel(true);
                       }}
                       prefix={<TrashSimple size={18} weight="duotone" />}

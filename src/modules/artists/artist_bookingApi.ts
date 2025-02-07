@@ -2,10 +2,7 @@ import { apiPaths } from '@/core/api/apiConstants';
 import { baseApi } from '@/core/api/apiQuery';
 import { PaginatedResponseType } from '@/core/types/responseTypes';
 import { toast } from 'react-toastify';
-import {
-  ArtitstBookingSchemaType,
-  ArtitstBookingType,
-} from './artist_bookingType';
+import { ArtitstBookingSchemaType, ArtitstBookingType } from './artistsType';
 
 const artistBookingApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({

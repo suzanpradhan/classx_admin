@@ -1,22 +1,7 @@
 import { selectorDataSchema } from '@/core/types/selectorType';
 import { nonempty } from '@/core/utils/formUtlis';
+import { introTrackFile } from '@/core/utils/helper';
 import { z } from 'zod';
-
-const introTrackFile = z.instanceof(File).refine(
-  (file) => {
-    const acceptedAudioTypes = [
-      'audio/mpeg', // MP3
-      'audio/wav', // WAV
-      'audio/ogg', // OGG
-      'audio/flac', // FLAC
-      'audio/aac', // AAC
-    ];
-    return acceptedAudioTypes.includes(file.type);
-  },
-  {
-    message: 'Invalid file type. Only audio files are allowed.',
-  }
-);
 
 export const trackSchema = z.object({
   id: z.number().optional().nullable(),

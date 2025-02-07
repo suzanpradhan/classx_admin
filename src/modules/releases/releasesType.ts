@@ -1,22 +1,7 @@
 import { selectorDataSchema } from '@/core/types/selectorType';
 import { nonempty } from '@/core/utils/formUtlis';
+import { imageFile } from '@/core/utils/helper';
 import { z } from 'zod';
-
-const imageFile = z.instanceof(File).refine(
-  (file) => {
-    const acceptedImageTypes = [
-      'image/jpeg',
-      'image/png',
-      'image/gif',
-      'image/bmp',
-      'image/webp',
-    ];
-    return acceptedImageTypes.includes(file.type);
-  },
-  {
-    message: 'Invalid file type. Only image files are allowed.',
-  }
-);
 
 export const releasesSchema = z.object({
   id: z.number().optional().nullable(),

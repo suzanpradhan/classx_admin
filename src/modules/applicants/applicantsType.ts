@@ -1,41 +1,8 @@
 import { selectorDataSchema } from '@/core/types/selectorType';
 import { nonempty } from '@/core/utils/formUtlis';
+import { documentFile, imageFile } from '@/core/utils/helper';
 import { z } from 'zod';
 import { GenresType } from '../genres/genresType';
-
-const imageFile = z.instanceof(File).refine(
-  (file) => {
-    const acceptedImageTypes = [
-      'image/jpeg',
-      'image/png',
-      'image/gif',
-      'image/bmp',
-      'image/webp',
-    ];
-    return acceptedImageTypes.includes(file.type);
-  },
-  {
-    message: 'Invalid file type. Only image files are allowed.',
-  }
-);
-
-const documentFile = z.instanceof(File).refine(
-  (file) => {
-    const acceptedDocumentTypes = [
-      'application/pdf',
-      'application/msword',
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-      'application/vnd.ms-excel',
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-      'text/plain',
-    ];
-    return acceptedDocumentTypes.includes(file.type);
-  },
-  {
-    message:
-      'Invalid file type. Only document files (PDF, DOC, DOCX, XLS, XLSX, TXT) are allowed.',
-  }
-);
 
 export const applicantsSchema = z.object({
   id: z.number().optional().nullable(),

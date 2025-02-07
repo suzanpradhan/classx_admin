@@ -8,7 +8,7 @@ import artistsApi from '@/modules/artists/artistsApi';
 import { PencilSimpleLine, TrashSimple, X } from 'phosphor-react';
 
 import { ApplicantsType } from '@/modules/applicants/applicantsType';
-import artistBookingApi from '@/modules/artist_booking/artist_bookingApi';
+import artistBookingApi from '@/modules/artists/artist_bookingApi';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import ArtitsBookingTab from './(components)/ArtitsBookingTab';
@@ -49,7 +49,7 @@ export default function EachDetailPage() {
             await Promise.resolve(
               dispatch(artistsApi.endpoints.deleteArtists.initiate(onDelete))
             );
-            navigator.push('/admin/artitsBooking/all');
+            navigator.push('/admin/artists/booking_artist/all');
           }
           setIsOpen(false);
           setOnDelete(undefined);
@@ -108,14 +108,14 @@ export default function EachDetailPage() {
                   buttonType="bordered"
                   prefix={<PencilSimpleLine size={20} weight="duotone" />}
                   type="link"
-                  href={`/admin/artitsBooking/mutate/${param.artist_bookingId}`}
+                  href={`/admin/artist_booking/mutate/${param.artist_bookingId}`}
                 />
                 <Button
                   className="w-9 h-9"
                   buttonType="bordered"
                   type="button"
                   onClick={() => {
-                    navigator.push('/admin/artitsBooking/all');
+                    navigator.push('/admin/artist_booking/all');
                   }}
                   suffix={<X size={20} weight="duotone" />}
                 />

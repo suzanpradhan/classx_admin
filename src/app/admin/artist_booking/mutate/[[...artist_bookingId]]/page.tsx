@@ -14,14 +14,15 @@ import {
 } from '@/core/ui/zenbuddha/src';
 import DateSelector from '@/core/ui/zenbuddha/src/components/DateSelector';
 import TimeInput from '@/core/ui/zenbuddha/src/components/TimeInput';
-import artistBookingApi from '@/modules/artist_booking/artist_bookingApi';
+import artistBookingApi from '@/modules/artists/artist_bookingApi';
+
+import artistsApi from '@/modules/artists/artistsApi';
 import {
+  ArtistsType,
   artitstBookingSchema,
   ArtitstBookingSchemaType,
   ArtitstBookingType,
-} from '@/modules/artist_booking/artist_bookingType';
-import artistsApi from '@/modules/artists/artistsApi';
-import { ArtistsType } from '@/modules/artists/artistsType';
+} from '@/modules/artists/artistsType';
 import { useFormik } from 'formik';
 import { useParams, useRouter } from 'next/navigation';
 import { ChangeEvent, useEffect, useState } from 'react';
@@ -60,12 +61,12 @@ const Page = () => {
     `getEachArtistBooking("${artist_bookingId || undefined}")`
   );
 
-  const allArtits = useAppSelector(
+  const allArtist = useAppSelector(
     (state: RootState) =>
       state.baseApi.queries[`getAllArtists`]
         ?.data as PaginatedResponseType<ArtistsType>
   );
-  const allArtitstMod = allArtits?.results.map((item) => {
+  const allArtistMod = allArtist?.results.map((item) => {
     return { label: item.name, value: item.id.toString() };
   });
 
@@ -165,14 +166,14 @@ const Page = () => {
   ) => {
     dispatch(
       artistsApi.endpoints.getAllArtists.initiate({
-        pageNumber: (allArtits.pagination.current_page + 1).toString(),
+        pageNumber: (allArtist.pagination.current_page + 1).toString(),
         searchString: searchQuery as string,
       })
     );
 
     return {
-      options: allArtitstMod,
-      hasMore: allArtits?.pagination.next != null,
+      options: allArtistMod,
+      hasMore: allArtist?.pagination.next != null,
     };
   };
 
@@ -263,10 +264,10 @@ const Page = () => {
             ></Selector>
           </div>
           <div className="flex flex-col flex-1">
-            {allArtits && (
+            {allArtist && (
               <Selector
                 id="artist"
-                options={allArtitstMod}
+                options={allArtistMod}
                 loadPaginatedOptions={loadPaginatedOptions}
                 label="Artist"
                 type="AsyncPaginate"

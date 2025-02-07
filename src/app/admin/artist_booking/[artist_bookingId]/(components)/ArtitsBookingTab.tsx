@@ -1,4 +1,4 @@
-import { ArtitstBookingType } from '@/modules/artist_booking/artist_bookingType';
+import { ArtitstBookingType } from '@/modules/artists/artistsType';
 import { format, parseISO } from 'date-fns';
 import { toZonedTime } from 'date-fns-tz';
 

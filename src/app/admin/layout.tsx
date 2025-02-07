@@ -117,8 +117,7 @@ export default function TestLayout({
               linkExact
             />
           </SideBarNavGroup>
-          <SideBarNavTitle title="Music" />
-
+          <SideBarNavTitle title="Library" />
           <SideBarNavGroup title="Genres" segment="admin/genres">
             <SideBarNavLink title="All Genres" link="/admin/genres/all" />
             <SideBarNavLink

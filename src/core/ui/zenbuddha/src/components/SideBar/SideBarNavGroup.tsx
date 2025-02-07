@@ -1,7 +1,7 @@
 'use client';
 
-import { ArrowDown2, ArrowRight2 } from 'iconsax-react';
 import { usePathname } from 'next/navigation';
+import { CaretDown, CaretRight } from 'phosphor-react';
 import { useEffect, useState } from 'react';
 
 interface SideBarNavGroupProps {
@@ -20,13 +20,13 @@ const SideBarNavGroup = ({
 
   useEffect(() => {
     setToggle(!!pathName.startsWith('/' + segment));
-  }, [pathName, setToggle, segment]);
+  }, [pathName, segment]);
 
   return (
     <div
       className={
         `px-1 text-white font-normal my-[2px] rounded-md flex flex-col items-start nav-group group ` +
-        (toggle ? 'bg-white/10' : 'bg-white/5')
+        (toggle ? 'bg-white/10' : 'bg-black/5')
       }
     >
       <button
@@ -39,14 +39,10 @@ const SideBarNavGroup = ({
         }}
       >
         {title}
-        {toggle ? (
-          <ArrowDown2 className="text-primaryGray-500" size={16} />
-        ) : (
-          <ArrowRight2 className="text-primaryGray-500" size={16} />
-        )}
+        {toggle ? <CaretDown size={16} /> : <CaretRight size={16} />}
       </button>
 
-      {toggle ? children : <></>}
+      {toggle && <div className=" w-full">{children}</div>}
     </div>
   );
 };

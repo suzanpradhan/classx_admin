@@ -1,19 +1,20 @@
+'use client';
 import { PageBar } from '@/core/ui/zenbuddha/src';
+import { useParams } from 'next/navigation';
 
-export default async function AddApplicantsLayout({
+export default function AddApplicantsLayout({
   children,
-  params,
 }: {
   children: React.ReactNode;
-  params: Promise<{ applicantsId: string }>;
 }) {
-  const resolvedParams = await params;
+  const { applicantsId } = useParams<{ applicantsId: string }>();
+
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col ">
       <PageBar
         leading={
           <div className="text-base font-bold text-dark-500">
-            {resolvedParams ? ' Add New' : 'Update'} Applicants
+            {applicantsId ? 'Update' : 'Add  '} Applicants
           </div>
         }
       ></PageBar>

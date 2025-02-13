@@ -69,6 +69,7 @@ const ApplicantsTableListing = () => {
             <th className={tableStyles.table_th}>Image</th>
             <th className={tableStyles.table_th}>FullName</th>
             <th className={tableStyles.table_th}>Email</th>
+            <th className={tableStyles.table_th}>Genre</th>
             <th className={tableStyles.table_th}>Permanent Address</th>
             <th className={tableStyles.table_th}>Current Address</th>
             <th className={tableStyles.table_th}>Action</th>
@@ -100,6 +101,7 @@ const ApplicantsTableListing = () => {
               </td>
               <td className={tableStyles.table_td}>{item.full_name}</td>
               <td className={tableStyles.table_td}>{item.email}</td>
+              <td className={tableStyles.table_td}>{item?.genre?.name}</td>
               <td className={tableStyles.table_td}>{item.perm_address}</td>
               <td className={tableStyles.table_td}>{item.current_address}</td>
               <td className={tableStyles.table_td}>

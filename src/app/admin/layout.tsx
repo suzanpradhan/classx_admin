@@ -1,14 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
-import AppBar from "@/core/ui/zenbuddha/src/components/AppBar";
-import SideBarNavGroup from "@/core/ui/zenbuddha/src/components/SideBar/SideBarNavGroup";
-import SideBarNavLink from "@/core/ui/zenbuddha/src/components/SideBar/SideBarNavLink";
-import SideBarNavTitle from "@/core/ui/zenbuddha/src/components/SideBar/SideBarNavTitle";
-import { Bell, LogOut } from "lucide-react";
-import { signOut } from "next-auth/react";
-import Link from "next/link";
-import { useState } from "react";
+import AppBar from '@/core/ui/zenbuddha/src/components/AppBar';
+import SideBarNavGroup from '@/core/ui/zenbuddha/src/components/SideBar/SideBarNavGroup';
+import SideBarNavLink from '@/core/ui/zenbuddha/src/components/SideBar/SideBarNavLink';
+import SideBarNavTitle from '@/core/ui/zenbuddha/src/components/SideBar/SideBarNavTitle';
+import { Bell, LogOut } from 'lucide-react';
+import { signOut } from 'next-auth/react';
+import Link from 'next/link';
+import { useState } from 'react';
 
 export default function TestLayout({
   children,
@@ -19,7 +19,6 @@ export default function TestLayout({
 
   return (
     <div className="relative overflow-hidden ">
-
       <AppBar
         onSideBarToggle={() => {
           setToggle(!toggle);
@@ -37,7 +36,8 @@ export default function TestLayout({
         <button className="flex h-9 w-9 items-center justify-center rounded-md bg-white/5">
           <Bell className="text-white" size={20} />
         </button>
-        <button className="flex h-9 w-9 items-center justify-center rounded-md bg-white/5"
+        <button
+          className="flex h-9 w-9 items-center justify-center rounded-md bg-white/5"
           onClick={() => {
             signOut({ callbackUrl: '/login', redirect: true });
           }}
@@ -52,13 +52,25 @@ export default function TestLayout({
             (toggle ? '' : '')
           }
         >
-          <SideBarNavLink
-            title="Dashboard"
-            link="/admin/dashboard"
-          />
+          <SideBarNavLink title="Dashboard" link="/admin/dashboard" />
           <div className="my-2 border-t border-white/5"></div>
 
-          <SideBarNavGroup title='Applicants' segment='admin/applicants'>
+          <SideBarNavGroup
+            title="Featured Release"
+            segment="admin/featured_releases"
+          >
+            <SideBarNavLink
+              title="All Featured Release"
+              link="/admin/featured_releases/all"
+              linkExact
+            />
+            <SideBarNavLink
+              title="Add New Featured Release"
+              link="/admin/featured_releases/mutate"
+              linkExact
+            />
+          </SideBarNavGroup>
+          <SideBarNavGroup title="Applicants" segment="admin/applicants">
             <SideBarNavLink
               title="All Applicants"
               link="/admin/applicants/all"
@@ -68,53 +80,53 @@ export default function TestLayout({
               title="Add New Applicant"
               link="/admin/applicants/mutate"
               linkExact
-
             />
           </SideBarNavGroup>
-          <SideBarNavGroup title='News' segment='admin/news'>
+          <SideBarNavGroup
+            title="Artist Booking"
+            segment="admin/artist_booking"
+          >
             <SideBarNavLink
-              title="All News"
-              link="/admin/news/all"
+              title="All Artist Booking"
+              link="/admin/artist_booking/all"
               linkExact
             />
+            <SideBarNavLink
+              title="Add New Artist Booking"
+              link="/admin/artist_booking/mutate"
+              linkExact
+            />
+          </SideBarNavGroup>
+          <SideBarNavGroup title="News" segment="admin/news">
+            <SideBarNavLink title="All News" link="/admin/news/all" linkExact />
             <SideBarNavLink
               title="Add News"
               link="/admin/news/mutate"
               linkExact
-
             />
           </SideBarNavGroup>
-          <SideBarNavGroup title='Artists' segment='admin/artists'>
+          <SideBarNavGroup title="Artists" segment="admin/artists">
             <SideBarNavLink
               title="All Artists"
               link="/admin/artists/all"
               linkExact
-
             />
             <SideBarNavLink
               title="Add New Artists"
               link="/admin/artists/mutate"
               linkExact
-
             />
           </SideBarNavGroup>
-          <SideBarNavTitle title="Music" />
-
-          <SideBarNavGroup title='Genres' segment='admin/genres'>
-            <SideBarNavLink
-              title="All Genres"
-              link="/admin/genres/all"
-            />
+          <SideBarNavTitle title="Library" />
+          <SideBarNavGroup title="Genres" segment="admin/genres">
+            <SideBarNavLink title="All Genres" link="/admin/genres/all" />
             <SideBarNavLink
               title="Add New Genres"
               link="/admin/genres/mutate"
             />
           </SideBarNavGroup>
-          <SideBarNavGroup title='Releases' segment='admin/releases'>
-            <SideBarNavLink
-              title="All Releases"
-              link="/admin/releases/all"
-            />
+          <SideBarNavGroup title="Releases" segment="admin/releases">
+            <SideBarNavLink title="All Releases" link="/admin/releases/all" />
             <SideBarNavLink
               title="Add New Releases"
               link="/admin/releases/mutate"
@@ -123,8 +135,10 @@ export default function TestLayout({
 
           <SideBarNavGroup title="Tracks" segment="admin/tracks">
             <SideBarNavLink title="All Tracks" link="/admin/tracks/all" />
-            <SideBarNavLink title="Add New Tracks" link="/admin/tracks/mutate" />
-
+            <SideBarNavLink
+              title="Add New Tracks"
+              link="/admin/tracks/mutate"
+            />
           </SideBarNavGroup>
           <div className="my-2 border-t border-white/5"></div>
           <SideBarNavTitle title="SHOP" />
@@ -133,11 +147,23 @@ export default function TestLayout({
           </SideBarNavGroup>
           <SideBarNavGroup title="Products" segment="admin/products">
             <SideBarNavLink title="All Products" link="/admin/products/all" />
-            <SideBarNavLink title="Add New Products" link="/admin/products/mutate" />
+            <SideBarNavLink
+              title="Add New Products"
+              link="/admin/products/mutate"
+            />
           </SideBarNavGroup>
-          <SideBarNavGroup title="Digital Download" segment="admin/digital_download">
-            <SideBarNavLink title="All Digital Download" link="/admin/digital_download/all" />
-            <SideBarNavLink title="Add New Digital Download" link="/admin/digital_download/mutate" />
+          <SideBarNavGroup
+            title="Digital Download"
+            segment="admin/digital_download"
+          >
+            <SideBarNavLink
+              title="All Digital Download"
+              link="/admin/digital_download/all"
+            />
+            <SideBarNavLink
+              title="Add New Digital Download"
+              link="/admin/digital_download/mutate"
+            />
           </SideBarNavGroup>
 
           <div className="my-2 border-t border-white/5"></div>
@@ -163,7 +189,6 @@ export default function TestLayout({
           {children}
         </div>
       </div>
-
     </div>
   );
 }

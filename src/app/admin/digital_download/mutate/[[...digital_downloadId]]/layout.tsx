@@ -1,19 +1,21 @@
-import { PageBar } from "@/core/ui/zenbuddha/src";
+'use client';
 
-export default async function AddGenresLayout({
+import { PageBar } from '@/core/ui/zenbuddha/src';
+import { useParams } from 'next/navigation';
+
+export default function AddDigitalDownloadLayout({
   children,
-  params,
 }: {
   children: React.ReactNode;
-  params: Promise<{ digital_downloadId: string }>;
 }) {
-  const resolvedParams = await params;
+  const { digital_downloadId } = useParams<{ digital_downloadId: string }>();
+
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col ">
       <PageBar
         leading={
           <div className="text-base font-bold text-dark-500">
-            {resolvedParams ? ' Add New' : 'Update'} Digital Download
+            {digital_downloadId ? 'Update' : 'Add  '} Digital Download
           </div>
         }
       ></PageBar>

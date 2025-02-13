@@ -11,7 +11,9 @@ export default function AddApplicantsLayout({
     <div className="flex flex-col">
       <PageBar
         leading={
-          <div className="text-base font-bold text-dark-500">Applicants</div>
+          <div className="text-base font-bold text-dark-500">
+            All Applicants
+          </div>
         }
       >
         <div className="flex">

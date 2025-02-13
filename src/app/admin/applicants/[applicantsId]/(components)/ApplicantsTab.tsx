@@ -50,7 +50,7 @@ const ApplicantsTab = ({ applicants }: { applicants: ApplicantsType }) => {
         </div>
         <div className="grid grid-cols-2 md:grid-cols-none">
           <div className="text-sm text-black">Genre</div>
-          <div className="text-base text-black">{applicants.genre}</div>
+          <div className="text-base text-black">{applicants?.genre?.name}</div>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-none">
           <div className="text-sm text-black">Carrer Plan</div>

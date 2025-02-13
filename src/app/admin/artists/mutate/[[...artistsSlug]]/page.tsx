@@ -1,9 +1,19 @@
 'use client';
 import { useGetApiResponse } from '@/core/api/getApiResponse';
 import { useAppDispatch } from '@/core/redux/clientStore';
-import { Button, FormCard, FormGroup, ImageInput, TextField } from '@/core/ui/zenbuddha/src';
+import {
+  Button,
+  FormCard,
+  FormGroup,
+  ImageInput,
+  TextField,
+} from '@/core/ui/zenbuddha/src';
 import artistsApi from '@/modules/artists/artistsApi';
-import { artistsSchema, ArtistsSchemaType, ArtistsType } from '@/modules/artists/artistsType';
+import {
+  artistsSchema,
+  ArtistsSchemaType,
+  ArtistsType,
+} from '@/modules/artists/artistsType';
 import { useFormik } from 'formik';
 import { useParams, useRouter } from 'next/navigation';
 import { ChangeEvent, useEffect, useState } from 'react';
@@ -13,46 +23,44 @@ import { ZodError } from 'zod';
 const Page = () => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const param = useParams();
-  const artistsId = param.artistsId && param.artistsId[0];
+  const params = useParams();
+  const slug = params.artistsSlug;
   const dispatch = useAppDispatch();
 
-
   const toMutateArtistsData = useGetApiResponse<ArtistsType>(
-    `getEachArtists("${artistsId ?? ''}")`
+    `getEachArtists("${slug ?? ''}")`
   );
 
   useEffect(() => {
-    if (artistsId) {
+    if (slug) {
       const fetchArtist = async () => {
         try {
           await dispatch(
-            artistsApi.endpoints.getEachArtists.initiate(artistsId)
+            artistsApi.endpoints.getEachArtists.initiate(slug.toString())
           );
         } catch (error) {
-          console.error("Error fetching artist data:", error);
+          console.error('Error fetching artist data:', error);
         }
       };
 
       fetchArtist();
     }
-  }, [artistsId, dispatch]);
+  }, [slug, dispatch]);
 
   const onSubmit = async (values: ArtistsSchemaType) => {
     if (isLoading) return;
     setIsLoading(true);
 
     try {
-      const data = artistsId
+      const data = slug
         ? await dispatch(
-          artistsApi.endpoints.updateArtists.initiate({
-            id: Number(artistsId),
-            ...values,
-          })
-        ).unwrap()
+            artistsApi.endpoints.updateArtists.initiate({
+              ...values,
+            })
+          ).unwrap()
         : await dispatch(
-          artistsApi.endpoints.addArtists.initiate(values)
-        ).unwrap();
+            artistsApi.endpoints.addArtists.initiate(values)
+          ).unwrap();
 
       if (data) router.push('/admin/artists/all');
     } catch (error) {
@@ -80,6 +88,7 @@ const Page = () => {
       name: toMutateArtistsData?.name || '',
       bio: toMutateArtistsData?.bio || '',
       profile_picture: toMutateArtistsData ? null : null,
+      slug: toMutateArtistsData ? toMutateArtistsData.slug : '',
     },
     validateOnChange: true,
     validate: validateForm,
@@ -124,15 +133,25 @@ const Page = () => {
               onChange={handleImageChange}
             />
             {formik.errors.profile_picture && (
-              <div className="text-red-500 text-sm">{formik.errors.profile_picture}</div>
+              <div className="text-red-500 text-sm">
+                {formik.errors.profile_picture}
+              </div>
             )}
           </div>
         </div>
-        <div className='mt-3 gap-2'>
-          <label htmlFor="bio" className="block text-sm mb-2 font-medium text-gray-700">
+        <div className="mt-3 gap-2">
+          <label
+            htmlFor="bio"
+            className="block text-sm mb-2 font-medium text-gray-700"
+          >
             Bio
           </label>
-          <ReactQuill theme="snow" className='h-60' value={formik.values.bio} onChange={handleRichTextChange} />
+          <ReactQuill
+            theme="snow"
+            className="h-60"
+            value={formik.values.bio}
+            onChange={handleRichTextChange}
+          />
         </div>
       </FormGroup>
 

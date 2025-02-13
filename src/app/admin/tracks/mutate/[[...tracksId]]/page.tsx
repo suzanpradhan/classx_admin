@@ -5,7 +5,13 @@ import { useAppDispatch, useAppSelector } from '@/core/redux/clientStore';
 import { RootState } from '@/core/redux/store';
 import { PaginatedResponseType } from '@/core/types/responseTypes';
 import Selector from '@/core/ui/components/Selector';
-import { Button, FormCard, FormGroup, MusicUploader, TextField } from '@/core/ui/zenbuddha/src';
+import {
+  Button,
+  FormCard,
+  FormGroup,
+  MusicUploader,
+  TextField,
+} from '@/core/ui/zenbuddha/src';
 import DurationInput from '@/core/ui/zenbuddha/src/components/Duration';
 import artistsApi from '@/modules/artists/artistsApi';
 import { ArtistsType } from '@/modules/artists/artistsType';
@@ -14,7 +20,12 @@ import { GenresType } from '@/modules/genres/genresType';
 import releaseApi from '@/modules/releases/releasesApi';
 import { ReleasesType } from '@/modules/releases/releasesType';
 import tracksApi from '@/modules/tracks/tracksApi';
-import { TrackRequestType, trackSchema, TrackSchemaType, Trackstype } from '@/modules/tracks/trackType';
+import {
+  TrackRequestType,
+  trackSchema,
+  TrackSchemaType,
+  Trackstype,
+} from '@/modules/tracks/trackType';
 import { useFormik } from 'formik';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -34,11 +45,7 @@ const Page = () => {
     dispatch(artistsApi.endpoints.getAllArtists.initiate({ pageNumber: '1' }));
     dispatch(releaseApi.endpoints.getAllReleases.initiate({ pageNumber: '1' }));
     if (tracksId) {
-      dispatch(
-        tracksApi.endpoints.getEachTracks.initiate(
-          tracksId
-        )
-      );
+      dispatch(tracksApi.endpoints.getEachTracks.initiate(tracksId));
     }
   }, [tracksId, dispatch]);
 
@@ -52,7 +59,9 @@ const Page = () => {
         ?.data as PaginatedResponseType<GenresType>
   );
 
-  const allGenresMod = allGenres?.results.map((item) => { return { label: item.name, value: item.id.toString() } })
+  const allGenresMod = allGenres?.results.map((item) => {
+    return { label: item.name, value: item.id.toString() };
+  });
 
   const allArtists = useAppSelector(
     (state: RootState) =>
@@ -60,15 +69,18 @@ const Page = () => {
         ?.data as PaginatedResponseType<ArtistsType>
   );
 
-  const allArtitstMod = allArtists?.results.map((item) => { return { label: item.name, value: item.id.toString() } })
+  const allArtitstMod = allArtists?.results.map((item) => {
+    return { label: item.name, value: item.id.toString() };
+  });
 
   const allRelease = useAppSelector(
     (state: RootState) =>
       state.baseApi.queries[`getAllReleases`]
         ?.data as PaginatedResponseType<ReleasesType>
   );
-  const allReleaseMod = allRelease?.results.map((item) => { return { label: item.title, value: item.id.toString() } })
-
+  const allReleaseMod = allRelease?.results.map((item) => {
+    return { label: item.title, value: item.id.toString() };
+  });
 
   const validateForm = (values: TrackSchemaType) => {
     try {
@@ -107,9 +119,7 @@ const Page = () => {
         );
       } else {
         data = await Promise.resolve(
-          dispatch(
-            tracksApi.endpoints.addTracks.initiate(finalRequestData)
-          )
+          dispatch(tracksApi.endpoints.addTracks.initiate(finalRequestData))
         );
         // data = await Promise.resolve(
         //   dispatch(
@@ -127,21 +137,28 @@ const Page = () => {
   const formik = useFormik<TrackSchemaType>({
     enableReinitialize: true,
     initialValues: {
-      id: toMutatetrackData
-        ? (toMutatetrackData.id ?? null)
-        : null,
+      id: toMutatetrackData ? (toMutatetrackData.id ?? null) : null,
       title: toMutatetrackData ? toMutatetrackData.title : '',
       duration: toMutatetrackData ? toMutatetrackData.duration : '',
       slug: toMutatetrackData ? toMutatetrackData.slug : '',
       intro_track: toMutatetrackData ? null : null,
-      artist: toMutatetrackData ? { value: toMutatetrackData.artist.id.toString(), label: toMutatetrackData.artist.name } : { value: '', label: '' },
-      release: toMutatetrackData ? { value: toMutatetrackData.release.id.toString(), label: toMutatetrackData.release.title } : { value: '', label: '' },
+      artist: toMutatetrackData
+        ? {
+            value: toMutatetrackData.artist.id.toString(),
+            label: toMutatetrackData.artist.name,
+          }
+        : { value: '', label: '' },
+      release: toMutatetrackData
+        ? {
+            value: toMutatetrackData.release.id.toString(),
+            label: toMutatetrackData.release.title,
+          }
+        : { value: '', label: '' },
       genres:
         toMutatetrackData?.genres?.map((genres) => ({
           value: genres.id!.toString(),
           label: genres.name,
         })) ?? [],
-
     },
     validate: validateForm,
     onSubmit,
@@ -150,7 +167,7 @@ const Page = () => {
   const handleAudioChange = (event: any) => {
     const file = event.target.files[0];
     if (file) {
-      formik.setFieldValue("intro_track", file);
+      formik.setFieldValue('intro_track', file);
     }
   };
 
@@ -160,14 +177,14 @@ const Page = () => {
     { page }: any
   ) => {
     dispatch(
-      genresApi.endpoints.getAllGenres.initiate(
-        { pageNumber: (allGenres.pagination.current_page + 1).toString(), searchString: searchQuery as string }
-      )
+      genresApi.endpoints.getAllGenres.initiate({
+        pageNumber: (allGenres.pagination.current_page + 1).toString(),
+        searchString: searchQuery as string,
+      })
     );
     return {
       options: allGenresMod,
-      hasMore:
-        allGenres?.pagination.next != null,
+      hasMore: allGenres?.pagination.next != null,
     };
   };
 
@@ -177,14 +194,14 @@ const Page = () => {
     { page }: any
   ) => {
     dispatch(
-      artistsApi.endpoints.getAllArtists.initiate(
-        { pageNumber: (allArtists.pagination.current_page + 1).toString(), searchString: searchQuery as string }
-      )
+      artistsApi.endpoints.getAllArtists.initiate({
+        pageNumber: (allArtists.pagination.current_page + 1).toString(),
+        searchString: searchQuery as string,
+      })
     );
     return {
       options: allArtitstMod,
-      hasMore:
-        allArtists?.pagination.next != null,
+      hasMore: allArtists?.pagination.next != null,
     };
   };
 
@@ -194,25 +211,24 @@ const Page = () => {
     { page }: any
   ) => {
     dispatch(
-      releaseApi.endpoints.getAllReleases.initiate(
-        { pageNumber: (allRelease.pagination.current_page + 1).toString(), searchString: searchQuery as string }
-      )
+      releaseApi.endpoints.getAllReleases.initiate({
+        pageNumber: (allRelease.pagination.current_page + 1).toString(),
+        searchString: searchQuery as string,
+      })
     );
     return {
       options: allReleaseMod,
-      hasMore:
-        allRelease?.pagination.next != null,
+      hasMore: allRelease?.pagination.next != null,
     };
   };
 
   const handleCreateGenre = async (inputValue: string) => {
     dispatch(
       genresApi.endpoints.addGenres.initiate({
-        name: inputValue
+        name: inputValue,
       })
     );
-
-  }
+  };
 
   // console.log("allGenres", allGenres)
 
@@ -238,7 +254,7 @@ const Page = () => {
           <div className="flex flex-col flex-1">
             <DurationInput
               id="duration"
-              name='duration'
+              name="duration"
               required
               label="Duration"
               className="flex-1 font-normal"
@@ -261,14 +277,14 @@ const Page = () => {
                   type="AsyncPaginateCreatable"
                   placeholder="Select genres"
                   className="flex-1"
-                  handleChange={(selectedOptions) => formik.setFieldValue('genres', selectedOptions)}
+                  handleChange={(selectedOptions) =>
+                    formik.setFieldValue('genres', selectedOptions)
+                  }
                   name="genres"
                   value={formik.values.genres}
                 />
               </>
             )}
-
-
           </div>
         </div>
         <div className="flex gap-2 mb-2 max-sm:flex-col">
@@ -279,15 +295,12 @@ const Page = () => {
                 options={allArtitstMod}
                 loadPaginatedOptions={loadPaginatedArtists}
                 label="Artist"
-                type='AsyncPaginate'
+                type="AsyncPaginate"
                 value={formik.values.artist}
                 placeholder="Select artist"
                 className="flex-1"
                 handleChange={(e) => {
-                  formik.setFieldValue(
-                    'artist',
-                    e
-                  );
+                  formik.setFieldValue('artist', e);
                 }}
                 name="artist"
               ></Selector>
@@ -299,16 +312,13 @@ const Page = () => {
                 id="release"
                 options={allReleaseMod}
                 loadPaginatedOptions={loadPaginatedRelease}
-                type='AsyncPaginate'
+                type="AsyncPaginate"
                 label="Release"
                 value={formik.values.release}
                 placeholder="Select release"
                 className="flex-1"
                 handleChange={(e) => {
-                  formik.setFieldValue(
-                    'release',
-                    e
-                  );
+                  formik.setFieldValue('release', e);
                 }}
                 name="release"
               ></Selector>
@@ -316,7 +326,6 @@ const Page = () => {
           </div>
         </div>
         <div className="flex gap-2 mb-2 max-sm:flex-col">
-
           <div className="flex flex-col flex-1">
             <MusicUploader
               id="intro_track"
@@ -327,12 +336,12 @@ const Page = () => {
               onChange={handleAudioChange}
             />
             {!!formik.errors.intro_track && (
-              <div className="text-red-500 text-sm">{formik.errors.intro_track}</div>
+              <div className="text-red-500 text-sm">
+                {formik.errors.intro_track}
+              </div>
             )}
           </div>
-
         </div>
-
       </FormGroup>
       <div className="flex justify-end gap-2 m-4">
         <Button
@@ -341,7 +350,6 @@ const Page = () => {
           className="h-8 w-fit"
           type="submit"
           isLoading={isLoading}
-
         />
         <Button
           text="Cancel"
@@ -354,8 +362,6 @@ const Page = () => {
         />
       </div>
     </FormCard>
-
-
   );
 };
 

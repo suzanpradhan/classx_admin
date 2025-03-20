@@ -140,6 +140,10 @@ export default function TestLayout({
               link="/admin/tracks/mutate"
             />
           </SideBarNavGroup>
+          <SideBarNavGroup title="Beats" segment="admin/sounds">
+            <SideBarNavLink title="All Beats" link="/admin/sounds/all" />
+            <SideBarNavLink title="Add New Beats" link="/admin/sounds/mutate" />
+          </SideBarNavGroup>
           <div className="my-2 border-t border-white/5"></div>
           <SideBarNavTitle title="SHOP" />
           <SideBarNavGroup title="Orders" segment="admin/orders">

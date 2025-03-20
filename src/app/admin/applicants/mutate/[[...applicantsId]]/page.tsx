@@ -291,7 +291,7 @@ const Page = () => {
                   options={allGenresMod}
                   loadPaginatedOptions={loadPaginatedOptions}
                   type="AsyncPaginate"
-                  label="genre"
+                  label="Genre"
                   value={formik.values.genre}
                   placeholder="Select genre"
                   className="flex-1"

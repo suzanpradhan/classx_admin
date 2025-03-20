@@ -32,6 +32,7 @@ export const apiPaths = {
   ordersUrl: 'orders/',
   productsUrl: 'products/',
   newsUrl: 'blogs/',
+  soundsUrl: 'sounds/',
   digital_downloadUrl: 'digital_files/',
   applicantsUrl: 'applicants/',
   artistbookingUrl: 'artist_booking/',

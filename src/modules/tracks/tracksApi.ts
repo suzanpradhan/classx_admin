@@ -16,7 +16,10 @@ const tracksApi = baseApi.injectEndpoints({
         if (payload.intro_track)
           formData.append('intro_track', payload.intro_track);
         if (payload.duration)
-          formData.append('duration', payload.duration.toString());
+          formData.append(
+            'duration',
+            `${payload.duration.hour?.toString().padStart(2, '0')}:${payload.duration.minutes?.toString().padStart(2, '0')}:${payload.duration.seconds?.toString().padStart(2, '0')}`
+          );
         if (payload.artist) {
           formData.append('artist', payload.artist.value);
         }
@@ -133,7 +136,10 @@ const tracksApi = baseApi.injectEndpoints({
           formData.append('artist', payload.artist.value);
         }
         if (payload.duration)
-          formData.append('duration', `${payload.duration.hour?.toString()}`);
+          formData.append(
+            'duration',
+            `${payload.duration.hour?.toString().padStart(2, '0')}:${payload.duration.minutes?.toString().padStart(2, '0')}:${payload.duration.seconds?.toString().padStart(2, '0')}`
+          );
         if (payload.release) formData.append('release', payload.release.value);
         payload.genres?.forEach((item, index) => {
           formData.append(`genres[${index}]name`, item.name);

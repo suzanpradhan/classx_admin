@@ -10,9 +10,9 @@ import {
   FormCard,
   FormGroup,
   MusicUploader,
-  TextField,
 } from '@/core/ui/zenbuddha/src';
 import DurationInput from '@/core/ui/zenbuddha/src/components/Duration';
+import TextField from '@/core/ui/zenbuddha/src/components/TextField2';
 import artistsApi from '@/modules/artists/artistsApi';
 import { ArtistsType } from '@/modules/artists/artistsType';
 import genresApi from '@/modules/genres/genresApi';
@@ -109,18 +109,16 @@ const Page = () => {
     try {
       var data;
       if (param.tracksId && param.tracksId[0]) {
-        data = await Promise.resolve(
-          dispatch(
-            tracksApi.endpoints.updateTracks.initiate({
-              id: parseInt(param.tracksId[0]),
-              ...finalRequestData,
-            })
-          )
-        );
+        data = await dispatch(
+          tracksApi.endpoints.updateTracks.initiate({
+            id: parseInt(param.tracksId[0]),
+            ...finalRequestData,
+          })
+        ).unwrap();
       } else {
-        data = await Promise.resolve(
-          dispatch(tracksApi.endpoints.addTracks.initiate(finalRequestData))
-        );
+        data = await dispatch(
+          tracksApi.endpoints.addTracks.initiate(finalRequestData)
+        ).unwrap();
         // data = await Promise.resolve(
         //   dispatch(
         //     genresApi.endpoints.addGenres.initiate(values)
@@ -129,17 +127,68 @@ const Page = () => {
       }
       if (data) router.push('/admin/tracks/all');
     } catch (error) {
-      console.error('Failed to submit:', error);
+      console.log('Failed to submit:', error);
     } finally {
       setIsLoading(false);
     }
   };
+
+  const changeDurationToSchemaType = (duration: string) => {
+    const durationArray = duration.split(':');
+    switch (durationArray.length) {
+      case 3: {
+        const [hour, minutes, seconds] = durationArray;
+        return {
+          hour: parseInt(hour),
+          minutes: parseInt(minutes),
+          seconds: parseInt(seconds),
+        };
+      }
+      case 2: {
+        const [minutes, seconds] = durationArray;
+        return {
+          hour: 0,
+          minutes: parseInt(minutes),
+          seconds: parseInt(seconds),
+        };
+      }
+      case 1: {
+        const seconds = duration;
+        return {
+          hour: 0,
+          minutes: 0,
+          seconds: parseInt(seconds),
+        };
+      }
+      default: {
+        return {
+          hour: 0,
+          minutes: 0,
+          seconds: 0,
+        };
+      }
+    }
+  };
+
+  const secondsToDurationSchemaType = (seconds: number) => {
+    const hour = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const sec = Math.floor(seconds % 60);
+    return {
+      hour: hour,
+      minutes: minutes,
+      seconds: sec,
+    };
+  };
+
   const formik = useFormik<TrackSchemaType>({
     enableReinitialize: true,
     initialValues: {
       id: toMutatetrackData ? (toMutatetrackData.id ?? null) : null,
       title: toMutatetrackData ? toMutatetrackData.title : '',
-      duration: toMutatetrackData ? toMutatetrackData.duration : '',
+      duration: toMutatetrackData
+        ? changeDurationToSchemaType(toMutatetrackData.duration)
+        : changeDurationToSchemaType('00:00:00'),
       slug: toMutatetrackData ? toMutatetrackData.slug : '',
       intro_track: toMutatetrackData ? null : null,
       artist: toMutatetrackData
@@ -168,6 +217,22 @@ const Page = () => {
     const file = event.target.files[0];
     if (file) {
       formik.setFieldValue('intro_track', file);
+      const audio = document.createElement('audio');
+      audio.src = URL.createObjectURL(file);
+
+      audio.addEventListener('loadedmetadata', () => {
+        const { hour, minutes, seconds } = secondsToDurationSchemaType(
+          audio.duration
+        );
+
+        console.log('duration value', hour, minutes, seconds);
+
+        formik.setFieldValue('duration[hour]', hour);
+        formik.setFieldValue('duration[minutes]', minutes);
+        formik.setFieldValue('duration[seconds]', seconds);
+      });
+
+      // console.log('duration value', formik.values.duration);
     }
   };
 
@@ -234,8 +299,21 @@ const Page = () => {
 
   return (
     <FormCard onSubmit={formik.handleSubmit} className="m-4">
-      <FormGroup title="Basic Type">
+      <FormGroup title="Track Info">
         <div className="flex gap-2 mb-2 max-sm:flex-col">
+          {/* <div className="flex flex-col flex-1">
+            <DurationInput
+              id="duration"
+              name="duration"
+              required
+              label="Duration"
+              className="flex-1 font-normal"
+              value={formik.values.duration ?? ''}
+              handleChange={(event) => {
+                formik.setFieldValue('duration', event.target.value);
+              }}
+            />
+          </div> */}
           <div className="flex flex-col flex-1">
             <TextField
               id="title"
@@ -249,21 +327,7 @@ const Page = () => {
               <div className="text-red-500 text-sm">{formik.errors.title}</div>
             )}
           </div>
-        </div>
-        <div className="flex gap-2 mb-2 max-sm:flex-col">
-          <div className="flex flex-col flex-1">
-            <DurationInput
-              id="duration"
-              name="duration"
-              required
-              label="Duration"
-              className="flex-1 font-normal"
-              value={formik.values.duration ?? ''}
-              handleChange={(event) => {
-                formik.setFieldValue('duration', event.target.value);
-              }}
-            />
-          </div>
+
           <div className="flex flex-col flex-1 relative">
             {allGenres && (
               <>
@@ -287,6 +351,50 @@ const Page = () => {
             )}
           </div>
         </div>
+        <div className="flex gap-2 mb-2 max-sm:flex-col">
+          <div className="flex flex-col flex-1">
+            <MusicUploader
+              id="intro_track"
+              label="Audio Track"
+              required
+              className="flex-1 font-normal"
+              value={formik.values.intro_track}
+              onChange={handleAudioChange}
+            />
+            {!!formik.errors.intro_track && (
+              <div className="text-red-500 text-sm">
+                {formik.errors.intro_track}
+              </div>
+            )}
+          </div>
+          <div className="basis-24 grow-0 shrink-0">
+            <DurationInput
+              id="duration"
+              name="duration"
+              required
+              disabled
+              label="Duration"
+              className="flex-1 font-normal"
+              value={formik.values.duration ?? ''}
+              // handleHourChange={(event) => {
+              // formik.setFieldValue('duration[hour]', event.target.value);
+              // }}
+              // handleMinChange={(event) => {
+              // formik.setFieldValue('duration[minutes]', event.target.value);
+              // }}
+              // handleSecChange={(event) => {
+              // formik.setFieldValue('duration[seconds]', event.target.value);
+              // }}
+            />
+            {!!formik.errors.duration && (
+              <div className="text-red-500 text-sm">
+                {formik.errors.duration.seconds}
+              </div>
+            )}
+          </div>
+        </div>
+      </FormGroup>
+      <FormGroup title="Other Info">
         <div className="flex gap-2 mb-2 max-sm:flex-col">
           <div className="flex flex-col flex-1">
             {allArtists && (
@@ -322,23 +430,6 @@ const Page = () => {
                 }}
                 name="release"
               ></Selector>
-            )}
-          </div>
-        </div>
-        <div className="flex gap-2 mb-2 max-sm:flex-col">
-          <div className="flex flex-col flex-1">
-            <MusicUploader
-              id="intro_track"
-              label="Audio Track"
-              required
-              className="flex-1 font-normal"
-              value={formik.values.intro_track}
-              onChange={handleAudioChange}
-            />
-            {!!formik.errors.intro_track && (
-              <div className="text-red-500 text-sm">
-                {formik.errors.intro_track}
-              </div>
             )}
           </div>
         </div>

@@ -70,8 +70,8 @@ const FeaturedReleasesTableListing = () => {
           <tr className={tableStyles.table_thead_tr}>
             <th className={tableStyles.table_th}>S.N.</th>
             <th className={tableStyles.table_th}>Title</th>
-            <th className={tableStyles.table_th}>Release</th>
             <th className={tableStyles.table_th}>Subtitle</th>
+            <th className={tableStyles.table_th}>Release</th>
             <th className={tableStyles.table_th}>Action</th>
           </tr>
         </thead>
@@ -81,8 +81,8 @@ const FeaturedReleasesTableListing = () => {
               <tr key={index} className={tableStyles.table_tbody_tr}>
                 <td className={tableStyles.table_td}>{item.id}</td>
                 <td className={tableStyles.table_td}>{item.title}</td>
-                <td className={tableStyles.table_td}>{item?.release?.title}</td>
                 <td className={tableStyles.table_td}>{item.subtitle}</td>
+                <td className={tableStyles.table_td}>{item?.release?.title}</td>
 
                 <td className={tableStyles.table_td}>
                   <div className={`flex items-stretch h-full gap-2 max-w-xs`}>

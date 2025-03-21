@@ -104,11 +104,6 @@ const Page = () => {
         data = await dispatch(
           soundsApi.endpoints.addSounds.initiate(finalRequestData)
         ).unwrap();
-        // data = await Promise.resolve(
-        //   dispatch(
-        //     genresApi.endpoints.addGenres.initiate(values)
-        //   )
-        // )
       }
       if (data) router.push('/admin/sounds/all');
     } catch (error) {

@@ -82,6 +82,13 @@ export default function TestLayout({
               linkExact
             />
           </SideBarNavGroup>
+          <SideBarNavGroup title="Appointments" segment="admin/appointments">
+            <SideBarNavLink
+              title="All Appointments"
+              link="/admin/appointments/all"
+              linkExact
+            />
+          </SideBarNavGroup>
           <SideBarNavGroup
             title="Artist Booking"
             segment="admin/artist_booking"

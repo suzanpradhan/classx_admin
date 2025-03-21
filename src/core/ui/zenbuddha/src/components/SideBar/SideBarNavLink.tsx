@@ -30,7 +30,7 @@ const SideBarNavLink = ({
     <Link
       href={link}
       className={
-        `flex items-center px-3 py-2 my-[2px] text-white font-medium text-sm w-full rounded-md h-10 group-[&.nav-group]:h-auto whitespace-nowrap ` +
+        `flex items-center px-3 py-2 my-[5px] text-white font-medium text-sm w-full rounded-md h-10 group-[&.nav-group]:h-auto whitespace-nowrap ` +
         (toggle ? 'bg-white/5 group-[&.nav-group]:bg-white/5' : '')
       }
       onClick={() => {

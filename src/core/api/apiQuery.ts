@@ -22,6 +22,7 @@ export const baseApi = createApi({
     'News',
     'Digital_Download',
     'Applicants',
+    'Appointments',
     'ArtistBooking',
     'FeaturedRelease',
   ],

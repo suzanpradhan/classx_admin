@@ -34,6 +34,7 @@ export const apiPaths = {
   newsUrl: 'blogs/',
   digital_downloadUrl: 'digital_files/',
   applicantsUrl: 'applicants/',
+  appointmentsUrl: 'appointments/',
   artistbookingUrl: 'artist_booking/',
   featuredreleasesUrl: 'featured_releases/',
 };

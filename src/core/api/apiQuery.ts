@@ -16,6 +16,7 @@ export const baseApi = createApi({
     'Genres',
     'Releases',
     'Track',
+    'Sounds',
     'TrackWave',
     'Orders',
     'Products',

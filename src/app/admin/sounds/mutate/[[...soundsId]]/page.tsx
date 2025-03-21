@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 'use client';
 import { useGetApiResponse } from '@/core/api/getApiResponse';
 import { useAppDispatch, useAppSelector } from '@/core/redux/clientStore';
@@ -10,22 +9,20 @@ import {
   FormCard,
   FormGroup,
   MusicUploader,
+  TextField,
 } from '@/core/ui/zenbuddha/src';
 import DurationInput from '@/core/ui/zenbuddha/src/components/Duration';
-import TextField from '@/core/ui/zenbuddha/src/components/TextField2';
 import artistsApi from '@/modules/artists/artistsApi';
 import { ArtistsType } from '@/modules/artists/artistsType';
 import genresApi from '@/modules/genres/genresApi';
 import { GenresType } from '@/modules/genres/genresType';
-import releaseApi from '@/modules/releases/releasesApi';
-import { ReleasesType } from '@/modules/releases/releasesType';
-import tracksApi from '@/modules/tracks/tracksApi';
+import soundsApi from '@/modules/sounds/soundsApi';
 import {
-  TrackRequestType,
-  trackSchema,
-  TrackSchemaType,
-  Trackstype,
-} from '@/modules/tracks/trackType';
+  SoundRequestType,
+  soundSchema,
+  SoundSchemaType,
+  SoundsType,
+} from '@/modules/sounds/soundsType';
 import { useFormik } from 'formik';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -35,22 +32,19 @@ const Page = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const param = useParams();
-  const [isFormOpen, setIsFormOpen] = useState(false);
-  const [newGenreName, setNewGenreName] = useState('');
-  const tracksId = param.tracksId && param.tracksId[0];
+  const soundsId = param.soundsId && param.soundsId[0];
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(genresApi.endpoints.getAllGenres.initiate({ pageNumber: '1' }));
     dispatch(artistsApi.endpoints.getAllArtists.initiate({ pageNumber: '1' }));
-    dispatch(releaseApi.endpoints.getAllReleases.initiate({ pageNumber: '1' }));
-    if (tracksId) {
-      dispatch(tracksApi.endpoints.getEachTracks.initiate(tracksId));
+    if (soundsId) {
+      dispatch(soundsApi.endpoints.getEachSounds.initiate(soundsId));
     }
-  }, [tracksId, dispatch]);
+  }, [soundsId, dispatch]);
 
-  const toMutatetrackData = useGetApiResponse<Trackstype>(
-    `getEachTracks("${tracksId ? tracksId : undefined}")`
+  const toMutatetrackData = useGetApiResponse<SoundsType>(
+    `getEachSounds("${soundsId ? soundsId : undefined}")`
   );
 
   const allGenres = useAppSelector(
@@ -73,18 +67,9 @@ const Page = () => {
     return { label: item.name, value: item.id.toString() };
   });
 
-  const allRelease = useAppSelector(
-    (state: RootState) =>
-      state.baseApi.queries[`getAllReleases`]
-        ?.data as PaginatedResponseType<ReleasesType>
-  );
-  const allReleaseMod = allRelease?.results.map((item) => {
-    return { label: item.title, value: item.id.toString() };
-  });
-
-  const validateForm = (values: TrackSchemaType) => {
+  const validateForm = (values: SoundSchemaType) => {
     try {
-      trackSchema.parse(values);
+      soundSchema.parse(values);
     } catch (error) {
       if (error instanceof ZodError) {
         console.log(error.errors);
@@ -93,8 +78,8 @@ const Page = () => {
     }
   };
 
-  const onSubmit = async (values: TrackSchemaType) => {
-    var finalRequestData: TrackRequestType = {
+  const onSubmit = async (values: SoundSchemaType) => {
+    var finalRequestData: SoundRequestType = {
       ...values,
       genres: values.genres?.map((each) =>
         each.__isNew__
@@ -108,24 +93,19 @@ const Page = () => {
     setIsLoading(true);
     try {
       var data;
-      if (param.tracksId && param.tracksId[0]) {
+      if (param.soundsId && param.soundsId[0]) {
         data = await dispatch(
-          tracksApi.endpoints.updateTracks.initiate({
-            id: parseInt(param.tracksId[0]),
+          soundsApi.endpoints.updateSounds.initiate({
+            id: parseInt(param.soundsId[0]),
             ...finalRequestData,
           })
         ).unwrap();
       } else {
         data = await dispatch(
-          tracksApi.endpoints.addTracks.initiate(finalRequestData)
+          soundsApi.endpoints.addSounds.initiate(finalRequestData)
         ).unwrap();
-        // data = await Promise.resolve(
-        //   dispatch(
-        //     genresApi.endpoints.addGenres.initiate(values)
-        //   )
-        // )
       }
-      if (data) router.push('/admin/tracks/all');
+      if (data) router.push('/admin/sounds/all');
     } catch (error) {
       console.log('Failed to submit:', error);
     } finally {
@@ -181,7 +161,7 @@ const Page = () => {
     };
   };
 
-  const formik = useFormik<TrackSchemaType>({
+  const formik = useFormik<SoundSchemaType>({
     enableReinitialize: true,
     initialValues: {
       id: toMutatetrackData ? (toMutatetrackData.id ?? null) : null,
@@ -189,20 +169,14 @@ const Page = () => {
       duration: toMutatetrackData
         ? changeDurationToSchemaType(toMutatetrackData.duration)
         : changeDurationToSchemaType('00:00:00'),
-      slug: toMutatetrackData ? toMutatetrackData.slug : '',
-      intro_track: toMutatetrackData ? null : null,
+      track: toMutatetrackData ? null : null,
       artist: toMutatetrackData
         ? {
             value: toMutatetrackData.artist.id.toString(),
             label: toMutatetrackData.artist.name,
           }
         : { value: '', label: '' },
-      release: toMutatetrackData
-        ? {
-            value: toMutatetrackData.release.id.toString(),
-            label: toMutatetrackData.release.title,
-          }
-        : { value: '', label: '' },
+
       genres:
         toMutatetrackData?.genres?.map((genres) => ({
           value: genres.id!.toString(),
@@ -216,7 +190,7 @@ const Page = () => {
   const handleAudioChange = (event: any) => {
     const file = event.target.files[0];
     if (file) {
-      formik.setFieldValue('intro_track', file);
+      formik.setFieldValue('track', file);
       const audio = document.createElement('audio');
       audio.src = URL.createObjectURL(file);
 
@@ -270,23 +244,6 @@ const Page = () => {
     };
   };
 
-  const loadPaginatedRelease = async (
-    searchQuery: any,
-    loadedOptions: any,
-    { page }: any
-  ) => {
-    dispatch(
-      releaseApi.endpoints.getAllReleases.initiate({
-        pageNumber: (allRelease.pagination.current_page + 1).toString(),
-        searchString: searchQuery as string,
-      })
-    );
-    return {
-      options: allReleaseMod,
-      hasMore: allRelease?.pagination.next != null,
-    };
-  };
-
   const handleCreateGenre = async (inputValue: string) => {
     dispatch(
       genresApi.endpoints.addGenres.initiate({
@@ -295,25 +252,10 @@ const Page = () => {
     );
   };
 
-  // console.log("allGenres", allGenres)
-
   return (
     <FormCard onSubmit={formik.handleSubmit} className="m-4">
-      <FormGroup title="Track Info">
+      <FormGroup title="Beats Info">
         <div className="flex gap-2 mb-2 max-sm:flex-col">
-          {/* <div className="flex flex-col flex-1">
-            <DurationInput
-              id="duration"
-              name="duration"
-              required
-              label="Duration"
-              className="flex-1 font-normal"
-              value={formik.values.duration ?? ''}
-              handleChange={(event) => {
-                formik.setFieldValue('duration', event.target.value);
-              }}
-            />
-          </div> */}
           <div className="flex flex-col flex-1">
             <TextField
               id="title"
@@ -354,17 +296,15 @@ const Page = () => {
         <div className="flex gap-2 mb-2 max-sm:flex-col">
           <div className="flex flex-col flex-1">
             <MusicUploader
-              id="intro_track"
-              label="Audio Track"
+              id="track"
+              label="Track"
               required
               className="flex-1 font-normal"
-              value={formik.values.intro_track}
+              value={formik.values.track}
               onChange={handleAudioChange}
             />
-            {!!formik.errors.intro_track && (
-              <div className="text-red-500 text-sm">
-                {formik.errors.intro_track}
-              </div>
+            {!!formik.errors.track && (
+              <div className="text-red-500 text-sm">{formik.errors.track}</div>
             )}
           </div>
           <div className="basis-24 grow-0 shrink-0">
@@ -376,15 +316,6 @@ const Page = () => {
               label="Duration"
               className="flex-1 font-normal"
               value={formik.values.duration ?? ''}
-              // handleHourChange={(event) => {
-              // formik.setFieldValue('duration[hour]', event.target.value);
-              // }}
-              // handleMinChange={(event) => {
-              // formik.setFieldValue('duration[minutes]', event.target.value);
-              // }}
-              // handleSecChange={(event) => {
-              // formik.setFieldValue('duration[seconds]', event.target.value);
-              // }}
             />
             {!!formik.errors.duration && (
               <div className="text-red-500 text-sm">
@@ -411,24 +342,6 @@ const Page = () => {
                   formik.setFieldValue('artist', e);
                 }}
                 name="artist"
-              ></Selector>
-            )}
-          </div>
-          <div className="flex flex-col flex-1">
-            {allRelease && (
-              <Selector
-                id="release"
-                options={allReleaseMod}
-                loadPaginatedOptions={loadPaginatedRelease}
-                type="AsyncPaginate"
-                label="Release"
-                value={formik.values.release}
-                placeholder="Select release"
-                className="flex-1"
-                handleChange={(e) => {
-                  formik.setFieldValue('release', e);
-                }}
-                name="release"
               ></Selector>
             )}
           </div>

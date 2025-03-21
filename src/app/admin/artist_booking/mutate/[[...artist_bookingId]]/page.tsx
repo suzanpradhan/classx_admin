@@ -325,19 +325,20 @@ const Page = () => {
               </div>
             )}
           </div>
-          <div className="flex flex-col flex-1">
-            <TextField
-              id="info"
-              type="text"
-              label="Info "
-              required
-              className="flex-1"
-              {...formik.getFieldProps('info')}
-            />
-            {formik.errors.info && (
-              <div className="text-red-500 text-sm">{formik.errors.info}</div>
-            )}
-          </div>
+        </div>
+        <div className="flex flex-col flex-1">
+          <TextField
+            id="info"
+            type="text"
+            label="Info "
+            required
+            isMulti
+            className="flex-1"
+            {...formik.getFieldProps('info')}
+          />
+          {formik.errors.info && (
+            <div className="text-red-500 text-sm">{formik.errors.info}</div>
+          )}
         </div>
       </FormGroup>
 

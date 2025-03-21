@@ -2,19 +2,17 @@ import { apiPaths, setHeaders } from '@/core/api/apiConstants';
 import { baseApi } from '@/core/api/apiQuery';
 import { PaginatedResponseType } from '@/core/types/responseTypes';
 import { toast } from 'react-toastify';
-import { TrackRequestType, Trackstype } from './trackType';
+import { SoundRequestType, SoundsType } from './soundsType';
 
-const tracksApi = baseApi.injectEndpoints({
+const soundsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     // ADD
-    addTracks: builder.mutation<any, TrackRequestType>({
+    addSounds: builder.mutation<any, SoundRequestType>({
       query: (payload) => {
         const formData = new FormData();
         formData.append('id', String(payload.id));
         formData.append('title', String(payload.title));
-        formData.append('slug', String(payload.slug));
-        if (payload.intro_track)
-          formData.append('intro_track', payload.intro_track);
+        if (payload.track) formData.append('track', payload.track);
         if (payload.duration)
           formData.append(
             'duration',
@@ -23,14 +21,13 @@ const tracksApi = baseApi.injectEndpoints({
         if (payload.artist) {
           formData.append('artist', payload.artist.value);
         }
-        if (payload.release) formData.append('release', payload.release.value);
         payload.genres?.forEach((item, index) => {
           formData.append(`genres[${index}]name`, item.name);
           if (item.id)
             formData.append(`genres[${index}]id`, item.id.toString());
         });
         return {
-          url: `${apiPaths.tracksUrl}`,
+          url: `${apiPaths.soundsUrl}`,
           method: 'POST',
           body: formData,
           prepareHeaders: async (headers: Headers) => await setHeaders(headers),
@@ -39,30 +36,29 @@ const tracksApi = baseApi.injectEndpoints({
       async onQueryStarted(payload, { queryFulfilled }) {
         try {
           await queryFulfilled;
-          toast.success('Tracks added');
+          toast.success('Sounds added');
         } catch (err) {
           console.log(err);
-          toast.error('Tracks adding failed');
+          toast.error('Sounds adding failed');
         }
       },
       transformResponse: (response: any) => {
         return response;
       },
-      invalidatesTags: [{ type: 'Track', id: 'LIST' }],
+      invalidatesTags: [{ type: 'Sounds', id: 'LIST' }],
     }),
-
     // Get All
-    getAllTracks: builder.query<PaginatedResponseType<Trackstype>, number>({
-      query: (pageNumber) => `${apiPaths.tracksUrl}?page=${pageNumber}`,
+    getAllSounds: builder.query<PaginatedResponseType<SoundsType>, number>({
+      query: (pageNumber) => `${apiPaths.soundsUrl}?page=${pageNumber}`,
       providesTags: (response) =>
         response?.results
           ? [
               ...response.results.map(
-                ({ id }) => ({ type: 'Track', id }) as const
+                ({ id }) => ({ type: 'Sounds', id }) as const
               ),
-              { type: 'Track', id: 'LIST' },
+              { type: 'Sounds', id: 'LIST' },
             ]
-          : [{ type: 'Track', id: 'LIST' }],
+          : [{ type: 'Sounds', id: 'LIST' }],
       serializeQueryArgs: ({ endpointName }) => {
         return endpointName;
       },
@@ -80,10 +76,10 @@ const tracksApi = baseApi.injectEndpoints({
 
     // Get Each
 
-    getEachTracks: builder.query<Trackstype, string>({
-      query: (tracksId) => `${apiPaths.tracksUrl}${tracksId}/`,
+    getEachSounds: builder.query<SoundsType, string>({
+      query: (soundsId) => `${apiPaths.soundsUrl}${soundsId}/`,
       providesTags: (result, error, id) => {
-        return [{ type: 'Track', id }];
+        return [{ type: 'Sounds', id }];
       },
       serializeQueryArgs: ({ queryArgs, endpointName }) => {
         return `${endpointName}("${queryArgs}")`;
@@ -103,35 +99,33 @@ const tracksApi = baseApi.injectEndpoints({
     }),
     // delete
 
-    deleteTracks: builder.mutation<any, string>({
+    deleteSounds: builder.mutation<any, string>({
       query(id) {
         return {
-          url: `${apiPaths.tracksUrl}${id}/`,
+          url: `${apiPaths.soundsUrl}${id}/`,
           method: 'DELETE',
         };
       },
       async onQueryStarted(payload, { queryFulfilled }) {
         try {
           await queryFulfilled;
-          toast.success('Tracks has been deleted.');
+          toast.success('Sounds has been deleted.');
         } catch (err) {
-          console.error('Delete Tracks Error:', err);
+          console.error('Delete Sounds Error:', err);
           toast.error(
-            'Failed to delete the Tracks. Please check if the ID is correct.'
+            'Failed to delete the Sounds. Please check if the ID is correct.'
           );
         }
       },
-      invalidatesTags: (result, error, id) => [{ type: 'Track', id }],
+      invalidatesTags: (result, error, id) => [{ type: 'Sounds', id }],
     }),
 
     // Update
-    updateTracks: builder.mutation<Trackstype, TrackRequestType>({
+    updateSounds: builder.mutation<SoundsType, SoundRequestType>({
       query: ({ id, ...payload }) => {
         const formData = new FormData();
         formData.append('title', String(payload.title));
-        formData.append('slug', String(payload.slug));
-        if (payload.intro_track)
-          formData.append('intro_track', payload.intro_track);
+        if (payload.track) formData.append('track', payload.track);
         if (payload.artist) {
           formData.append('artist', payload.artist.value);
         }
@@ -140,7 +134,6 @@ const tracksApi = baseApi.injectEndpoints({
             'duration',
             `${payload.duration.hour?.toString().padStart(2, '0')}:${payload.duration.minutes?.toString().padStart(2, '0')}:${payload.duration.seconds?.toString().padStart(2, '0')}`
           );
-        if (payload.release) formData.append('release', payload.release.value);
         payload.genres?.forEach((item, index) => {
           formData.append(`genres[${index}]name`, item.name);
           if (item.id)
@@ -148,7 +141,7 @@ const tracksApi = baseApi.injectEndpoints({
         });
 
         return {
-          url: `${apiPaths.tracksUrl}${id}/`,
+          url: `${apiPaths.soundsUrl}${id}/`,
           method: 'PATCH',
           body: formData,
         };
@@ -156,16 +149,16 @@ const tracksApi = baseApi.injectEndpoints({
       async onQueryStarted(payload, { queryFulfilled }) {
         try {
           await queryFulfilled;
-          toast.success('Tracks  Updated.');
+          toast.success('Sounds  Updated.');
         } catch (err) {
           console.log(err);
-          toast.error('Failed updating a Tracks.');
+          toast.error('Failed updating a Sounds.');
         }
       },
-      invalidatesTags: (result, error, { id }) => [{ type: 'Track', id: id! }],
+      invalidatesTags: (result, error, { id }) => [{ type: 'Sounds', id: id! }],
     }),
   }),
   overrideExisting: true,
 });
 
-export default tracksApi;
+export default soundsApi;

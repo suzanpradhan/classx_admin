@@ -35,7 +35,9 @@ const DateSelector = ({
       <Popover>
         <PopoverTrigger asChild className="w-full">
           <button
-            className={cn('text-sm text-dark-500 flex flex-col h-full relative')}
+            className={cn(
+              'text-sm text-dark-500 flex flex-col h-full relative items-start'
+            )}
           >
             {label && (
               <span className="text-sm font-medium mb-2 text-dark-500">
@@ -48,8 +50,9 @@ const DateSelector = ({
             <div className="flex items-center py-3 px-4 rounded-md border bg-slate-50 text-sm focus:outline-none w-full min-h-[2.9rem]">
               <span className="flex-1 text-left">
                 {value
-                  ? `${value.getFullYear()} / ${value.getMonth() + 1
-                  } / ${value.getDate()}`
+                  ? `${value.getFullYear()} / ${
+                      value.getMonth() + 1
+                    } / ${value.getDate()}`
                   : props.placeholder || 'Select a date'}
               </span>
               <CalendarIcon className="h-5 w-5 text-gray-400 ml-2" />

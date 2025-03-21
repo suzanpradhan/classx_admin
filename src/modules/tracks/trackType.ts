@@ -3,13 +3,21 @@ import { nonempty } from '@/core/utils/formUtlis';
 import { introTrackFile } from '@/core/utils/helper';
 import { z } from 'zod';
 
+export const durationSchema = z.object({
+  hour: z.number().optional().nullable(),
+  minutes: z.number().optional().nullable(),
+  seconds: z.number(),
+});
+
+export type DurationSchemaType = z.infer<typeof durationSchema>;
+
 export const trackSchema = z.object({
   id: z.number().optional().nullable(),
   slug: z.string(),
   artist: selectorDataSchema,
   title: z.string().pipe(nonempty),
   genres: z.array(selectorDataSchema).optional(),
-  duration: z.string(),
+  duration: durationSchema,
   intro_track: introTrackFile.optional().nullable(),
   release: selectorDataSchema,
 });

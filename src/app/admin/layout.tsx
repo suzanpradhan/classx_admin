@@ -82,6 +82,13 @@ export default function TestLayout({
               linkExact
             />
           </SideBarNavGroup>
+          <SideBarNavGroup title="Appointments" segment="admin/appointments">
+            <SideBarNavLink
+              title="All Appointments"
+              link="/admin/appointments/all"
+              linkExact
+            />
+          </SideBarNavGroup>
           <SideBarNavGroup
             title="Artist Booking"
             segment="admin/artist_booking"
@@ -139,6 +146,10 @@ export default function TestLayout({
               title="Add New Tracks"
               link="/admin/tracks/mutate"
             />
+          </SideBarNavGroup>
+          <SideBarNavGroup title="Beats" segment="admin/sounds">
+            <SideBarNavLink title="All Beats" link="/admin/sounds/all" />
+            <SideBarNavLink title="Add New Beats" link="/admin/sounds/mutate" />
           </SideBarNavGroup>
           <div className="my-2 border-t border-white/5"></div>
           <SideBarNavTitle title="SHOP" />

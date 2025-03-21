@@ -90,7 +90,7 @@ const AppointmentsTableListing = () => {
             <th className={tableStyles.table_th}>Type</th>
             <th className={tableStyles.table_th}>Permanent Address</th>
             <th className={tableStyles.table_th}>Current Address</th>
-            <th className={tableStyles.table_th}>Star Date</th>
+            <th className={tableStyles.table_th}>Start Date</th>
             <th className={tableStyles.table_th}>End Date</th>
             <th className={tableStyles.table_th}>Action</th>
           </tr>

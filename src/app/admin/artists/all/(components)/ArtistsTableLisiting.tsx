@@ -105,7 +105,7 @@ const ArtistsTableLisiting = () => {
                 </td>
                 <td className={tableStyles.table_td}>{item.name}</td>
                 <td className={tableStyles.table_td}>
-                  <span>{parse(item.bio)}...</span>
+                  <span className="line-clamp-5">{parse(item.bio)}...</span>
                 </td>
 
                 <td className={tableStyles.table_td}>

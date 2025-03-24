@@ -164,6 +164,7 @@ const Page = () => {
               type="text"
               label="Text One"
               className="flex-1"
+              isMulti
               {...formik.getFieldProps('text_one')}
             />
             {formik.errors.text_one && (
@@ -172,20 +173,19 @@ const Page = () => {
               </div>
             )}
           </div>
-          <div className="flex flex-col flex-1">
-            <TextField
-              id="text_two"
-              type="text"
-              label="Text Two"
-              className="flex-1"
-              {...formik.getFieldProps('text_two')}
-            />
-            {formik.errors.text_two && (
-              <div className="text-red-500 text-sm">
-                {formik.errors.text_two}
-              </div>
-            )}
-          </div>
+        </div>
+        <div className="flex flex-col flex-1">
+          <TextField
+            id="text_two"
+            type="text"
+            label="Text Two"
+            className="flex-1"
+            isMulti
+            {...formik.getFieldProps('text_two')}
+          />
+          {formik.errors.text_two && (
+            <div className="text-red-500 text-sm">{formik.errors.text_two}</div>
+          )}
         </div>
         <div className="mt-3 gap-2">
           <label

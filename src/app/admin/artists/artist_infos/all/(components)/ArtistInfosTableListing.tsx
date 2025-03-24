@@ -69,9 +69,9 @@ const ArtistInfosTableListing = () => {
             <tr className={tableStyles.table_thead_tr}>
               <th className={tableStyles.table_th}>S.N.</th>
               <th className={tableStyles.table_th}>Artist</th>
-              <th className={tableStyles.table_th}>Feat Text</th>
               <th className={tableStyles.table_th}>Text one</th>
               <th className={tableStyles.table_th}>Text two</th>
+              <th className={tableStyles.table_th}>Feat Text</th>
               <th className={tableStyles.table_th}>Book artist</th>
               <th className={tableStyles.table_th}>Action</th>
             </tr>
@@ -82,14 +82,22 @@ const ArtistInfosTableListing = () => {
                 <td className={tableStyles.table_td}>{item.id}</td>
                 <td className={tableStyles.table_td}>{item?.artist?.name}</td>
                 <td className={tableStyles.table_td}>
-                  {' '}
-                  <span>{parse(item.feat_text)}...</span>
+                  <span className="line-clamp-2">{item?.text_one}</span>
                 </td>
-                <td className={tableStyles.table_td}>{item?.text_one}</td>
-                <td className={tableStyles.table_td}>{item?.text_two}</td>
+                <td className={tableStyles.table_td}>
+                  <span className="line-clamp-2">{item?.text_two}</span>
+                </td>
                 <td className={tableStyles.table_td}>
                   {' '}
-                  <span>{parse(item?.book_artist as string)}...</span>
+                  <span className="line-clamp-2">
+                    {parse(item.feat_text)}...
+                  </span>
+                </td>
+                <td className={tableStyles.table_td}>
+                  {' '}
+                  <span className="line-clamp-2">
+                    {parse(item?.book_artist as string)}...
+                  </span>
                 </td>
 
                 <td className={tableStyles.table_td}>

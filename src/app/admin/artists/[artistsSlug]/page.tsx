@@ -18,19 +18,17 @@ export default function EachDetailPage() {
   const [tab, setTab] = useState(0);
   const [modalIsOpen, setIsOpen] = useState(false);
   const param = useParams();
-  const artistsId = param.artistsId;
+  const slug = param.artistsSlug;
   const [onDelete, setOnDelete] = useState<any>(undefined);
 
   useEffect(() => {
-    if (artistsId) {
-      dispatch(
-        artistsApi.endpoints.getEachArtists.initiate(artistsId as string)
-      );
+    if (slug) {
+      dispatch(artistsApi.endpoints.getEachArtists.initiate(slug as string));
     }
-  }, [dispatch, artistsId]);
+  }, [dispatch, slug]);
 
   const ArtistsData = useGetApiResponse<ArtistsType>(
-    `getEachArtists("${artistsId ? artistsId : undefined}")`
+    `getEachArtists("${slug ? slug : undefined}")`
   );
 
   return (
@@ -94,8 +92,8 @@ export default function EachDetailPage() {
                   buttonType="bordered"
                   prefix={<TrashSimple size={20} weight="duotone" />}
                   onClick={() => {
-                    if (param.artistsId) {
-                      setOnDelete(param.artistsId);
+                    if (slug) {
+                      setOnDelete(slug);
                       setIsOpen(true);
                     }
                   }}
@@ -105,7 +103,7 @@ export default function EachDetailPage() {
                   buttonType="bordered"
                   prefix={<PencilSimpleLine size={20} weight="duotone" />}
                   type="link"
-                  href={`/admin/artists/mutate/${param.artistsId}`}
+                  href={`/admin/artists/mutate/${slug}`}
                 />
                 <Button
                   className="w-9 h-9"

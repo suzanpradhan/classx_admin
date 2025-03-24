@@ -225,14 +225,10 @@ const Page = () => {
           audio.duration
         );
 
-        console.log('duration value', hour, minutes, seconds);
-
         formik.setFieldValue('duration[hour]', hour);
         formik.setFieldValue('duration[minutes]', minutes);
         formik.setFieldValue('duration[seconds]', seconds);
       });
-
-      // console.log('duration value', formik.values.duration);
     }
   };
 

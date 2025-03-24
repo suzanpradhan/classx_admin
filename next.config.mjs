@@ -8,6 +8,12 @@ const nextConfig = {
         port: '',
         pathname: '/media/**',
       },
+      {
+        protocol: 'http',
+        hostname: 'uatclassx.suzanpradhan.com.np',
+        port: '',
+        pathname: '/media/**',
+      },
     ],
   },
 };

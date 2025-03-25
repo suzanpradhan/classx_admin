@@ -33,7 +33,7 @@ export default function EachDetailPage() {
   }, [artist_infosId, dispatch]);
 
   const artistInfosData = useGetApiResponse<ArtistInfosType>(
-    `getEachArtistInfos("${artist_infosId ? artist_infosId : undefined}")`
+    `getEachArtistInfos("${artist_infosId || undefined}")`
   );
 
   return (

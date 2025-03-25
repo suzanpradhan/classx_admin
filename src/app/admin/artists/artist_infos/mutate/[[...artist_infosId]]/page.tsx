@@ -115,7 +115,7 @@ const Page = () => {
   const handleRichTextChangeFeat = (value: string) => {
     formik.setFieldValue('feat_text', value);
   };
-  const handleRichTextChangBookArtits = (value: string) => {
+  const handleRichTextChangeBookArtists = (value: string) => {
     formik.setFieldValue('book_artist', value);
   };
 
@@ -226,7 +226,7 @@ const Page = () => {
             theme="snow"
             className="h-60"
             value={formik.values.book_artist}
-            onChange={handleRichTextChangBookArtits}
+            onChange={handleRichTextChangeBookArtists}
           />
         </div>
       </FormGroup>

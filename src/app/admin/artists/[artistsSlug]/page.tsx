@@ -28,7 +28,7 @@ export default function EachDetailPage() {
   }, [dispatch, slug]);
 
   const ArtistsData = useGetApiResponse<ArtistsType>(
-    `getEachArtists("${slug ? slug : undefined}")`
+    `getEachArtists("${slug || undefined}")`
   );
 
   return (

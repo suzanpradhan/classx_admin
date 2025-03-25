@@ -5,31 +5,26 @@ import { PaginatedResponseType } from '@/core/types/responseTypes';
 import AlertDialog from '@/core/ui/components/AlertDialog';
 import PaginationNav from '@/core/ui/components/Pagination';
 import { Button, TableCard, tableStyles } from '@/core/ui/zenbuddha/src';
-import artistsApi from '@/modules/artists/artistsApi';
-import { ArtistsType } from '@/modules/artists/artistsType';
+import artistInfosApi from '@/modules/artists/artist_infosApi';
+import { ArtistInfosType } from '@/modules/artists/artistsType';
 import parse from 'html-react-parser';
-import Image from 'next/image';
 import { Eye, PencilSimpleLine, TrashSimple } from 'phosphor-react';
 import { useEffect, useState } from 'react';
 
-const ArtistsTableLisiting = () => {
+const ArtistInfosTableListing = () => {
   const dispatch = useAppDispatch();
   const [pageIndex, setPageIndex] = useState(1);
   const [deleteModelOpen, toggleDeleteModel] = useState(false);
   const [onDelete, setOnDelete] = useState<string | undefined>(undefined);
 
   useEffect(() => {
-    dispatch(
-      artistsApi.endpoints.getAllArtists.initiate({
-        pageNumber: pageIndex.toString(),
-      })
-    );
+    dispatch(artistInfosApi.endpoints.getAllArtistInfos.initiate(pageIndex));
   }, [dispatch, pageIndex]);
 
-  const artistsData = useAppSelector(
+  const artistsInfosData = useAppSelector(
     (state: RootState) =>
-      state.baseApi.queries[`getAllArtists`]
-        ?.data as PaginatedResponseType<ArtistsType>
+      state.baseApi.queries[`getAllArtistInfos`]
+        ?.data as PaginatedResponseType<ArtistInfosType>
   );
 
   return (
@@ -45,7 +40,7 @@ const ArtistsTableLisiting = () => {
             if (onDelete) {
               await Promise.resolve(
                 dispatch(
-                  artistsApi.endpoints.deleteArtists.initiate(
+                  artistInfosApi.endpoints.deleteArtistInfos.initiate(
                     onDelete as string
                   )
                 )
@@ -57,13 +52,13 @@ const ArtistsTableLisiting = () => {
         />
         <TableCard
           footer={
-            artistsData && artistsData?.results.length ? (
+            artistsInfosData && artistsInfosData?.results.length ? (
               <PaginationNav
                 gotoPage={setPageIndex}
                 canPreviousPage={pageIndex > 1}
-                canNextPage={pageIndex < artistsData.pagination.total_page}
-                pageCount={artistsData.pagination.total_page}
-                pageIndex={artistsData.pagination.current_page - 1}
+                canNextPage={pageIndex < artistsInfosData.pagination.total_page}
+                pageCount={artistsInfosData.pagination.total_page}
+                pageIndex={artistsInfosData.pagination.current_page - 1}
               />
             ) : (
               <></>
@@ -73,39 +68,36 @@ const ArtistsTableLisiting = () => {
           <thead>
             <tr className={tableStyles.table_thead_tr}>
               <th className={tableStyles.table_th}>S.N.</th>
-              <th className={tableStyles.table_th}>Profile</th>
-              <th className={tableStyles.table_th}>Name</th>
-              <th className={tableStyles.table_th}>Bio</th>
+              <th className={tableStyles.table_th}>Artist</th>
+              <th className={tableStyles.table_th}>Text one</th>
+              <th className={tableStyles.table_th}>Text two</th>
+              <th className={tableStyles.table_th}>Feat Text</th>
+              <th className={tableStyles.table_th}>Book artist</th>
               <th className={tableStyles.table_th}>Action</th>
             </tr>
           </thead>
           <tbody>
-            {artistsData?.results.map((item, index) => (
+            {artistsInfosData?.results.map((item, index) => (
               <tr key={index} className={tableStyles.table_tbody_tr}>
                 <td className={tableStyles.table_td}>{item.id}</td>
+                <td className={tableStyles.table_td}>{item?.artist?.name}</td>
                 <td className={tableStyles.table_td}>
-                  <div className="relative w-20 h-20 overflow-hidden rounded-md">
-                    {item.profile_picture && (
-                      <Image
-                        src={item.profile_picture}
-                        alt={item.name ?? ''}
-                        onError={(e) => {
-                          const target = e.currentTarget as HTMLImageElement;
-                          target.src = '/images/errors/placeholder.webp';
-                        }}
-                        fill
-                        placeholder="blur"
-                        blurDataURL={item.profile_picture}
-                        quality={75}
-                        sizes="(max-width: 768px) 75vw, 33vw"
-                        className="object-cover"
-                      />
-                    )}
-                  </div>
+                  <span className="line-clamp-2">{item?.text_one}</span>
                 </td>
-                <td className={tableStyles.table_td}>{item.name}</td>
                 <td className={tableStyles.table_td}>
-                  <span className="line-clamp-5">{parse(item.bio)}...</span>
+                  <span className="line-clamp-2">{item?.text_two}</span>
+                </td>
+                <td className={tableStyles.table_td}>
+                  {' '}
+                  <span className="line-clamp-2">
+                    {parse(item.feat_text)}...
+                  </span>
+                </td>
+                <td className={tableStyles.table_td}>
+                  {' '}
+                  <span className="line-clamp-2">
+                    {parse(item?.book_artist as string)}...
+                  </span>
                 </td>
 
                 <td className={tableStyles.table_td}>
@@ -113,7 +105,7 @@ const ArtistsTableLisiting = () => {
                     <Button
                       className="h-8 w-8"
                       type="link"
-                      href={`/admin/artists/${item.slug}`}
+                      href={`/admin/artists/artist_infos/${item.id}`}
                       buttonType="bordered"
                       prefix={<Eye size={18} weight="duotone" />}
                     />
@@ -121,7 +113,7 @@ const ArtistsTableLisiting = () => {
                       className="h-8 w-8"
                       kind="warning"
                       type="link"
-                      href={`/admin/artists/mutate/${item.slug}`}
+                      href={`/admin/artists/artist_infos/mutate/${item.id}`}
                       prefix={<PencilSimpleLine size={15} weight="duotone" />}
                     />
                     <Button
@@ -129,7 +121,7 @@ const ArtistsTableLisiting = () => {
                       kind="danger"
                       type="button"
                       onClick={() => {
-                        setOnDelete(item.slug?.toString());
+                        setOnDelete(item.id?.toString());
                         toggleDeleteModel(true);
                       }}
                       prefix={<TrashSimple size={18} weight="duotone" />}
@@ -145,4 +137,4 @@ const ArtistsTableLisiting = () => {
   );
 };
 
-export default ArtistsTableLisiting;
+export default ArtistInfosTableListing;

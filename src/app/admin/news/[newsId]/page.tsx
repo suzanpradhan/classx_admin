@@ -62,12 +62,10 @@ export default function EachDetailPage() {
                   <div className="text-base font-bold text-dark-500">
                     {newsData.title}
                   </div>
-
                 </div>
               }
               bottom={
                 <div className="flex gap-4 text-base font-normal text-primaryGray-500 pb-2">
-
                   <button
                     className={
                       tab == 1
@@ -78,7 +76,7 @@ export default function EachDetailPage() {
                       setTab(0);
                     }}
                   >
-                    NEWS TAB
+                    NEWS TAP
                     {tab == 1 ? (
                       <div className="absolute top-[calc(100%+6px)] h-[2px] w-full bg-dark-500 rounded-md"></div>
                     ) : (

@@ -81,7 +81,7 @@ export default function EachDetailPage() {
                       setTab(0);
                     }}
                   >
-                    APPLICANTS TAB
+                    APPLICANTS INFO
                     {tab == 1 ? (
                       <div className="absolute top-[calc(100%+6px)] h-[2px] w-full bg-dark-500 rounded-md"></div>
                     ) : (

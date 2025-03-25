@@ -123,6 +123,16 @@ export default function TestLayout({
               link="/admin/artists/mutate"
               linkExact
             />
+            <SideBarNavLink
+              title="All Artists Infos"
+              link="/admin/artists/artist_infos/all"
+              linkExact
+            />
+            <SideBarNavLink
+              title="Add New Artists Infos"
+              link="/admin/artists/artist_infos/mutate"
+              linkExact
+            />
           </SideBarNavGroup>
           <SideBarNavTitle title="Library" />
           <SideBarNavGroup title="Genres" segment="admin/genres">

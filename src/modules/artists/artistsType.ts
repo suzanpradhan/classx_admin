@@ -23,9 +23,20 @@ export const artitstBookingSchema = z.object({
   info: z.string().optional(),
   artist: selectorDataSchema,
 });
+export const artistInfosSchema = z.object({
+  id: z.number().optional().nullable(),
+  artist: selectorDataSchema,
+  text_two: z.string().optional(),
+  text_one: z.string(),
+  feat_text: z.string(),
+  about: z.string(),
+  book_artist: z.string(),
+});
 
 export type ArtitstBookingSchemaType = z.infer<typeof artitstBookingSchema>;
 export type ArtistsSchemaType = z.infer<typeof artistsSchema>;
+export type ArtistInfosSchemaType = z.infer<typeof artistInfosSchema>;
+
 export type ArtitstBookingType = {
   id: number;
   full_name: string;
@@ -45,4 +56,14 @@ export type ArtistsType = {
   name: string;
   bio: string;
   profile_picture?: string;
+};
+
+export type ArtistInfosType = {
+  id: number;
+  artist: ArtistsType;
+  about: string;
+  feat_text: string;
+  text_one?: string;
+  text_two?: string;
+  book_artist?: string;
 };

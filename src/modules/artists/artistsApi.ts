@@ -14,6 +14,7 @@ const artistsApi = baseApi.injectEndpoints({
         fromData.append('slug', String(payload.slug));
         fromData.append('name', String(payload.name));
         fromData.append('bio', String(payload.bio));
+
         if (payload.profile_picture)
           fromData.append('profile_picture', payload.profile_picture);
         return {

@@ -44,7 +44,7 @@ const Page = () => {
     { value: 'clz', label: 'College Organization' },
     { value: 'entre', label: 'Entrepreneur' },
     { value: 'hotel', label: 'Hotel' },
-    { value: 'other ', label: ' Other' },
+    { value: 'other', label: ' Other' },
   ];
   useEffect(() => {
     dispatch(artistsApi.endpoints.getAllArtists.initiate({ pageNumber: '1' }));

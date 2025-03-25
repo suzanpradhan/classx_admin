@@ -38,4 +38,5 @@ export const apiPaths = {
   appointmentsUrl: 'appointments/',
   artistbookingUrl: 'artist_booking/',
   featuredreleasesUrl: 'featured_releases/',
+  artist_infosUrl: 'artist_infos/',
 };

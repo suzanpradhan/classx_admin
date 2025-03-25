@@ -26,6 +26,7 @@ export const baseApi = createApi({
     'Appointments',
     'ArtistBooking',
     'FeaturedRelease',
+    'ArtistInfos',
   ],
   endpoints: () => ({}),
 });

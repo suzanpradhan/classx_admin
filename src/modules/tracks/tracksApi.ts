@@ -13,6 +13,8 @@ const tracksApi = baseApi.injectEndpoints({
         formData.append('id', String(payload.id));
         formData.append('title', String(payload.title));
         formData.append('slug', String(payload.slug));
+        formData.append('youtube', String(payload.youtube));
+        formData.append('spotify', String(payload.spotify));
         if (payload.intro_track)
           formData.append('intro_track', payload.intro_track);
         if (payload.duration)
@@ -129,6 +131,8 @@ const tracksApi = baseApi.injectEndpoints({
       query: ({ id, ...payload }) => {
         const formData = new FormData();
         formData.append('title', String(payload.title));
+        formData.append('youtube', String(payload.youtube));
+        formData.append('spotify', String(payload.spotify));
         formData.append('slug', String(payload.slug));
         if (payload.intro_track)
           formData.append('intro_track', payload.intro_track);

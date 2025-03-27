@@ -18,6 +18,8 @@ export const trackSchema = z.object({
   title: z.string().pipe(nonempty),
   genres: z.array(selectorDataSchema).optional(),
   duration: durationSchema,
+  youtube: z.string().url({ message: 'Invalid URL format.' }),
+  spotify: z.string().url({ message: 'Invalid URL format.' }),
   intro_track: introTrackFile.optional().nullable(),
   release: selectorDataSchema,
 });
@@ -39,6 +41,8 @@ export type Trackstype = {
   title: string;
   slug: string;
   duration: string;
+  youtube: string;
+  spotify: string;
   intro_track: string;
   artist: ArtistType;
   release: ReleaseType;

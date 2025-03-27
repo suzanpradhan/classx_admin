@@ -1,4 +1,4 @@
-import { Trackstype } from '@/modules/tracks/trackType'
+import { Trackstype } from '@/modules/tracks/trackType';
 
 const TrackDetailsTap = ({ tracks }: { tracks: Trackstype }) => {
   return (
@@ -12,11 +12,15 @@ const TrackDetailsTap = ({ tracks }: { tracks: Trackstype }) => {
         </div>
         <div className="grid grid-cols-2 md:grid-cols-none md:grid-rows-2">
           <div className="text-sm text-black">Artists</div>
-          <div className="text-base capitalize text-black">{tracks.artist.name}</div>
+          <div className="text-base capitalize text-black">
+            {tracks.artist.name}
+          </div>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-none md:grid-rows-2">
           <div className="text-sm text-black">Release</div>
-          <div className="text-base capitalize text-black">{tracks.release.title}</div>
+          <div className="text-base capitalize text-black">
+            {tracks.release.title}
+          </div>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-none md:grid-rows-2">
           <div className="text-sm text-black">Genres</div>
@@ -28,14 +32,25 @@ const TrackDetailsTap = ({ tracks }: { tracks: Trackstype }) => {
         </div>
         <div className="grid grid-cols-2 md:grid-cols-none md:grid-rows-2">
           <div className="text-sm text-black">Duration</div>
-          <div className="text-base capitalize text-black">{tracks.duration}</div>
+          <div className="text-base capitalize text-black">
+            {tracks.duration}
+          </div>
         </div>
-
+        <div className="grid grid-cols-2 md:grid-cols-none md:grid-rows-2">
+          <div className="text-sm text-black">Youtube</div>
+          <div className="text-base capitalize text-black">
+            {tracks.youtube}
+          </div>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-none md:grid-rows-2">
+          <div className="text-sm text-black">Spotify</div>
+          <div className="text-base capitalize text-black">
+            {tracks.spotify}
+          </div>
+        </div>
       </div>
-
-
     </div>
-  )
-}
+  );
+};
 
-export default TrackDetailsTap
+export default TrackDetailsTap;

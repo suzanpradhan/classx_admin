@@ -191,6 +191,8 @@ const Page = () => {
         : changeDurationToSchemaType('00:00:00'),
       slug: toMutatetrackData ? toMutatetrackData.slug : '',
       intro_track: toMutatetrackData ? null : null,
+      youtube: toMutatetrackData?.youtube || '',
+      spotify: toMutatetrackData?.spotify || '',
       artist: toMutatetrackData
         ? {
             value: toMutatetrackData.artist.id.toString(),
@@ -426,6 +428,36 @@ const Page = () => {
                 }}
                 name="release"
               ></Selector>
+            )}
+          </div>
+        </div>
+        <div className="flex gap-2 mb-2 max-sm:flex-col">
+          <div className="flex flex-col flex-1">
+            <TextField
+              id="youtube"
+              type="text"
+              label="Youtube "
+              className="flex-1"
+              {...formik.getFieldProps('youtube')}
+            />
+            {formik.errors.youtube && (
+              <div className="text-red-500 text-sm">
+                {formik.errors.youtube}
+              </div>
+            )}
+          </div>
+          <div className="flex flex-col flex-1">
+            <TextField
+              id="spotify"
+              type="text"
+              label="Spotify "
+              className="flex-1"
+              {...formik.getFieldProps('spotify')}
+            />
+            {formik.errors.spotify && (
+              <div className="text-red-500 text-sm">
+                {formik.errors.spotify}
+              </div>
             )}
           </div>
         </div>

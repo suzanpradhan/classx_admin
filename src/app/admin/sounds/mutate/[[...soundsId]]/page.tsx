@@ -8,7 +8,6 @@ import {
   Button,
   FormCard,
   FormGroup,
-  MusicUploader,
   TextField,
 } from '@/core/ui/zenbuddha/src';
 import DurationInput from '@/core/ui/zenbuddha/src/components/Duration';
@@ -295,14 +294,14 @@ const Page = () => {
         </div>
         <div className="flex gap-2 mb-2 max-sm:flex-col">
           <div className="flex flex-col flex-1">
-            <MusicUploader
+            {/* <MusicUploader
               id="track"
               label="Track"
               required
               className="flex-1 font-normal"
               value={formik.values.track}
               onChange={handleAudioChange}
-            />
+            /> */}
             {!!formik.errors.track && (
               <div className="text-red-500 text-sm">{formik.errors.track}</div>
             )}

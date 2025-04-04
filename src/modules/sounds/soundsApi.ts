@@ -92,10 +92,6 @@ const soundsApi = baseApi.injectEndpoints({
           toast.error(JSON.stringify(err));
         }
       },
-      // transformResponse: (response: any) => {
-      //   console.log('get hotek response', response);
-      //   return response;
-      // },
     }),
     // delete
 

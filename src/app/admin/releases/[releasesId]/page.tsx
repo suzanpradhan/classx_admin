@@ -22,18 +22,17 @@ export default function EachDetailPage() {
   const releasesId = param.releasesId;
   const [onDelete, setOnDelete] = useState<any>(undefined);
 
-
   useEffect(() => {
     if (releasesId) {
-      dispatch(releaseApi.endpoints.getEachReleases.initiate(releasesId as string));
+      dispatch(
+        releaseApi.endpoints.getEachReleases.initiate(releasesId as string)
+      );
     }
   }, [releasesId, dispatch]);
 
   const releasesData = useGetApiResponse<ReleasesType>(
     `getEachReleases("${releasesId ? releasesId : undefined}")`
   );
-
-  console.log(releasesData, "Data")
 
   return (
     <>
@@ -66,12 +65,10 @@ export default function EachDetailPage() {
                   <div className="text-base font-bold text-dark-500">
                     {releasesData.title}
                   </div>
-
                 </div>
               }
               bottom={
                 <div className="flex gap-4 text-base font-normal text-primaryGray-500 pb-2">
-
                   <button
                     className={
                       tab == 1

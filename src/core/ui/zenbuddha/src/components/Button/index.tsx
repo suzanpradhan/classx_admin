@@ -49,7 +49,8 @@ const Button = ({ buttonType = 'flat', kind, ...props }: ButtonProps) => {
       <Link
         title={props.tooltip}
         className={
-          `${buttonType == 'bordered' ? 'border' : ''
+          `${
+            buttonType == 'bordered' ? 'border' : ''
           } ${color} rounded-md h-12 text-sm font-normal flex justify-center items-center hover:opacity-95 px-3 whitespace-nowrap ` +
           props.className
         }
@@ -72,9 +73,11 @@ const Button = ({ buttonType = 'flat', kind, ...props }: ButtonProps) => {
     <button
       onClick={props.onClick}
       title={props.tooltip}
+      role="button"
       type={props.type ?? 'button'}
       className={
-        `${buttonType == 'bordered' ? 'border' : ''
+        `${
+          buttonType == 'bordered' ? 'border' : ''
         } ${color} rounded-md h-12 text-sm font-normal flex justify-center items-center hover:opacity-95 px-3 whitespace-nowrap ` +
         props.className
       }

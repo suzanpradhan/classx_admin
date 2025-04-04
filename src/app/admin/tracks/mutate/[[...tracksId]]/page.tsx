@@ -11,7 +11,6 @@ import {
   FormGroup,
   MusicUploader,
 } from '@/core/ui/zenbuddha/src';
-import DurationInput from '@/core/ui/zenbuddha/src/components/Duration';
 import TextField from '@/core/ui/zenbuddha/src/components/TextField2';
 import artistsApi from '@/modules/artists/artistsApi';
 import { ArtistsType } from '@/modules/artists/artistsType';
@@ -20,11 +19,13 @@ import { GenresType } from '@/modules/genres/genresType';
 import releaseApi from '@/modules/releases/releasesApi';
 import { ReleasesType } from '@/modules/releases/releasesType';
 import tracksApi from '@/modules/tracks/tracksApi';
+import tracksWaveApi from '@/modules/tracks/tracksWaveApi';
 import {
   TrackRequestType,
   trackSchema,
   TrackSchemaType,
   Trackstype,
+  TrackWaveType,
 } from '@/modules/tracks/trackType';
 import { useFormik } from 'formik';
 import { useParams, useRouter } from 'next/navigation';
@@ -35,15 +36,12 @@ const Page = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const param = useParams();
-  const [isFormOpen, setIsFormOpen] = useState(false);
-  const [newGenreName, setNewGenreName] = useState('');
   const tracksId = param.tracksId && param.tracksId[0];
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(genresApi.endpoints.getAllGenres.initiate({ pageNumber: '1' }));
     dispatch(artistsApi.endpoints.getAllArtists.initiate({ pageNumber: '1' }));
-    dispatch(releaseApi.endpoints.getAllReleases.initiate({ pageNumber: '1' }));
     if (tracksId) {
       dispatch(tracksApi.endpoints.getEachTracks.initiate(tracksId));
     }
@@ -51,6 +49,20 @@ const Page = () => {
 
   const toMutatetrackData = useGetApiResponse<Trackstype>(
     `getEachTracks("${tracksId ? tracksId : undefined}")`
+  );
+
+  useEffect(() => {
+    if (toMutatetrackData) {
+      dispatch(
+        tracksWaveApi.endpoints.getEachTrackWave.initiate(
+          toMutatetrackData.track_wave?.toString()
+        )
+      );
+    }
+  }, [tracksId, toMutatetrackData]);
+
+  const toMutateWaveData = useGetApiResponse<TrackWaveType>(
+    `getEachTrackWave-${toMutatetrackData?.track_wave}`
   );
 
   const allGenres = useAppSelector(
@@ -70,16 +82,7 @@ const Page = () => {
   );
 
   const allArtitstMod = allArtists?.results.map((item) => {
-    return { label: item.name, value: item.id.toString() };
-  });
-
-  const allRelease = useAppSelector(
-    (state: RootState) =>
-      state.baseApi.queries[`getAllReleases`]
-        ?.data as PaginatedResponseType<ReleasesType>
-  );
-  const allReleaseMod = allRelease?.results.map((item) => {
-    return { label: item.title, value: item.id.toString() };
+    return { label: item.name, value: item.id.toString(), extra: item.slug };
   });
 
   const validateForm = (values: TrackSchemaType) => {
@@ -94,7 +97,7 @@ const Page = () => {
   };
 
   const onSubmit = async (values: TrackSchemaType) => {
-    var finalRequestData: TrackRequestType = {
+    const finalRequestData: TrackRequestType = {
       ...values,
       genres: values.genres?.map((each) =>
         each.__isNew__
@@ -102,28 +105,41 @@ const Page = () => {
           : { id: parseInt(each.value), name: each.label }
       ),
     };
+    const wave_data = values.wave_data!;
+
     if (isLoading) {
       return;
     }
     setIsLoading(true);
     try {
       var data;
-      if (param.tracksId && param.tracksId[0]) {
+      if (tracksId) {
         data = await dispatch(
-          tracksApi.endpoints.updateTracks.initiate({
-            id: parseInt(param.tracksId[0]),
-            ...finalRequestData,
+          tracksWaveApi.endpoints.updateTrackWave.initiate({
+            id: toMutateWaveData.id!,
+            payload: wave_data,
           })
-        ).unwrap();
+        );
+        if (data.data?.wave_data) {
+          data = await dispatch(
+            tracksApi.endpoints.updateTracks.initiate({
+              id: parseInt(tracksId),
+              ...finalRequestData,
+            })
+          ).unwrap();
+        }
       } else {
         data = await dispatch(
-          tracksApi.endpoints.addTracks.initiate(finalRequestData)
+          tracksWaveApi.endpoints.addTrackWave.initiate(wave_data)
         ).unwrap();
-        // data = await Promise.resolve(
-        //   dispatch(
-        //     genresApi.endpoints.addGenres.initiate(values)
-        //   )
-        // )
+        if (data.wave_data) {
+          data = await dispatch(
+            tracksApi.endpoints.addTracks.initiate({
+              ...finalRequestData,
+              wave_data_id: data.id,
+            })
+          ).unwrap();
+        }
       }
       if (data) router.push('/admin/tracks/all');
     } catch (error) {
@@ -170,17 +186,6 @@ const Page = () => {
     }
   };
 
-  const secondsToDurationSchemaType = (seconds: number) => {
-    const hour = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    const sec = Math.floor(seconds % 60);
-    return {
-      hour: hour,
-      minutes: minutes,
-      seconds: sec,
-    };
-  };
-
   const formik = useFormik<TrackSchemaType>({
     enableReinitialize: true,
     initialValues: {
@@ -190,13 +195,14 @@ const Page = () => {
         ? changeDurationToSchemaType(toMutatetrackData.duration)
         : changeDurationToSchemaType('00:00:00'),
       slug: toMutatetrackData ? toMutatetrackData.slug : '',
-      intro_track: toMutatetrackData ? null : null,
-      youtube: toMutatetrackData?.youtube || '',
-      spotify: toMutatetrackData?.spotify || '',
+      intro_track_url: toMutatetrackData
+        ? toMutatetrackData.intro_track
+        : undefined,
       artist: toMutatetrackData
         ? {
             value: toMutatetrackData.artist.id.toString(),
             label: toMutatetrackData.artist.name,
+            extra: toMutatetrackData.artist.slug,
           }
         : { value: '', label: '' },
       release: toMutatetrackData
@@ -210,29 +216,41 @@ const Page = () => {
           value: genres.id!.toString(),
           label: genres.name,
         })) ?? [],
+      wave_data_from_source: toMutateWaveData?.wave_data,
     },
     validate: validateForm,
     onSubmit,
   });
 
-  const handleAudioChange = (event: any) => {
-    const file = event.target.files[0];
-    if (file) {
-      formik.setFieldValue('intro_track', file);
-      const audio = document.createElement('audio');
-      audio.src = URL.createObjectURL(file);
+  useEffect(() => {
+    dispatch(
+      releaseApi.endpoints.getAllReleases.initiate({
+        pageNumber: '1',
+        artistSlug: formik.values.artist.extra,
+      })
+    );
+  }, [formik.values.artist, dispatch]);
 
-      audio.addEventListener('loadedmetadata', () => {
-        const { hour, minutes, seconds } = secondsToDurationSchemaType(
-          audio.duration
-        );
+  const allRelease = useAppSelector(
+    (state: RootState) =>
+      state.baseApi.queries[`getAllReleases${formik.values.artist.extra ?? ''}`]
+        ?.data as PaginatedResponseType<ReleasesType>
+  );
 
-        formik.setFieldValue('duration[hour]', hour);
-        formik.setFieldValue('duration[minutes]', minutes);
-        formik.setFieldValue('duration[seconds]', seconds);
-      });
-    }
-  };
+  let allReleaseMod = allRelease?.results.map((item) => ({
+    label: item.title,
+    value: item.id.toString(),
+  }));
+
+  useEffect(() => {
+    const updateAllRelese = () => {
+      allReleaseMod = allRelease?.results.map((item) => ({
+        label: item.title,
+        value: item.id.toString(),
+      }));
+    };
+    updateAllRelese();
+  }, [allRelease]);
 
   const loadPaginatedGenres = async (
     searchQuery: any,
@@ -275,13 +293,13 @@ const Page = () => {
   ) => {
     dispatch(
       releaseApi.endpoints.getAllReleases.initiate({
-        pageNumber: (allRelease.pagination.current_page + 1).toString(),
+        pageNumber: (allRelease?.pagination?.current_page + 1).toString(),
         searchString: searchQuery as string,
       })
     );
     return {
       options: allReleaseMod,
-      hasMore: allRelease?.pagination.next != null,
+      hasMore: allRelease?.pagination?.next != null,
     };
   };
 
@@ -292,8 +310,6 @@ const Page = () => {
       })
     );
   };
-
-  // console.log("allGenres", allGenres)
 
   return (
     <FormCard onSubmit={formik.handleSubmit} className="m-4">
@@ -354,10 +370,35 @@ const Page = () => {
             <MusicUploader
               id="intro_track"
               label="Audio Track"
+              trackUrl={formik.values.intro_track_url ?? undefined}
               required
               className="flex-1 font-normal"
               value={formik.values.intro_track}
-              onChange={handleAudioChange}
+              duration={formik.values.duration}
+              waveDataFromSource={
+                formik.values.wave_data_from_source ?? undefined
+              }
+              waveData={formik.values.wave_data ?? undefined}
+              onFileChange={(e) => {
+                const file = e?.target.files?.[0];
+                if (file) {
+                  formik.setFieldValue('intro_track', file);
+                } else {
+                  formik.setFieldValue('intro_track', undefined);
+                }
+              }}
+              onDurationChange={(duration) => {
+                const { hour, minutes, seconds } = duration;
+                formik.setFieldValue('duration[hour]', hour);
+                formik.setFieldValue('duration[minutes]', minutes);
+                formik.setFieldValue('duration[seconds]', seconds);
+              }}
+              setUrlNull={() =>
+                formik.setFieldValue('intro_track_url', undefined)
+              }
+              onWaveDataChange={(waveData) =>
+                formik.setFieldValue('wave_data', waveData)
+              }
             />
             {!!formik.errors.intro_track && (
               <div className="text-red-500 text-sm">
@@ -365,7 +406,7 @@ const Page = () => {
               </div>
             )}
           </div>
-          <div className="basis-24 grow-0 shrink-0">
+          {/* <div className="basis-24 grow-0 shrink-0">
             <DurationInput
               id="duration"
               name="duration"
@@ -389,7 +430,7 @@ const Page = () => {
                 {formik.errors.duration.seconds}
               </div>
             )}
-          </div>
+          </div> */}
         </div>
       </FormGroup>
       <FormGroup title="Other Info">
@@ -413,12 +454,13 @@ const Page = () => {
             )}
           </div>
           <div className="flex flex-col flex-1">
-            {allRelease && (
+            {allReleaseMod && (
               <Selector
                 id="release"
                 options={allReleaseMod}
-                loadPaginatedOptions={loadPaginatedRelease}
-                type="AsyncPaginate"
+                // loadPaginatedOptions={loadPaginatedRelease}
+
+                // type="Async"
                 label="Release"
                 value={formik.values.release}
                 placeholder="Select release"

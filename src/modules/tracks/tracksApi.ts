@@ -25,6 +25,9 @@ const tracksApi = baseApi.injectEndpoints({
         if (payload.artist) {
           formData.append('artist', payload.artist.value);
         }
+        if (payload.wave_data_id) {
+          formData.append('track_wave', payload.wave_data_id.toString());
+        }
         if (payload.release) formData.append('release', payload.release.value);
         payload.genres?.forEach((item, index) => {
           formData.append(`genres[${index}]name`, item.name);
@@ -98,10 +101,6 @@ const tracksApi = baseApi.injectEndpoints({
           toast.error(JSON.stringify(err));
         }
       },
-      // transformResponse: (response: any) => {
-      //   console.log('get hotek response', response);
-      //   return response;
-      // },
     }),
     // delete
 

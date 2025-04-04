@@ -1,6 +1,5 @@
 import { selectorDataSchema } from '@/core/types/selectorType';
-import { nonempty } from '@/core/utils/formUtlis';
-import { introTrackFile } from '@/core/utils/helper';
+import { introTrackFile, nonempty } from '@/core/utils/formUtlis';
 import { z } from 'zod';
 
 export const durationSchema = z.object({
@@ -11,29 +10,53 @@ export const durationSchema = z.object({
 
 export type DurationSchemaType = z.infer<typeof durationSchema>;
 
-export const trackSchema = z.object({
-  id: z.number().optional().nullable(),
-  slug: z.string(),
-  artist: selectorDataSchema,
-  title: z.string().pipe(nonempty),
-  genres: z.array(selectorDataSchema).optional(),
-  duration: durationSchema,
-  youtube: z.string().url({ message: 'Invalid URL format.' }),
-  spotify: z.string().url({ message: 'Invalid URL format.' }),
-  intro_track: introTrackFile.optional().nullable(),
-  release: selectorDataSchema,
-});
+export const trackSchema = z
+  .object({
+    id: z.number().optional().nullable(),
+    slug: z.string(),
+    artist: selectorDataSchema,
+    title: z.string().pipe(nonempty),
+    genres: z.array(selectorDataSchema).optional(),
+    duration: durationSchema,
+    intro_track: introTrackFile.optional().nullable(),
+    intro_track_url: z.string().optional().nullable(),
+    release: selectorDataSchema,
+    wave_data: z.array(z.number()).optional().nullable(),
+    wave_data_id: z.number().optional().nullable(),
+    wave_data_from_source: z.string().optional().nullable(),
+    youtube: z.string().optional().nullable(),
+    spotify: z.string().optional().nullable(),
+  })
+  .refine(
+    (data) =>
+      (data.intro_track !== null && data.intro_track !== undefined) ||
+      (data.intro_track_url && data.intro_track_url.length > 1),
+    {
+      message: 'Audio track required',
+      path: ['intro_track'], // Points to the 'intro_track' field in the error message
+    }
+  )
+  .refine(
+    (data) =>
+      (data.wave_data_from_source && data.wave_data_from_source.length > 1) ||
+      (data.wave_data && data.wave_data.length > 1),
+    {
+      message: '',
+      path: ['intro_track'], // Points to the 'intro_track' field in the error message
+    }
+  );
 
 export const genresSchema = z.object({
   id: z.number().optional().nullable(),
   name: z.string(),
 });
-export const trackRequestSchema = trackSchema.extend({
+
+export type TrackSchemaType = z.infer<typeof trackSchema>;
+
+export const trackRequestSchema = trackSchema._def.schema._def.schema.extend({
   genres: z.array(genresSchema).optional(),
 });
-
 export type TrackRequestType = z.infer<typeof trackRequestSchema>;
-export type TrackSchemaType = z.infer<typeof trackSchema>;
 
 export type Trackstype = {
   id: number;
@@ -46,6 +69,7 @@ export type Trackstype = {
   intro_track: string;
   artist: ArtistType;
   release: ReleaseType;
+  track_wave: number;
 };
 
 export type GenreType = {
@@ -62,4 +86,10 @@ export type ArtistType = {
   name: string;
   bio: string;
   profile_picture: string;
+  slug: string;
+};
+
+export type TrackWaveType = {
+  id: number;
+  wave_data: string;
 };

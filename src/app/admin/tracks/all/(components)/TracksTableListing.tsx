@@ -7,6 +7,7 @@ import AlertDialog from '@/core/ui/components/AlertDialog';
 import PaginationNav from '@/core/ui/components/Pagination';
 import { Button, TableCard, tableStyles } from '@/core/ui/zenbuddha/src';
 import tracksApi from '@/modules/tracks/tracksApi';
+import tracksWaveApi from '@/modules/tracks/tracksWaveApi';
 import { Trackstype } from '@/modules/tracks/trackType';
 // import { Eye } from 'iconsax-react';
 import { Eye, PencilSimpleLine, TrashSimple } from 'phosphor-react';
@@ -23,9 +24,9 @@ const TaraclTableListing = () => {
   }, [dispatch, pageIndex]);
   const trackData = useAppSelector(
     (state: RootState) =>
-      state.baseApi.queries[`getAllTracks`]?.data as PaginatedResponseType<Trackstype>
+      state.baseApi.queries[`getAllTracks`]
+        ?.data as PaginatedResponseType<Trackstype>
   );
-
 
   // console.log(trackData, "data");
 
@@ -39,11 +40,14 @@ const TaraclTableListing = () => {
         }}
         onClickYes={async () => {
           if (onDelete) {
-            await Promise.resolve(
-              dispatch(
-                tracksApi.endpoints.deleteTracks.initiate(onDelete as string)
+            await dispatch(
+              tracksApi.endpoints.deleteTracks.initiate(onDelete as string)
+            ).unwrap();
+            await dispatch(
+              tracksWaveApi.endpoints.deleteTrackWave.initiate(
+                onDelete as string
               )
-            );
+            ).unwrap();
           }
           toggleDeleteModel(false);
           setOnDelete(undefined);
@@ -59,7 +63,6 @@ const TaraclTableListing = () => {
               pageCount={trackData.pagination.total_page}
               pageIndex={trackData.pagination.current_page - 1}
             />
-
           ) : (
             <></>
           )
@@ -82,9 +85,32 @@ const TaraclTableListing = () => {
               <td className={tableStyles.table_td}>{item.id}</td>
               <td className={tableStyles.table_td}>{item.title}</td>
               <td className={tableStyles.table_td}>{item.artist.name}</td>
-              <td className={tableStyles.table_td}>{item.genres && item.genres.length > 0 ? item.genres.map((item, index) => <div key={index} className='inline-block px-1 text-xs bg-slate-300 text-dark-500 rounded-sm mr-1'>{item.name}</div>) : ""}</td>
-              <td className={tableStyles.table_td}><span className={`text-xs px-2 py-1 rounded-sm capitalize bg-blue-100 text-black flex items-center gap-1 w-max`}>{item.release.title}</span></td>
-              <td className={tableStyles.table_td}><span className={`text-xs px-2 py-1 rounded-sm capitalize bg-slate-200 text-black flex items-center gap-1 w-max`}>{item.duration}</span></td>
+              <td className={tableStyles.table_td}>
+                {item.genres && item.genres.length > 0
+                  ? item.genres.map((item, index) => (
+                      <div
+                        key={index}
+                        className="inline-block px-1 text-xs bg-slate-300 text-dark-500 rounded-sm mr-1"
+                      >
+                        {item.name}
+                      </div>
+                    ))
+                  : ''}
+              </td>
+              <td className={tableStyles.table_td}>
+                <span
+                  className={`text-xs px-2 py-1 rounded-sm capitalize bg-blue-100 text-black flex items-center gap-1 w-max`}
+                >
+                  {item.release.title}
+                </span>
+              </td>
+              <td className={tableStyles.table_td}>
+                <span
+                  className={`text-xs px-2 py-1 rounded-sm capitalize bg-slate-200 text-black flex items-center gap-1 w-max`}
+                >
+                  {item.duration}
+                </span>
+              </td>
 
               <td className={`${tableStyles.table_td} flex gap-2 max-w-xs`}>
                 <Button
@@ -92,13 +118,13 @@ const TaraclTableListing = () => {
                   type="link"
                   href={`/admin/tracks/${item.id}`}
                   buttonType="bordered"
-                  kind='warning'
+                  kind="warning"
                   prefix={<Eye size={18} weight="duotone" />}
                 />
                 <Button
                   className="h-8 w-8"
                   type="link"
-                  kind='warning'
+                  kind="warning"
                   href={`/admin/tracks/mutate/${item.id}`}
                   prefix={<PencilSimpleLine size={15} weight="duotone" />}
                 />

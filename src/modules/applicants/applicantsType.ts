@@ -1,6 +1,5 @@
 import { selectorDataSchema } from '@/core/types/selectorType';
-import { nonempty } from '@/core/utils/formUtlis';
-import { documentFile, imageFile } from '@/core/utils/helper';
+import { documentFile, imageFile, nonempty } from '@/core/utils/formUtlis';
 import { z } from 'zod';
 import { GenresType } from '../genres/genresType';
 

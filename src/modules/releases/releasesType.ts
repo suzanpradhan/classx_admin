@@ -1,6 +1,5 @@
 import { selectorDataSchema } from '@/core/types/selectorType';
-import { nonempty } from '@/core/utils/formUtlis';
-import { imageFile } from '@/core/utils/helper';
+import { imageFile, nonempty } from '@/core/utils/formUtlis';
 import { z } from 'zod';
 
 export const releasesSchema = z.object({
@@ -52,4 +51,5 @@ export type ArtistType = {
   name: string;
   bio: string;
   profile_picture: string;
+  slug: string;
 };

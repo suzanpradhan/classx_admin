@@ -3,8 +3,8 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'classxpresentation.suzanpradhan.com.np',
+        protocol: 'http',
+        hostname: 'uatclassx.suzanpradhan.com.np',
         port: '',
         pathname: '/media/**',
       },

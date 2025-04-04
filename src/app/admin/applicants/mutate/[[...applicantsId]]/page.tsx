@@ -56,7 +56,6 @@ const Page = () => {
     `getEachApplicants("${applicantsId ? applicantsId : undefined}")`
   );
 
-  console.log(toMutateAppliacantsData, 'toMutateAppliacantsData');
   const allGenres = useAppSelector(
     (state: RootState) =>
       state.baseApi.queries[`getAllGenres`]

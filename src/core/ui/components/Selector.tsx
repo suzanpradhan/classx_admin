@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-'use client'
+'use client';
 
 import { SelectorDataType } from '@/core/types/selectorType';
 import { cn } from '@/lib/utils';
@@ -10,7 +10,13 @@ import Select, {
   SingleValue,
   components,
 } from 'react-select';
-import { AsyncPaginate, ComponentProps, LoadOptions, UseAsyncPaginateParams, withAsyncPaginate } from 'react-select-async-paginate';
+import {
+  AsyncPaginate,
+  ComponentProps,
+  LoadOptions,
+  UseAsyncPaginateParams,
+  withAsyncPaginate,
+} from 'react-select-async-paginate';
 import AsyncSelect from 'react-select/async';
 import Creatable, { CreatableProps } from 'react-select/creatable';
 
@@ -39,23 +45,28 @@ export interface SelectorProps {
   onChange?: any;
   suffix?: React.ReactNode;
   value?: SingleValue<SelectorDataType> | MultiValue<SelectorDataType>;
-  type?: 'Creatable' | 'Select' | 'Async' | 'AsyncPaginate' | 'AsyncPaginateCreatable';
+  type?:
+    | 'Creatable'
+    | 'Select'
+    | 'Async'
+    | 'AsyncPaginate'
+    | 'AsyncPaginateCreatable';
   loadOptions?: (inputValue: string) => void;
   handleChange?: (
     // eslint-disable-next-line no-unused-vars
     e:
       | SingleValue<{
-        value: string;
-        label: string;
-        extra?: string | undefined;
-        __isNew__?: boolean | undefined;
-      }>
+          value: string;
+          label: string;
+          extra?: string | undefined;
+          __isNew__?: boolean | undefined;
+        }>
       | MultiValue<{
-        value: string;
-        label: string;
-        extra?: string | undefined;
-        __isNew__?: boolean | undefined;
-      }>
+          value: string;
+          label: string;
+          extra?: string | undefined;
+          __isNew__?: boolean | undefined;
+        }>
   ) => void;
   formatOptionLabel?: (data: SelectorDataType) => React.ReactNode;
 }
@@ -64,16 +75,16 @@ type AsyncPaginateCreatableProps<
   OptionType,
   Group extends GroupBase<OptionType>,
   Additional,
-  IsMulti extends boolean
+  IsMulti extends boolean,
 > = CreatableProps<OptionType, IsMulti, Group> &
   UseAsyncPaginateParams<OptionType, Group, Additional> &
-  ComponentProps<OptionType, Group, IsMulti>
+  ComponentProps<OptionType, Group, IsMulti>;
 
 type AsyncPaginateCreatableType = <
   OptionType,
   Group extends GroupBase<OptionType>,
   Additional,
-  IsMulti extends boolean = false
+  IsMulti extends boolean = false,
 >(
   props: AsyncPaginateCreatableProps<OptionType, Group, Additional, IsMulti>
 ) => ReactElement;
@@ -212,7 +223,7 @@ const Selector = ({ className, suffix, ...props }: SelectorProps) => {
       ) : props.type == 'AsyncPaginate' ? (
         props.loadPaginatedOptions ? (
           <AsyncPaginate
-            id="companyId"
+            id={props.id}
             isDisabled={props.isDisabled}
             loadOptions={props.loadPaginatedOptions}
             value={props.value}
@@ -346,7 +357,6 @@ const Selector = ({ className, suffix, ...props }: SelectorProps) => {
                 primary25: '#EAB308',
                 primary: '#2560AA',
                 // primary: '#060708',
-
               },
             };
           }}

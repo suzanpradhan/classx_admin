@@ -6,16 +6,30 @@ import { RootState } from '@/core/redux/store';
 import { PaginatedResponseType } from '@/core/types/responseTypes';
 import { SelectorDataType } from '@/core/types/selectorType';
 import Selector from '@/core/ui/components/Selector';
-import { Button, FormCard, FormGroup, ImageInput, TextField } from '@/core/ui/zenbuddha/src';
+import {
+  Button,
+  FormCard,
+  FormGroup,
+  ImageInput,
+  TextField,
+} from '@/core/ui/zenbuddha/src';
 import DateSelector from '@/core/ui/zenbuddha/src/components/DateSelector';
 import artistsApi from '@/modules/artists/artistsApi';
 import { ArtistsType } from '@/modules/artists/artistsType';
 import genresApi from '@/modules/genres/genresApi';
 import { GenresType } from '@/modules/genres/genresType';
 import productsApi from '@/modules/products/productsApi';
-import { ProductsSchemaType, ProductsType } from '@/modules/products/productType';
+import {
+  ProductsSchemaType,
+  ProductsType,
+} from '@/modules/products/productType';
 import releaseApi from '@/modules/releases/releasesApi';
-import { ReleasesRequestType, releasesSchema, ReleasesSchemaType, ReleasesType } from '@/modules/releases/releasesType';
+import {
+  ReleasesRequestType,
+  releasesSchema,
+  ReleasesSchemaType,
+  ReleasesType,
+} from '@/modules/releases/releasesType';
 import { useFormik } from 'formik';
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
@@ -24,13 +38,12 @@ import ReactQuill from 'react-quill-new';
 import { SingleValue } from 'react-select';
 import { ZodError } from 'zod';
 
-
 const Page = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const param = useParams();
   const releasesId = param.releasesId && param.releasesId[0];
-  const productSlug = param.releasesId && param.releasesId[1];
+  // const productSlug = param.releasesId;
   const dispatch = useAppDispatch();
 
   const Releases_TYPES: Array<SelectorDataType> = [
@@ -43,20 +56,15 @@ const Page = () => {
     dispatch(genresApi.endpoints.getAllGenres.initiate({ pageNumber: '1' }));
     dispatch(artistsApi.endpoints.getAllArtists.initiate({ pageNumber: '1' }));
     if (releasesId) {
-      dispatch(
-        releaseApi.endpoints.getEachReleases.initiate(
-          releasesId
-        )
-      );
+      dispatch(releaseApi.endpoints.getEachReleases.initiate(releasesId));
     }
   }, [releasesId, dispatch]);
 
-
   useEffect(() => {
-    if (productSlug) {
-      dispatch(productsApi.endpoints.getEachProducts.initiate(productSlug));
+    if (releasesId) {
+      dispatch(productsApi.endpoints.getEachProducts.initiate(releasesId));
     }
-  }, [productSlug, dispatch])
+  }, [releasesId, dispatch]);
 
   const toMutateReleasesData = useGetApiResponse<ReleasesType>(
     `getEachReleases("${releasesId ? releasesId : undefined}")`
@@ -67,8 +75,9 @@ const Page = () => {
       state.baseApi.queries[`getAllGenres`]
         ?.data as PaginatedResponseType<GenresType>
   );
-  const allGenresMod = allGenres?.results.map((item) => { return { label: item.name, value: item.id.toString() } })
-
+  const allGenresMod = allGenres?.results.map((item) => {
+    return { label: item.name, value: item.id.toString() };
+  });
 
   const allArtists = useAppSelector(
     (state: RootState) =>
@@ -76,14 +85,15 @@ const Page = () => {
         ?.data as PaginatedResponseType<ArtistsType>
   );
 
-  const allArtitstMod = allArtists?.results.map((item) => { return { label: item.name, value: item.id.toString() } })
+  const allArtitstMod = allArtists?.results.map((item) => {
+    return { label: item.name, value: item.id.toString() };
+  });
 
   const productData = useAppSelector(
     (state: RootState) =>
-      state.baseApi.queries[`getEachProducts("${productSlug}")`]
+      state.baseApi.queries[`getEachProducts("${releasesId}")`]
         ?.data as ProductsType
-  )
-
+  );
 
   const validateForm = (values: ReleasesSchemaType) => {
     try {
@@ -96,6 +106,10 @@ const Page = () => {
     }
   };
   const onSubmit = async (values: ReleasesSchemaType) => {
+    if (isLoading) {
+      return;
+    }
+    setIsLoading(true);
     var finalRequestData: ReleasesRequestType = {
       ...values,
       genres: values.genres?.map((each) =>
@@ -105,18 +119,14 @@ const Page = () => {
       ),
     };
 
-    if (isLoading) {
-      return;
-    }
-    setIsLoading(true);
     try {
       let releaseData;
 
-      if (param.releasesId && param.releasesId[0]) {
+      if (releasesId) {
         releaseData = await Promise.resolve(
           dispatch(
             releaseApi.endpoints.updateReleases.initiate({
-              id: parseInt(param.releasesId[0]),
+              id: parseInt(releasesId),
               ...finalRequestData,
             })
           )
@@ -129,47 +139,44 @@ const Page = () => {
             price: values.price!,
             slug: values.slug!,
             description: values.description ?? '',
-            product_type: "digital",
+            product_type: 'digital',
             stock: '',
             artist: values.artist.value,
             release: releasesId,
           };
 
           const productResponse = await Promise.resolve(
-            dispatch(productsApi.endpoints.updateProducts.initiate({
-              id: productSlug ? parseInt(productSlug) : undefined,
-              ...productData,
-            }))
+            dispatch(
+              productsApi.endpoints.updateProducts.initiate({
+                id: releasesId ? parseInt(releasesId) : undefined,
+                ...productData,
+              })
+            )
           );
-
-          if (productResponse) {
-            console.log("Product updated successfully:", productResponse);
-          }
         }
       } else {
-        releaseData = await Promise.resolve(
-          dispatch(releaseApi.endpoints.addReleases.initiate(finalRequestData))
+        releaseData = await dispatch(
+          releaseApi.endpoints.addReleases.initiate(finalRequestData)
         );
 
-        if (releaseData && releaseData.data != undefined) {
+        if (releaseData) {
           const productData: ProductsSchemaType = {
             title: values.title!,
             thumbnail: values.cover!,
             price: values.price!,
             slug: values.slug!,
             description: values.description ?? '',
-            product_type: "digital",
+            product_type: 'digital',
             stock: '',
             artist: values.artist.value,
             release: releaseData.data.id,
           };
 
-          const productResponse = await Promise.resolve(
-            dispatch(productsApi.endpoints.addProducts.initiate(productData))
+          const productResponse = await dispatch(
+            productsApi.endpoints.addProducts.initiate(productData)
           );
-
           if (productResponse) {
-            console.log("Product added successfully:", productResponse);
+            console.log('Product added successfully:', productResponse);
           }
         }
       }
@@ -179,7 +186,6 @@ const Page = () => {
       if (releaseData) {
         window.location.href = '/admin/releases/all';
       }
-
     } catch (error) {
       console.error('Failed to submit:', error);
     } finally {
@@ -194,12 +200,17 @@ const Page = () => {
   const formik = useFormik<ReleasesSchemaType>({
     enableReinitialize: true,
     initialValues: {
-      id: toMutateReleasesData
-        ? (toMutateReleasesData.id ?? null)
-        : null,
+      id: toMutateReleasesData ? (toMutateReleasesData.id ?? null) : null,
       title: toMutateReleasesData ? toMutateReleasesData.title : '',
-      release_type: toMutateReleasesData ? toMutateReleasesData.release_type : '',
-      artist: toMutateReleasesData ? { value: toMutateReleasesData.artist.id.toString(), label: toMutateReleasesData.artist.name } : { value: '', label: '' },
+      release_type: toMutateReleasesData
+        ? toMutateReleasesData.release_type
+        : '',
+      artist: toMutateReleasesData
+        ? {
+            value: toMutateReleasesData.artist.id.toString(),
+            label: toMutateReleasesData.artist.name,
+          }
+        : { value: '', label: '' },
       release_date: dateTiemString,
       price: productData ? productData.price : '',
       slug: productData ? productData.slug : '',
@@ -210,7 +221,6 @@ const Page = () => {
           value: genres.id!.toString(),
           label: genres.name,
         })) ?? [],
-
     },
     validate: validateForm,
     onSubmit,
@@ -233,15 +243,15 @@ const Page = () => {
     { page }: any
   ) => {
     dispatch(
-      genresApi.endpoints.getAllGenres.initiate(
-        { pageNumber: (allGenres.pagination.current_page + 1).toString(), searchString: searchQuery as string }
-      )
+      genresApi.endpoints.getAllGenres.initiate({
+        pageNumber: (allGenres.pagination.current_page + 1).toString(),
+        searchString: searchQuery as string,
+      })
     );
 
     return {
       options: allGenresMod,
-      hasMore:
-        allGenres?.pagination.next != null,
+      hasMore: allGenres?.pagination.next != null,
     };
   };
 
@@ -251,25 +261,24 @@ const Page = () => {
     { page }: any
   ) => {
     dispatch(
-      artistsApi.endpoints.getAllArtists.initiate(
-        { pageNumber: (allArtists.pagination.current_page + 1).toString(), searchString: searchQuery as string }
-      )
+      artistsApi.endpoints.getAllArtists.initiate({
+        pageNumber: (allArtists.pagination.current_page + 1).toString(),
+        searchString: searchQuery as string,
+      })
     );
     return {
       options: allArtitstMod,
-      hasMore:
-        allArtists?.pagination.next != null,
+      hasMore: allArtists?.pagination.next != null,
     };
   };
 
   const handleCreateGenre = async (inputValue: string) => {
     dispatch(
       genresApi.endpoints.addGenres.initiate({
-        name: inputValue
+        name: inputValue,
       })
     );
-
-  }
+  };
 
   return (
     <FormCard onSubmit={formik.handleSubmit} className="m-4 !max-w-full">
@@ -286,7 +295,9 @@ const Page = () => {
                   {...formik.getFieldProps('title')}
                 />
                 {!!formik.errors.title && (
-                  <div className="text-red-500 text-sm">{formik.errors.title}</div>
+                  <div className="text-red-500 text-sm">
+                    {formik.errors.title}
+                  </div>
                 )}
               </div>
             </div>
@@ -305,7 +316,9 @@ const Page = () => {
                   }
                 />
                 {!!formik.errors.release_date && (
-                  <div className="text-red-500 text-sm">{formik.errors.release_date}</div>
+                  <div className="text-red-500 text-sm">
+                    {formik.errors.release_date}
+                  </div>
                 )}
               </div>
               <div className="flex flex-col flex-1">
@@ -320,7 +333,9 @@ const Page = () => {
                     type="AsyncPaginateCreatable"
                     placeholder="Select genres"
                     className="flex-1"
-                    handleChange={(selectedOptions) => formik.setFieldValue('genres', selectedOptions)}
+                    handleChange={(selectedOptions) =>
+                      formik.setFieldValue('genres', selectedOptions)
+                    }
                     name="genres"
                     value={formik.values.genres}
                   ></Selector>
@@ -334,16 +349,13 @@ const Page = () => {
                     id="artist"
                     options={allArtitstMod}
                     loadPaginatedOptions={loadPaginatedArtists}
-                    type='AsyncPaginate'
+                    type="AsyncPaginate"
                     label="Artist"
                     value={formik.values.artist}
                     placeholder="Select artist"
                     className="flex-1"
                     handleChange={(e) => {
-                      formik.setFieldValue(
-                        'artist',
-                        e
-                      );
+                      formik.setFieldValue('artist', e);
                     }}
                     name="artist"
                   ></Selector>
@@ -356,7 +368,8 @@ const Page = () => {
                   handleChange={(e) => {
                     formik.setFieldValue(
                       'release_type',
-                      (e as SingleValue<{ value: string; label: string }>)?.value
+                      (e as SingleValue<{ value: string; label: string }>)
+                        ?.value
                     );
                   }}
                   options={Releases_TYPES}
@@ -372,10 +385,18 @@ const Page = () => {
               </div>
             </div>
             <div className="mt-3 gap-2">
-              <label htmlFor="description" className="block mb-2 text-sm font-medium text-gray-700">
+              <label
+                htmlFor="description"
+                className="block mb-2 text-sm font-medium text-gray-700"
+              >
                 Description
               </label>
-              <ReactQuill theme="snow" className="h-60 bg-whiteShade" value={formik.values.description ?? ''} onChange={handleRichTextChange} />
+              <ReactQuill
+                theme="snow"
+                className="h-60 bg-whiteShade"
+                value={formik.values.description ?? ''}
+                onChange={handleRichTextChange}
+              />
             </div>
           </FormGroup>
         </div>
@@ -391,7 +412,9 @@ const Page = () => {
                 {...formik.getFieldProps('price')}
               />
               {formik.errors.price && (
-                <div className="text-red-500 text-sm">{formik.errors.price}</div>
+                <div className="text-red-500 text-sm">
+                  {formik.errors.price}
+                </div>
               )}
 
               <div className="">
@@ -404,7 +427,9 @@ const Page = () => {
                   onChange={handleImageChange}
                 />
                 {!!formik.errors.cover && (
-                  <div className="text-red-500 text-sm">{formik.errors.cover}</div>
+                  <div className="text-red-500 text-sm">
+                    {formik.errors.cover}
+                  </div>
                 )}
                 <div className="bg-blueWhite border mt-3 border-primaryGray-300 rounded-lg overflow-hidden max-w-xl relative aspect-video">
                   {formik.values.cover || formik.values.cover_url ? (
@@ -412,14 +437,15 @@ const Page = () => {
                       src={
                         formik.values.cover
                           ? URL.createObjectURL(formik.values.cover)
-                          : formik.values.cover_url ?? "/default-placeholder.png"
+                          : (formik.values.cover_url ??
+                            '/default-placeholder.png')
                       }
                       alt="Cover Preview"
                       layout="fill"
                       objectFit="contain"
                       quality={85}
                       onError={(e) => {
-                        e.currentTarget.src = "/default-placeholder.png";
+                        e.currentTarget.src = '/default-placeholder.png';
                       }}
                     />
                   ) : (
@@ -429,9 +455,6 @@ const Page = () => {
                   )}
                 </div>
               </div>
-
-
-
             </div>
           </FormGroup>
         </div>
@@ -456,7 +479,6 @@ const Page = () => {
         />
       </div>
     </FormCard>
-
   );
 };
 

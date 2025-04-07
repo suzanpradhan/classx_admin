@@ -107,10 +107,6 @@ const productsApi = baseApi.injectEndpoints({
           toast.error(JSON.stringify(err));
         }
       },
-      transformResponse: (response: any) => {
-        console.log('get each products response', response);
-        return response;
-      },
     }),
     // delete
 
@@ -126,6 +122,7 @@ const productsApi = baseApi.injectEndpoints({
           await queryFulfilled;
           toast.success('Products has been deleted.');
         } catch (err) {
+          console.log('Delete Products Error:', err);
           toast.error(
             'Failed to delete the Products. Please check if the ID is correct.'
           );

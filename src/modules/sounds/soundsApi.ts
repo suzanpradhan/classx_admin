@@ -18,6 +18,9 @@ const soundsApi = baseApi.injectEndpoints({
             'duration',
             `${payload.duration.hour?.toString().padStart(2, '0')}:${payload.duration.minutes?.toString().padStart(2, '0')}:${payload.duration.seconds?.toString().padStart(2, '0')}`
           );
+        if (payload.wave_data_id) {
+          formData.append('track_wave', payload.wave_data_id.toString());
+        }
         if (payload.artist) {
           formData.append('artist', payload.artist.value);
         }

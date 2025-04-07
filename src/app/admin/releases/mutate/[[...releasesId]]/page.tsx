@@ -43,7 +43,6 @@ const Page = () => {
   const [isLoading, setIsLoading] = useState(false);
   const param = useParams();
   const releasesId = param.releasesId && param.releasesId[0];
-  // const productSlug = param.releasesId;
   const dispatch = useAppDispatch();
 
   const Releases_TYPES: Array<SelectorDataType> = [
@@ -95,6 +94,7 @@ const Page = () => {
         ?.data as ProductsType
   );
 
+  console.log(productData, 'productdata');
   const validateForm = (values: ReleasesSchemaType) => {
     try {
       releasesSchema.parse(values);

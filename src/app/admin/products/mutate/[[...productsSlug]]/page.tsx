@@ -1,10 +1,20 @@
 'use client';
 import { useGetApiResponse } from '@/core/api/getApiResponse';
 import { useAppDispatch } from '@/core/redux/clientStore';
-import { Button, FormCard, FormGroup, ImageInput, TextField } from '@/core/ui/zenbuddha/src';
+import {
+  Button,
+  FormCard,
+  FormGroup,
+  ImageInput,
+  TextField,
+} from '@/core/ui/zenbuddha/src';
 import artistsApi from '@/modules/artists/artistsApi';
 import productsApi from '@/modules/products/productsApi';
-import { productsSchema, ProductsSchemaType, ProductsType } from '@/modules/products/productType';
+import {
+  productsSchema,
+  ProductsSchemaType,
+  ProductsType,
+} from '@/modules/products/productType';
 import { useFormik } from 'formik';
 import { useParams, useRouter } from 'next/navigation';
 import { ChangeEvent, useEffect, useState } from 'react';
@@ -29,14 +39,12 @@ const Page = () => {
   useEffect(() => {
     // dispatch(releaseApi.endpoints.getAllReleases.initiate(1));
     dispatch(artistsApi.endpoints.getAllArtists.initiate({ pageNumber: '1' }));
-
   }, [dispatch]);
 
   useEffect(() => {
     if (slug) {
       dispatch(productsApi.endpoints.getEachProducts.initiate(slug.toString()));
     }
-
   }, [slug, dispatch]);
 
   // useEffect(() => {
@@ -68,16 +76,14 @@ const Page = () => {
     setIsLoading(true);
     try {
       const data = slug
-        ? await Promise.resolve(
-          dispatch(
+        ? await dispatch(
             productsApi.endpoints.updateProducts.initiate({
               ...values,
             })
-          )
-        )
-        : await Promise.resolve(
-          dispatch(productsApi.endpoints.addProducts.initiate(values))
-        );
+          ).unwrap()
+        : await dispatch(
+            productsApi.endpoints.addProducts.initiate(values)
+          ).unwrap();
       if (data) router.push('/admin/products/all');
       setIsLoading(false);
     } catch (error) {
@@ -112,7 +118,6 @@ const Page = () => {
     validate: validateForm,
     onSubmit,
   });
-
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.[0]) {
@@ -168,7 +173,9 @@ const Page = () => {
               onChange={handleImageChange}
             />
             {formik.errors.thumbnail && (
-              <div className="text-red-500 text-sm">{formik.errors.thumbnail}</div>
+              <div className="text-red-500 text-sm">
+                {formik.errors.thumbnail}
+              </div>
             )}
           </div>
           <div className="flex flex-col flex-1">
@@ -274,16 +281,22 @@ const Page = () => {
           )} */}
         </div>
 
-
-        <div className='mt-3 gap-2'>
-          <label htmlFor="description" className="block text-sm mb-2 font-medium text-gray-700">
+        <div className="mt-3 gap-2">
+          <label
+            htmlFor="description"
+            className="block text-sm mb-2 font-medium text-gray-700"
+          >
             Description
           </label>
-          <ReactQuill theme="snow" className='h-60' value={formik.values.description} onChange={handleRichTextChange}
+          <ReactQuill
+            theme="snow"
+            className="h-60"
+            value={formik.values.description}
+            onChange={handleRichTextChange}
           />
         </div>
 
-        <div className='flex gap-2 mb-2 max-sm:flex-col'>
+        <div className="flex gap-2 mb-2 max-sm:flex-col">
           {/* <div className='flex flex-col flex-1'>
             <ColorSelector
               id="colorPicker"
@@ -294,9 +307,7 @@ const Page = () => {
             />
 
           </div> */}
-
         </div>
-
       </FormGroup>
 
       <div className="flex justify-end gap-2 m-4">

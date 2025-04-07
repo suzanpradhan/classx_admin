@@ -107,6 +107,10 @@ const productsApi = baseApi.injectEndpoints({
           toast.error(JSON.stringify(err));
         }
       },
+      transformResponse: (response: any) => {
+        console.log('get each products response', response);
+        return response;
+      },
     }),
     // delete
 

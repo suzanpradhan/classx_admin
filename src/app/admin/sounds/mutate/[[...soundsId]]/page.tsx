@@ -8,9 +8,9 @@ import {
   Button,
   FormCard,
   FormGroup,
+  MusicUploader,
   TextField,
 } from '@/core/ui/zenbuddha/src';
-import DurationInput from '@/core/ui/zenbuddha/src/components/Duration';
 import artistsApi from '@/modules/artists/artistsApi';
 import { ArtistsType } from '@/modules/artists/artistsType';
 import genresApi from '@/modules/genres/genresApi';
@@ -22,6 +22,8 @@ import {
   SoundSchemaType,
   SoundsType,
 } from '@/modules/sounds/soundsType';
+import tracksWaveApi from '@/modules/tracks/tracksWaveApi';
+import { TrackWaveType } from '@/modules/tracks/trackType';
 import { useFormik } from 'formik';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -44,6 +46,9 @@ const Page = () => {
 
   const toMutatetrackData = useGetApiResponse<SoundsType>(
     `getEachSounds("${soundsId ? soundsId : undefined}")`
+  );
+  const toMutateWaveData = useGetApiResponse<TrackWaveType>(
+    `getEachTrackWave-${toMutatetrackData?.track_wave}`
   );
 
   const allGenres = useAppSelector(
@@ -86,23 +91,41 @@ const Page = () => {
           : { id: parseInt(each.value), name: each.label }
       ),
     };
+    const wave_data = values.wave_data!;
+
     if (isLoading) {
       return;
     }
     setIsLoading(true);
     try {
       var data;
-      if (param.soundsId && param.soundsId[0]) {
+      if (soundsId) {
         data = await dispatch(
-          soundsApi.endpoints.updateSounds.initiate({
-            id: parseInt(param.soundsId[0]),
-            ...finalRequestData,
+          tracksWaveApi.endpoints.updateTrackWave.initiate({
+            id: toMutateWaveData.id!,
+            payload: wave_data,
           })
-        ).unwrap();
+        );
+        if (data.data?.wave_data) {
+          data = await dispatch(
+            soundsApi.endpoints.updateSounds.initiate({
+              id: parseInt(soundsId),
+              ...finalRequestData,
+            })
+          ).unwrap();
+        }
       } else {
         data = await dispatch(
-          soundsApi.endpoints.addSounds.initiate(finalRequestData)
+          tracksWaveApi.endpoints.addTrackWave.initiate(wave_data)
         ).unwrap();
+        if (data.wave_data) {
+          data = await dispatch(
+            soundsApi.endpoints.addSounds.initiate({
+              ...finalRequestData,
+              wave_data_id: data.id,
+            })
+          ).unwrap();
+        }
       }
       if (data) router.push('/admin/sounds/all');
     } catch (error) {
@@ -168,7 +191,7 @@ const Page = () => {
       duration: toMutatetrackData
         ? changeDurationToSchemaType(toMutatetrackData.duration)
         : changeDurationToSchemaType('00:00:00'),
-      track: toMutatetrackData ? null : null,
+      track_url: toMutatetrackData ? toMutatetrackData.track : undefined,
       artist: toMutatetrackData
         ? {
             value: toMutatetrackData.artist.id.toString(),
@@ -181,6 +204,7 @@ const Page = () => {
           value: genres.id!.toString(),
           label: genres.name,
         })) ?? [],
+      wave_data_from_source: toMutateWaveData?.wave_data,
     },
     validate: validateForm,
     onSubmit,
@@ -294,19 +318,42 @@ const Page = () => {
         </div>
         <div className="flex gap-2 mb-2 max-sm:flex-col">
           <div className="flex flex-col flex-1">
-            {/* <MusicUploader
+            <MusicUploader
               id="track"
-              label="Track"
+              label="Audio Track"
+              trackUrl={formik.values.track_url ?? undefined}
               required
               className="flex-1 font-normal"
               value={formik.values.track}
-              onChange={handleAudioChange}
-            /> */}
+              duration={formik.values.duration}
+              waveDataFromSource={
+                formik.values.wave_data_from_source ?? undefined
+              }
+              waveData={formik.values.wave_data ?? undefined}
+              onFileChange={(e) => {
+                const file = e?.target.files?.[0];
+                if (file) {
+                  formik.setFieldValue('track', file);
+                } else {
+                  formik.setFieldValue('track', undefined);
+                }
+              }}
+              onDurationChange={(duration) => {
+                const { hour, minutes, seconds } = duration;
+                formik.setFieldValue('duration[hour]', hour);
+                formik.setFieldValue('duration[minutes]', minutes);
+                formik.setFieldValue('duration[seconds]', seconds);
+              }}
+              setUrlNull={() => formik.setFieldValue('track_url', undefined)}
+              onWaveDataChange={(waveData) =>
+                formik.setFieldValue('wave_data', waveData)
+              }
+            />
             {!!formik.errors.track && (
               <div className="text-red-500 text-sm">{formik.errors.track}</div>
             )}
           </div>
-          <div className="basis-24 grow-0 shrink-0">
+          {/* <div className="basis-24 grow-0 shrink-0">
             <DurationInput
               id="duration"
               name="duration"
@@ -321,7 +368,7 @@ const Page = () => {
                 {formik.errors.duration.seconds}
               </div>
             )}
-          </div>
+          </div> */}
         </div>
       </FormGroup>
       <FormGroup title="Other Info">

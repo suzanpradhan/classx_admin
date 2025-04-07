@@ -44,11 +44,22 @@ const Page = () => {
     }
   }, [soundsId, dispatch]);
 
-  const toMutatetrackData = useGetApiResponse<SoundsType>(
+  const toMutatesoundData = useGetApiResponse<SoundsType>(
     `getEachSounds("${soundsId ? soundsId : undefined}")`
   );
+
+  useEffect(() => {
+    if (toMutatesoundData) {
+      dispatch(
+        tracksWaveApi.endpoints.getEachTrackWave.initiate(
+          toMutatesoundData.track_wave?.toString()
+        )
+      );
+    }
+  }, [soundsId, toMutatesoundData]);
+
   const toMutateWaveData = useGetApiResponse<TrackWaveType>(
-    `getEachTrackWave-${toMutatetrackData?.track_wave}`
+    `getEachTrackWave-${toMutatesoundData?.track_wave}`
   );
 
   const allGenres = useAppSelector(
@@ -186,21 +197,21 @@ const Page = () => {
   const formik = useFormik<SoundSchemaType>({
     enableReinitialize: true,
     initialValues: {
-      id: toMutatetrackData ? (toMutatetrackData.id ?? null) : null,
-      title: toMutatetrackData ? toMutatetrackData.title : '',
-      duration: toMutatetrackData
-        ? changeDurationToSchemaType(toMutatetrackData.duration)
+      id: toMutatesoundData ? (toMutatesoundData.id ?? null) : null,
+      title: toMutatesoundData ? toMutatesoundData.title : '',
+      duration: toMutatesoundData
+        ? changeDurationToSchemaType(toMutatesoundData.duration)
         : changeDurationToSchemaType('00:00:00'),
-      track_url: toMutatetrackData ? toMutatetrackData.track : undefined,
-      artist: toMutatetrackData
+      track_url: toMutatesoundData ? toMutatesoundData.track : undefined,
+      artist: toMutatesoundData
         ? {
-            value: toMutatetrackData.artist.id.toString(),
-            label: toMutatetrackData.artist.name,
+            value: toMutatesoundData.artist.id.toString(),
+            label: toMutatesoundData.artist.name,
           }
         : { value: '', label: '' },
 
       genres:
-        toMutatetrackData?.genres?.map((genres) => ({
+        toMutatesoundData?.genres?.map((genres) => ({
           value: genres.id!.toString(),
           label: genres.name,
         })) ?? [],

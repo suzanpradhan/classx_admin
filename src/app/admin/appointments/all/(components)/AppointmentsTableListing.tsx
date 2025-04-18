@@ -9,14 +9,8 @@ import appointmentsApi from '@/modules/appointments/appointmentsApi';
 import { AppointmentsType } from '@/modules/appointments/appointmentsType';
 import { format, parseISO } from 'date-fns';
 import { toZonedTime } from 'date-fns-tz';
-import {
-  Clock,
-  Eye,
-  PaperPlaneRight,
-  Phone,
-  TrashSimple,
-  User,
-} from 'phosphor-react';
+import { DirectRight } from 'iconsax-react';
+import { Clock, Eye, Phone, TrashSimple, User } from 'phosphor-react';
 import { useEffect, useState } from 'react';
 
 const AppointmentsTableListing = () => {
@@ -122,7 +116,7 @@ const AppointmentsTableListing = () => {
                       className={`text-xs px-2 py-1 rounded-sm  bg-slate-900 text-white flex items-center gap-1 w-max`}
                     >
                       {item.email}
-                      <PaperPlaneRight size={15} weight="duotone" />
+                      <DirectRight size={15} />
                     </a>
                   </div>
                 </td>

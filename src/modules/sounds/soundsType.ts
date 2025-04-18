@@ -32,7 +32,7 @@ export const soundSchema = z
       (data.wave_data_from_source && data.wave_data_from_source.length > 1) ||
       (data.wave_data && data.wave_data.length > 1),
     {
-      message: '',
+      message: 'Wave data or wave data source required',
       path: ['track'], // Points to the 'track' field in the error message
     }
   );

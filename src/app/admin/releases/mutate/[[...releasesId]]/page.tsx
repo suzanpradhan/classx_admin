@@ -130,7 +130,7 @@ const Page = () => {
           })
         ).unwrap();
 
-        if (releaseData && releaseData) {
+        if (releaseData) {
           const productData: ProductsSchemaType = {
             title: values.title!,
             thumbnail: values.cover!,

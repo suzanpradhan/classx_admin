@@ -43,7 +43,7 @@ const Page = () => {
   const [isLoading, setIsLoading] = useState(false);
   const param = useParams();
   const releasesId = param.releasesId && param.releasesId[0];
-  // const productSlug = param.releasesId;
+  const productSlug = param.releasesId && param.releasesId[1];
   const dispatch = useAppDispatch();
 
   const Releases_TYPES: Array<SelectorDataType> = [
@@ -61,10 +61,10 @@ const Page = () => {
   }, [releasesId, dispatch]);
 
   useEffect(() => {
-    if (releasesId) {
-      dispatch(productsApi.endpoints.getEachProducts.initiate(releasesId));
+    if (productSlug) {
+      dispatch(productsApi.endpoints.getEachProducts.initiate(productSlug));
     }
-  }, [releasesId, dispatch]);
+  }, [productSlug, dispatch]);
 
   const toMutateReleasesData = useGetApiResponse<ReleasesType>(
     `getEachReleases("${releasesId ? releasesId : undefined}")`
@@ -91,7 +91,7 @@ const Page = () => {
 
   const productData = useAppSelector(
     (state: RootState) =>
-      state.baseApi.queries[`getEachProducts("${releasesId}")`]
+      state.baseApi.queries[`getEachProducts("${productSlug}")`]
         ?.data as ProductsType
   );
 
@@ -106,10 +106,6 @@ const Page = () => {
     }
   };
   const onSubmit = async (values: ReleasesSchemaType) => {
-    if (isLoading) {
-      return;
-    }
-    setIsLoading(true);
     var finalRequestData: ReleasesRequestType = {
       ...values,
       genres: values.genres?.map((each) =>
@@ -119,20 +115,22 @@ const Page = () => {
       ),
     };
 
+    if (isLoading) {
+      return;
+    }
+    setIsLoading(true);
     try {
       let releaseData;
 
-      if (releasesId) {
-        releaseData = await Promise.resolve(
-          dispatch(
-            releaseApi.endpoints.updateReleases.initiate({
-              id: parseInt(releasesId),
-              ...finalRequestData,
-            })
-          )
-        );
+      if (param.releasesId && param.releasesId[0]) {
+        releaseData = await dispatch(
+          releaseApi.endpoints.updateReleases.initiate({
+            id: parseInt(param.releasesId[0]),
+            ...finalRequestData,
+          })
+        ).unwrap();
 
-        if (releaseData && releaseData.data) {
+        if (releaseData) {
           const productData: ProductsSchemaType = {
             title: values.title!,
             thumbnail: values.cover!,
@@ -145,21 +143,22 @@ const Page = () => {
             release: releasesId,
           };
 
-          const productResponse = await Promise.resolve(
-            dispatch(
-              productsApi.endpoints.updateProducts.initiate({
-                id: releasesId ? parseInt(releasesId) : undefined,
-                ...productData,
-              })
-            )
-          );
+          const productResponse = await dispatch(
+            productsApi.endpoints.updateProducts.initiate({
+              id: productSlug ? parseInt(productSlug) : undefined,
+              ...productData,
+            })
+          ).unwrap();
+
+          if (productResponse) {
+            console.log('Product updated successfully:', productResponse);
+          }
         }
       } else {
         releaseData = await dispatch(
           releaseApi.endpoints.addReleases.initiate(finalRequestData)
-        );
-
-        if (releaseData) {
+        ).unwrap();
+        if (releaseData && releaseData.data !== undefined) {
           const productData: ProductsSchemaType = {
             title: values.title!,
             thumbnail: values.cover!,
@@ -174,14 +173,13 @@ const Page = () => {
 
           const productResponse = await dispatch(
             productsApi.endpoints.addProducts.initiate(productData)
-          );
+          ).unwrap();
+
           if (productResponse) {
             console.log('Product added successfully:', productResponse);
           }
         }
       }
-
-      // if (releaseData) router.push('/admin/releases/all');
 
       if (releaseData) {
         window.location.href = '/admin/releases/all';

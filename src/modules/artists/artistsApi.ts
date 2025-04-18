@@ -88,7 +88,7 @@ const artistsApi = baseApi.injectEndpoints({
         }
       },
       transformResponse: (response: any) => {
-        console.log('get each artist response', response);
+        // console.log('get each artist response', response);
         return response;
       },
     }),

@@ -14,7 +14,7 @@ const eventCategoryApi = eventApi.injectEndpoints({
       query: (payload) => {
         const formData = new FormData();
         formData.append('id', String(payload.id));
-        formData.append('name', String(payload.title));
+        formData.append('title', String(payload.title));
         return {
           url: `${eventApiPaths.eventCategoryUrl}`,
           method: 'POST',

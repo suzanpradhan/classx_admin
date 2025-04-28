@@ -194,6 +194,19 @@ export default function TestLayout({
               link="/admin/events/venue/mutate"
             />
           </SideBarNavGroup>
+          <SideBarNavGroup
+            title="Event Catergory"
+            segment="admin/events/category"
+          >
+            <SideBarNavLink
+              title="All Event Catergory"
+              link="/admin/events/category/all"
+            />
+            <SideBarNavLink
+              title="Add New Event Catergory"
+              link="/admin/events/category/mutate"
+            />
+          </SideBarNavGroup>
           <div className="my-2 border-t border-white/5"></div>
           {/* <SideBarNavTitle title="Settings" />
           <SideBarNavGroup title="Accounts" segment="admin/accounts">

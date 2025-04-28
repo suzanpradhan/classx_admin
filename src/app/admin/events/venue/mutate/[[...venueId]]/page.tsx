@@ -34,15 +34,25 @@ const Page = () => {
 
   useEffect(() => {
     dispatch(cityApi.endpoints.getAllCity.initiate({ pageNumber: '1' }));
+  }, [dispatch]);
+
+  useEffect(() => {
     if (venueId) {
-      dispatch(venueApi.endpoints.getEachVenue.initiate(venueId));
+      const fetchcity = async () => {
+        try {
+          await dispatch(venueApi.endpoints.getEachVenue.initiate(venueId));
+        } catch (error) {
+          console.error('Error fetching venue data:', error);
+        }
+      };
+
+      fetchcity();
     }
   }, [venueId, dispatch]);
 
   const toMutateVenueData = useGetApiResponse<VenueDataType>(
-    `getEachVenue("${venueId ? venueId : undefined}")`
+    `getEachVenue("${venueId ?? ''}")`
   );
-
   const allCity = useAppSelector(
     (state: RootState) =>
       state.eventApi.queries[`getAllCity`]
@@ -138,7 +148,7 @@ const Page = () => {
       <FormGroup title="Basic Type">
         <div className="flex mb-2 flex-col flex-1">
           <TextField
-            id="title"
+            id="name"
             type="text"
             label="Name"
             required
@@ -171,7 +181,7 @@ const Page = () => {
 
           <div className="flex flex-col flex-1">
             <ImageInput
-              id="Image"
+              id="image"
               label="Cover Image"
               required
               className="flex-1 font-normal"
@@ -186,7 +196,7 @@ const Page = () => {
 
         <div className="mt-3 gap-2">
           <label
-            htmlFor="content"
+            htmlFor="description"
             className="block text-sm mb-2 font-medium text-gray-700"
           >
             Description

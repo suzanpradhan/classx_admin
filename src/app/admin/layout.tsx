@@ -186,7 +186,14 @@ export default function TestLayout({
               link="/admin/digital_download/mutate"
             />
           </SideBarNavGroup>
-
+          <SideBarNavTitle title="Event" />
+          <SideBarNavGroup title="Venue" segment="admin/events/venue">
+            <SideBarNavLink title="All Venue" link="/admin/events/venue/all" />
+            <SideBarNavLink
+              title="Add New Venue"
+              link="/admin/events/venue/mutate"
+            />
+          </SideBarNavGroup>
           <div className="my-2 border-t border-white/5"></div>
           {/* <SideBarNavTitle title="Settings" />
           <SideBarNavGroup title="Accounts" segment="admin/accounts">

@@ -20,6 +20,11 @@ export async function setHeaders(headers: Headers) {
   return headers;
 }
 
+export async function setHeadersEvents(headers: Headers) {
+  headers.set('accept', 'application/json');
+  return headers;
+}
+
 export const apiPaths = {
   serverUrl: process.env.NEXT_PUBLIC_SERVER_URL,
   baseUrl: process.env.NEXT_PUBLIC_SERVER_URL + '/api/v1/',
@@ -39,4 +44,15 @@ export const apiPaths = {
   artistbookingUrl: 'artist_booking/',
   featuredreleasesUrl: 'featured_releases/',
   artist_infosUrl: 'artist_infos/',
+};
+
+export const eventApiPaths = {
+  serverUrl: process.env.NEXT_PUBLIC_EVENT_URL,
+  eventBaseUrl: process.env.NEXT_PUBLIC_EVENT_URL + '/api/v1/',
+
+  venueUrl: 'venue/',
+  cityUrl: 'city/',
+  stateUrl: 'state/',
+  eventCategoryUrl: 'event-category/',
+  eventUrl: 'event/',
 };

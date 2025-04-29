@@ -42,6 +42,15 @@ export const eventApi = createApi({
     baseUrl: `${eventApiPaths.eventBaseUrl}`,
     prepareHeaders: async (headers: Headers) => await setHeadersEvents(headers),
   }),
-  tagTypes: ['Venue', 'City', 'State', 'Event', 'Event_Category'],
+  tagTypes: [
+    'User',
+    'Venue',
+    'City',
+    'State',
+    'Event',
+    'Performer',
+    'Event_Category',
+    'Event_Performer',
+  ],
   endpoints: () => ({}),
 });

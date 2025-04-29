@@ -28,7 +28,7 @@ const venueApi = eventApi.injectEndpoints({
           toast.success('Venue Created.');
         } catch (err) {
           console.log(err);
-          toast.error('Failed creating a news.');
+          toast.error('Failed creating a performer.');
         }
       },
       transformResponse: (response: any) => {

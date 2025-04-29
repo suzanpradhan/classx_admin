@@ -1,6 +1,7 @@
 'use client';
-import { useGetApiResponse } from '@/core/api/getApiResponse';
-import { useAppDispatch } from '@/core/redux/clientStore';
+import { useAppDispatch, useAppSelector } from '@/core/redux/clientStore';
+import { RootState } from '@/core/redux/store';
+import { PaginatedResponseType } from '@/core/types/responseTypes';
 import {
   Button,
   FormCard,
@@ -41,10 +42,12 @@ const Page = () => {
     }
   }, [categoryId, dispatch]);
 
-  const toMutateCategoryData = useGetApiResponse<EventCategoryType>(
-    `getEachEventCategory("${categoryId ? categoryId : undefined}")`
+  const toMutateCategoryData = useAppSelector(
+    (state: RootState) =>
+      state.eventApi.queries[
+        `getEachEventCategory("${categoryId || undefined}")`
+      ]?.data as PaginatedResponseType<EventCategoryType>
   );
-
   const onSubmit = async (values: EventCategorySchemaType) => {
     if (isLoading) {
       return;

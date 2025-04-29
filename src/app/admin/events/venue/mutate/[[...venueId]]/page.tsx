@@ -1,5 +1,4 @@
 'use client';
-import { useGetApiResponse } from '@/core/api/getApiResponse';
 import { useAppDispatch, useAppSelector } from '@/core/redux/clientStore';
 import { RootState } from '@/core/redux/store';
 import { PaginatedResponseType } from '@/core/types/responseTypes';
@@ -38,21 +37,16 @@ const Page = () => {
 
   useEffect(() => {
     if (venueId) {
-      const fetchcity = async () => {
-        try {
-          await dispatch(venueApi.endpoints.getEachVenue.initiate(venueId));
-        } catch (error) {
-          console.error('Error fetching venue data:', error);
-        }
-      };
-
-      fetchcity();
+      dispatch(venueApi.endpoints.getEachVenue.initiate(venueId));
     }
   }, [venueId, dispatch]);
 
-  const toMutateVenueData = useGetApiResponse<VenueDataType>(
-    `getEachVenue("${venueId ?? ''}")`
+  const toMutateVenueData = useAppSelector(
+    (state: RootState) =>
+      state.eventApi.queries[`getEachVenue("${venueId || undefined}")`]
+        ?.data as PaginatedResponseType<VenueDataType>
   );
+
   const allCity = useAppSelector(
     (state: RootState) =>
       state.eventApi.queries[`getAllCity`]

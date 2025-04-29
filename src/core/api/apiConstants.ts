@@ -21,7 +21,11 @@ export async function setHeaders(headers: Headers) {
 }
 
 export async function setHeadersEvents(headers: Headers) {
+  const apiKey = process.env.NEXT_PUBLIC_X_ORGANZIER_KEY || '';
+  const username = process.env.NEXT_PUBLIC_X_ORGANZIER_USERNAME || '';
   headers.set('accept', 'application/json');
+  headers.set('X-Organizer-Key', apiKey);
+  headers.set('X-Organizer-Username', username);
   return headers;
 }
 
@@ -49,10 +53,13 @@ export const apiPaths = {
 export const eventApiPaths = {
   serverUrl: process.env.NEXT_PUBLIC_EVENT_URL,
   eventBaseUrl: process.env.NEXT_PUBLIC_EVENT_URL + '/api/v1/',
-
+  loginUrl: 'auth/login/',
+  accountsUrl: 'accounts/',
   venueUrl: 'venue/',
   cityUrl: 'city/',
   stateUrl: 'state/',
   eventCategoryUrl: 'event-category/',
   eventUrl: 'event/',
+  performerUrl: 'performer/',
+  eventPerformerUrl: 'event-performer/',
 };

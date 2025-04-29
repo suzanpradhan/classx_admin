@@ -207,6 +207,19 @@ export default function TestLayout({
               link="/admin/events/category/mutate"
             />
           </SideBarNavGroup>
+          <SideBarNavGroup
+            title="Event Performer"
+            segment="admin/events/performer"
+          >
+            <SideBarNavLink
+              title="All Event Performer"
+              link="/admin/events/performer/all"
+            />
+            <SideBarNavLink
+              title="Add New Event Performer"
+              link="/admin/events/performer/mutate"
+            />
+          </SideBarNavGroup>
           <div className="my-2 border-t border-white/5"></div>
           {/* <SideBarNavTitle title="Settings" />
           <SideBarNavGroup title="Accounts" segment="admin/accounts">

@@ -186,7 +186,7 @@ export default function TestLayout({
               link="/admin/digital_download/mutate"
             />
           </SideBarNavGroup>
-          <SideBarNavTitle title="Event" />
+          <SideBarNavTitle title="Events" />
           <SideBarNavGroup title="Venue" segment="admin/events/venue">
             <SideBarNavLink title="All Venue" link="/admin/events/venue/all" />
             <SideBarNavLink
@@ -199,7 +199,7 @@ export default function TestLayout({
             segment="admin/events/category"
           >
             <SideBarNavLink
-              title="All Event Catergory"
+              title="All Events Catergory"
               link="/admin/events/category/all"
             />
             <SideBarNavLink
@@ -212,11 +212,18 @@ export default function TestLayout({
             segment="admin/events/performer"
           >
             <SideBarNavLink
-              title="All Event Performer"
+              title="All Events Performer"
               link="/admin/events/performer/all"
             />
             <SideBarNavLink
               title="Add New Event Performer"
+              link="/admin/events/performer/mutate"
+            />
+          </SideBarNavGroup>
+          <SideBarNavGroup title="Event" segment="admin/events/event">
+            <SideBarNavLink title="All Events" link="/admin/events/event/all" />
+            <SideBarNavLink
+              title="Add New Event"
               link="/admin/events/performer/mutate"
             />
           </SideBarNavGroup>

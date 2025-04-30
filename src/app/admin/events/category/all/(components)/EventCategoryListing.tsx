@@ -97,8 +97,10 @@ const EventCategoryListing = () => {
                     type="button"
                     prefix={<TrashSimple size={18} weight="duotone" />}
                     onClick={() => {
-                      setOnDelete(item.id.toString());
-                      toggleDeleteModel(true);
+                      if (item.id) {
+                        setOnDelete(item.id.toString());
+                        toggleDeleteModel(true);
+                      }
                     }}
                   />
                 </td>

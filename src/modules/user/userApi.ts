@@ -1,7 +1,7 @@
 import { eventApiPaths } from '@/core/api/apiConstants';
 import { eventApi } from '@/core/api/apiQuery';
 import { PaginatedResponseType } from '@/core/types/responseTypes';
-import { UserResponse } from './accountsType';
+import { UserResponse } from './userType';
 
 const userApi = eventApi.injectEndpoints({
   endpoints: (builder) => ({

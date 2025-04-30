@@ -56,9 +56,32 @@ const eventsApi = eventApi.injectEndpoints({
         }
       },
       transformResponse: (response: any) => {
-        console.log('get each city response', response);
+        console.log('get each event response', response);
         return response;
       },
+    }),
+
+    // delete
+
+    deleteEvent: builder.mutation<any, string>({
+      query(id) {
+        return {
+          url: `${eventApiPaths.eventUrl}${id}/`,
+          method: 'DELETE',
+        };
+      },
+      async onQueryStarted(payload, { queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          toast.success('Event has been deleted.');
+        } catch (err) {
+          console.error('Delete Event Error:', err);
+          toast.error(
+            'Failed to delete the Event. Please check if the ID is correct.'
+          );
+        }
+      },
+      invalidatesTags: (result, error, id) => [{ type: 'Event', id }],
     }),
   }),
   overrideExisting: true,

@@ -14,6 +14,11 @@ const nextConfig = {
         port: '',
         pathname: '/media/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'event.suzanpradhan.com.np',
+        pathname: '/media/**',
+      },
     ],
   },
 };

@@ -20,6 +20,15 @@ export async function setHeaders(headers: Headers) {
   return headers;
 }
 
+export async function setHeadersEvents(headers: Headers) {
+  const apiKey = process.env.NEXT_PUBLIC_X_ORGANZIER_KEY || '';
+  const username = process.env.NEXT_PUBLIC_X_ORGANZIER_USERNAME || '';
+  headers.set('accept', 'application/json');
+  headers.set('X-Organizer-Key', apiKey);
+  headers.set('X-Organizer-Username', username);
+  return headers;
+}
+
 export const apiPaths = {
   serverUrl: process.env.NEXT_PUBLIC_SERVER_URL,
   baseUrl: process.env.NEXT_PUBLIC_SERVER_URL + '/api/v1/',
@@ -39,4 +48,19 @@ export const apiPaths = {
   artistbookingUrl: 'artist_booking/',
   featuredreleasesUrl: 'featured_releases/',
   artist_infosUrl: 'artist_infos/',
+};
+
+export const eventApiPaths = {
+  serverUrl: process.env.NEXT_PUBLIC_EVENT_URL,
+  eventBaseUrl: process.env.NEXT_PUBLIC_EVENT_URL + '/api/v1/',
+  loginUrl: 'auth/login/',
+  usersUrl: 'users/',
+  venueUrl: 'venue/',
+  cityUrl: 'city/',
+  stateUrl: 'state/',
+  eventCategoryUrl: 'event-category/',
+  eventUrl: 'event/',
+  event_tagsUrl: 'event-tag/',
+  performerUrl: 'performer/',
+  eventPerformerUrl: 'event-performer/',
 };

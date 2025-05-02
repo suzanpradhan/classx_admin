@@ -5,6 +5,11 @@ export const nonempty = z
   .transform((t) => t?.trim())
   .pipe(z.string().min(1, { message: 'Required' }));
 
+export const nonemptyDate = z
+  .date()
+  .refine((date) => !isNaN(date.getTime()), { message: 'Date is required' })
+  .nullable();
+
 export const introTrackFile = z.instanceof(File).refine(
   (file) => {
     const acceptedAudioTypes = [

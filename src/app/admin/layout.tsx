@@ -186,7 +186,47 @@ export default function TestLayout({
               link="/admin/digital_download/mutate"
             />
           </SideBarNavGroup>
-
+          <SideBarNavTitle title="Events" />
+          <SideBarNavGroup title="Venue" segment="admin/events/venue">
+            <SideBarNavLink title="All Venue" link="/admin/events/venue/all" />
+            <SideBarNavLink
+              title="Add New Venue"
+              link="/admin/events/venue/mutate"
+            />
+          </SideBarNavGroup>
+          <SideBarNavGroup
+            title="Event Catergory"
+            segment="admin/events/category"
+          >
+            <SideBarNavLink
+              title="All Events Catergory"
+              link="/admin/events/category/all"
+            />
+            <SideBarNavLink
+              title="Add New Event Catergory"
+              link="/admin/events/category/mutate"
+            />
+          </SideBarNavGroup>
+          <SideBarNavGroup
+            title="Event Performer"
+            segment="admin/events/performer"
+          >
+            <SideBarNavLink
+              title="All Events Performer"
+              link="/admin/events/performer/all"
+            />
+            <SideBarNavLink
+              title="Add New Event Performer"
+              link="/admin/events/performer/mutate"
+            />
+          </SideBarNavGroup>
+          <SideBarNavGroup title="Event" segment="admin/events/event">
+            <SideBarNavLink title="All Events" link="/admin/events/event/all" />
+            <SideBarNavLink
+              title="Add New Event"
+              link="/admin/events/event/mutate"
+            />
+          </SideBarNavGroup>
           <div className="my-2 border-t border-white/5"></div>
           {/* <SideBarNavTitle title="Settings" />
           <SideBarNavGroup title="Accounts" segment="admin/accounts">

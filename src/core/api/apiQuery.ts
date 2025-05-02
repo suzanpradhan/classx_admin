@@ -1,5 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query';
-import { apiPaths, setHeaders } from './apiConstants';
+import {
+  apiPaths,
+  eventApiPaths,
+  setHeaders,
+  setHeadersEvents,
+} from './apiConstants';
 
 export const baseApi = createApi({
   reducerPath: 'baseApi',
@@ -27,6 +32,26 @@ export const baseApi = createApi({
     'ArtistBooking',
     'FeaturedRelease',
     'ArtistInfos',
+  ],
+  endpoints: () => ({}),
+});
+
+export const eventApi = createApi({
+  reducerPath: 'eventApi',
+  baseQuery: fetchBaseQuery({
+    baseUrl: `${eventApiPaths.eventBaseUrl}`,
+    prepareHeaders: async (headers: Headers) => await setHeadersEvents(headers),
+  }),
+  tagTypes: [
+    'User',
+    'Venue',
+    'City',
+    'State',
+    'Event',
+    'Performer',
+    'Event_Category',
+    'Event_Performer',
+    'Event_Tags',
   ],
   endpoints: () => ({}),
 });

@@ -23,7 +23,7 @@ const Page = () => {
   const [pageIndex, setPageIndex] = useState(1);
   const router = useRouter();
   const param = useParams();
-  const performerSlug = param.performerSlug && param.performerSlug[0];
+  const performerId = param.performerId && param.performerId[0];
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -32,11 +32,11 @@ const Page = () => {
   }, [pageIndex, dispatch]);
 
   useEffect(() => {
-    if (performerSlug) {
+    if (performerId) {
       const fetchcity = async () => {
         try {
           await dispatch(
-            performerApi.endpoints.getEachPerformer.initiate(performerSlug)
+            performerApi.endpoints.getEachPerformer.initiate(performerId)
           );
         } catch (error) {
           console.error('Error fetching venue data:', error);
@@ -45,13 +45,12 @@ const Page = () => {
 
       fetchcity();
     }
-  }, [performerSlug, dispatch]);
+  }, [performerId, dispatch]);
 
   const toMutatePerformerData = useAppSelector(
     (state: RootState) =>
-      state.eventApi.queries[
-        `getEachPerformer("${performerSlug || undefined}")`
-      ]?.data as PaginatedResponseType<EventPerfomerDataTypes>
+      state.eventApi.queries[`getEachPerformer("${performerId || undefined}")`]
+        ?.data as PaginatedResponseType<EventPerfomerDataTypes>
   );
 
   const allEvents = useAppSelector(
@@ -79,10 +78,10 @@ const Page = () => {
     setIsLoading(true);
 
     try {
-      const data = performerSlug
+      const data = performerId
         ? await dispatch(
             performerApi.endpoints.updatePerformer.initiate({
-              id: Number(performerSlug),
+              id: Number(performerId),
               ...values,
             })
           ).unwrap()
@@ -116,7 +115,7 @@ const Page = () => {
       event: toMutatePerformerData?.event
         ? {
             label: toMutatePerformerData.event.name,
-            value: toMutatePerformerData.event.id,
+            value: toMutatePerformerData.event.id.toString(),
           }
         : { label: '', value: '' },
 

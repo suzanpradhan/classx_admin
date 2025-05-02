@@ -6,11 +6,11 @@ import { Button, PageBar, Spinner } from '@/core/ui/zenbuddha/src';
 import { PencilSimpleLine, TrashSimple, X } from 'phosphor-react';
 
 import { RootState } from '@/core/redux/store';
-import venueApi from '@/modules/events/venue/venueApi';
-import { VenueDataType } from '@/modules/events/venue/venueType';
+import eventsApi from '@/modules/events/event/eventApi';
+import { EventType } from '@/modules/events/event/eventType';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import VanueDetailsTap from './(components)/VenueDetailsTap';
+import EventDetailsTap from './(components)/EventDetails';
 
 export default function EachDetailPage() {
   const navigator = useRouter();
@@ -18,19 +18,19 @@ export default function EachDetailPage() {
   const [tab, setTab] = useState(0);
   const [modalIsOpen, setIsOpen] = useState(false);
   const param = useParams();
-  const venueId = param.venueId;
+  const eventId = param.eventId;
   const [onDelete, setOnDelete] = useState<any>(undefined);
 
   useEffect(() => {
-    if (venueId) {
-      dispatch(venueApi.endpoints.getEachVenue.initiate(venueId.toString()));
+    if (eventId) {
+      dispatch(eventsApi.endpoints.getEachEvent.initiate(eventId.toString()));
     }
-  }, [dispatch, venueId]);
+  }, [dispatch, eventId]);
 
-  const venueData = useAppSelector(
+  const eventData = useAppSelector(
     (state: RootState) =>
-      state.eventApi.queries[`getEachVenue("${venueId || undefined}")`]
-        ?.data as VenueDataType
+      state.eventApi.queries[`getEachEvent("${eventId || undefined}")`]
+        ?.data as EventType
   );
 
   return (
@@ -44,25 +44,25 @@ export default function EachDetailPage() {
         onClickYes={async () => {
           if (onDelete) {
             await Promise.resolve(
-              dispatch(venueApi.endpoints.deleteVenue.initiate(onDelete))
+              dispatch(eventsApi.endpoints.deleteEvent.initiate(onDelete))
             );
-            navigator.push('/admin/events/venue/all');
+            navigator.push('/admin/events/event/all');
           }
           setIsOpen(false);
           setOnDelete(undefined);
         }}
       />
       <div className="flex flex-col">
-        {venueData ? (
+        {eventData ? (
           <>
             <PageBar
               leading={
                 <div className="flex flex-col pt-4 pb-4">
                   <div className="text-sm font-medium text-primaryGray-500">
-                    #{venueData.id} Venue
+                    #{eventData.id} Event
                   </div>
                   <div className="text-base font-bold text-dark-500">
-                    {venueData.name}
+                    {eventData.name}
                   </div>
                 </div>
               }
@@ -78,7 +78,7 @@ export default function EachDetailPage() {
                       setTab(0);
                     }}
                   >
-                    VENUE TAP
+                    EVENT TAP
                     {tab == 1 ? (
                       <div className="absolute top-[calc(100%+6px)] h-[2px] w-full bg-dark-500 rounded-md"></div>
                     ) : (
@@ -94,8 +94,8 @@ export default function EachDetailPage() {
                   buttonType="bordered"
                   prefix={<TrashSimple size={20} weight="duotone" />}
                   onClick={() => {
-                    if (param.venueId) {
-                      setOnDelete(param.venueId);
+                    if (param.eventId) {
+                      setOnDelete(param.eventId);
                       setIsOpen(true);
                     }
                   }}
@@ -105,20 +105,20 @@ export default function EachDetailPage() {
                   buttonType="bordered"
                   prefix={<PencilSimpleLine size={20} weight="duotone" />}
                   type="link"
-                  href={`/admin/events/venue/mutate/${venueId}`}
+                  href={`/admin/events/event/mutate/${param.eventId}`}
                 />
                 <Button
                   className="w-9 h-9"
                   buttonType="bordered"
                   type="button"
                   onClick={() => {
-                    navigator.push('/admin/events/venue/all');
+                    navigator.push('/admin/events/event/all');
                   }}
                   suffix={<X size={20} weight="duotone" />}
                 />
               </div>
             </PageBar>
-            {tab == 0 ? <VanueDetailsTap venue={venueData} /> : <></>}
+            {tab == 0 ? <EventDetailsTap event={eventData} /> : <></>}
           </>
         ) : (
           <div className="flex justify-center items-center min-h-[calc(100vh-3.25rem)]">

@@ -38,8 +38,12 @@ const venueApi = eventApi.injectEndpoints({
     }),
 
     // Get All
-    getAllVenue: builder.query<PaginatedResponseType<VenueDataType>, number>({
-      query: (pageNumber) => `${eventApiPaths.venueUrl}?page=${pageNumber}`,
+    getAllVenue: builder.query<
+      PaginatedResponseType<VenueDataType>,
+      { pageNumber: string; searchString?: string }
+    >({
+      query: ({ pageNumber, searchString }) =>
+        `${eventApiPaths.venueUrl}?page=${pageNumber}${searchString ? `&search=${searchString}` : ''}`,
       providesTags: (response) =>
         response?.results
           ? [

@@ -11,7 +11,7 @@ import { EventType } from '@/modules/events/event/eventType';
 import { format, parseISO } from 'date-fns';
 import { toZonedTime } from 'date-fns-tz';
 import Image from 'next/image';
-import { Eye, PencilSimpleLine, TrashSimple } from 'phosphor-react';
+import { Clock, Eye, PencilSimpleLine, TrashSimple } from 'phosphor-react';
 import { useEffect, useState } from 'react';
 
 const EventLisiting = () => {
@@ -108,8 +108,31 @@ const EventLisiting = () => {
                 </td>
                 <td className={tableStyles.table_td}>{item.name}</td>
                 <td className={tableStyles.table_td}>{item?.venue?.name}</td>
-                <td className={tableStyles.table_td}>{formattedDate}</td>
-                <td className={tableStyles.table_td}>{item?.status}</td>
+                <td className={tableStyles.table_td}>
+                  <span
+                    className={`text-xs px-2 py-1 rounded-sm capitalize bg-slate-200 text-black flex items-center gap-1 w-max`}
+                  >
+                    <Clock size={15} weight="duotone" />
+                    {formattedDate}
+                  </span>
+                </td>
+                <td className={tableStyles.table_td}>
+                  <span
+                    className={`text-white text-xs px-2 py-1 rounded-sm capitalize ${
+                      item.status === 'AVAILABLE'
+                        ? 'bg-green-500'
+                        : item.status === 'POSTPONED'
+                          ? 'bg-blue-500'
+                          : item.status === 'BOOKED'
+                            ? 'bg-purple-500'
+                            : item.status === 'CANCELLED'
+                              ? 'bg-red-500'
+                              : 'bg-gray-500'
+                    }`}
+                  >
+                    {item.status}
+                  </span>
+                </td>
                 <td className={tableStyles.table_td}>
                   {item?.organizer?.username}
                 </td>
@@ -119,7 +142,7 @@ const EventLisiting = () => {
                     <Button
                       className="h-8 w-8"
                       type="link"
-                      href={`/admin/events/venue/${item.id}`}
+                      href={`/admin/events/event/${item.id}`}
                       buttonType="bordered"
                       prefix={<Eye size={18} weight="duotone" />}
                     />
@@ -127,7 +150,7 @@ const EventLisiting = () => {
                       className="h-8 w-8"
                       kind="warning"
                       type="link"
-                      href={`/admin/events/venue/mutate/${item.id}`}
+                      href={`/admin/events/event/mutate/${item.id}`}
                       prefix={<PencilSimpleLine size={15} weight="duotone" />}
                     />
                     <Button

@@ -224,7 +224,7 @@ export default function TestLayout({
             <SideBarNavLink title="All Events" link="/admin/events/event/all" />
             <SideBarNavLink
               title="Add New Event"
-              link="/admin/events/performer/mutate"
+              link="/admin/events/event/mutate"
             />
           </SideBarNavGroup>
           <div className="my-2 border-t border-white/5"></div>

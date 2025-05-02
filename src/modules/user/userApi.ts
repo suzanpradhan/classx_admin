@@ -8,14 +8,14 @@ const userApi = eventApi.injectEndpoints({
     // Get All
     getUser: builder.query<
       PaginatedResponseType<UserResponse>,
-      { pageNumber: number; searchText?: string }
+      { pageNumber: string; searchString?: string }
     >({
-      query: ({ pageNumber, searchText }) =>
-        `${eventApiPaths.accountsUrl}?page=${pageNumber}${searchText ? `&search=${searchText}` : ''}`,
+      query: ({ pageNumber, searchString }) =>
+        `${eventApiPaths.usersUrl}?page=${pageNumber}${searchString ? `&search=${searchString}` : ''}`,
       providesTags: (response) =>
-        response
+        response?.results
           ? [
-              ...response?.results?.map(
+              ...response.results.map(
                 ({ id }) => ({ type: 'User', id }) as const
               ),
               { type: 'User', id: 'LIST' },

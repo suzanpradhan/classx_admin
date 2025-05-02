@@ -19,7 +19,7 @@ const VenueTableListing = () => {
   const [onDelete, setOnDelete] = useState<string | undefined>(undefined);
 
   useEffect(() => {
-    dispatch(venueApi.endpoints.getAllVenue.initiate(pageIndex));
+    dispatch(venueApi.endpoints.getAllVenue.initiate({ pageNumber: '1' }));
   }, [dispatch, pageIndex]);
 
   const venueData = useAppSelector(

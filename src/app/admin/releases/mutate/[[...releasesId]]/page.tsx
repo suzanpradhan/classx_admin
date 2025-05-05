@@ -119,6 +119,7 @@ const Page = () => {
       return;
     }
     setIsLoading(true);
+
     try {
       let releaseData;
 
@@ -128,9 +129,9 @@ const Page = () => {
             id: parseInt(param.releasesId[0]),
             ...finalRequestData,
           })
-        ).unwrap();
+        );
 
-        if (releaseData) {
+        if (releaseData?.data) {
           const productData: ProductsSchemaType = {
             title: values.title!,
             thumbnail: values.cover!,
@@ -148,17 +149,18 @@ const Page = () => {
               id: productSlug ? parseInt(productSlug) : undefined,
               ...productData,
             })
-          ).unwrap();
+          );
 
-          if (productResponse) {
-            console.log('Product updated successfully:', productResponse);
+          if (productResponse?.data) {
+            console.log('Product updated successfully:', productResponse.data);
           }
         }
       } else {
         releaseData = await dispatch(
           releaseApi.endpoints.addReleases.initiate(finalRequestData)
-        ).unwrap();
-        if (releaseData && releaseData.data !== undefined) {
+        );
+
+        if (releaseData?.data) {
           const productData: ProductsSchemaType = {
             title: values.title!,
             thumbnail: values.cover!,
@@ -173,10 +175,10 @@ const Page = () => {
 
           const productResponse = await dispatch(
             productsApi.endpoints.addProducts.initiate(productData)
-          ).unwrap();
+          );
 
-          if (productResponse) {
-            console.log('Product added successfully:', productResponse);
+          if (productResponse?.data) {
+            console.log('Product added successfully:', productResponse.data);
           }
         }
       }

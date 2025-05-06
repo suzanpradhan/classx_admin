@@ -88,7 +88,7 @@ const Page = () => {
   const formik = useFormik<EventCategorySchemaType>({
     enableReinitialize: true,
     initialValues: {
-      id: toMutateCategoryData ? (toMutateCategoryData.id ?? null) : null,
+      id: toMutateCategoryData?.id ?? null,
       title: toMutateCategoryData ? toMutateCategoryData.title : '',
     },
     validateOnChange: true,

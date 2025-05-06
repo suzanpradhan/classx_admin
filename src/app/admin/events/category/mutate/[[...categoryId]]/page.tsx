@@ -61,7 +61,10 @@ const Page = () => {
             })
           ).unwrap()
         : await dispatch(
-            eventCategoryApi.endpoints.addEventCategory.initiate(values)
+            eventCategoryApi.endpoints.addEventCategory.initiate({
+              ...values,
+              id: undefined,
+            })
           ).unwrap();
 
       if (data) {

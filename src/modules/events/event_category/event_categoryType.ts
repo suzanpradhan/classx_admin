@@ -8,6 +8,6 @@ export const eventCategorySchema = z.object({
 export type EventCategorySchemaType = z.infer<typeof eventCategorySchema>;
 
 export type EventCategoryType = {
-  id?: number | null | undefined;
+  id?: number;
   title: string;
 };

@@ -1,4 +1,4 @@
-import NewsTableLisiting from "./(components)/NewsTableLisiting";
+import NewsTableLisiting from './(components)/NewsTableLisiting';
 
 const page = () => {
   return (

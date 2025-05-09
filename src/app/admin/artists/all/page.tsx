@@ -1,4 +1,4 @@
-import ArtistsTableLisiting from "./(components)/ArtistsTableLisiting";
+import ArtistsTableLisiting from './(components)/ArtistsTableLisiting';
 
 const page = () => {
   return (

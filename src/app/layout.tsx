@@ -2,7 +2,7 @@ import Provider from '@/core/redux/provider';
 import Notification from '@/core/ui/components/Notification';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
-import "react-datetime/css/react-datetime.css";
+import 'react-datetime/css/react-datetime.css';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import 'react-quill-new/dist/quill.snow.css';
 import 'react-toastify/dist/ReactToastify.css';
@@ -10,17 +10,31 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: 'ClassX Presentation',
-  description: 'ClassX Presentation is a venture with a non-stereotypical scheme towards creating a stepping stone in the developing phase of the seeking(aspiring) artists.',
-  keywords: ['music', 'nepali', 'song', 'songs', 'class', 'classx', 'classX', 'classXpresentation', 'presentation', 'vek', 'yabes', 'songsnepal'],
+  description:
+    'ClassX Presentation is a venture with a non-stereotypical scheme towards creating a stepping stone in the developing phase of the seeking(aspiring) artists.',
+  keywords: [
+    'music',
+    'nepali',
+    'song',
+    'songs',
+    'class',
+    'classx',
+    'classX',
+    'classXpresentation',
+    'presentation',
+    'vek',
+    'yabes',
+    'songsnepal',
+  ],
   authors: [
     {
       name: 'IIONS Tech Pvt. Ltd.',
-      url: 'https://github.com/suzanpradhan/classx_admin'
+      url: 'https://github.com/suzanpradhan/classx_admin',
     },
   ],
   icons: {
     icon: '/favicon.ico',
-  }
+  },
 };
 
 const helvetica = localFont({
@@ -64,9 +78,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${helvetica.variable} font-sans`}
-      >
+      <body className={`${helvetica.variable} font-sans`}>
         <Notification />
         <div id="deleteWarningDialog"></div>
         <Provider>{children}</Provider>

@@ -26,7 +26,8 @@ const NewsTableLisiting = () => {
 
   const newsData = useAppSelector(
     (state: RootState) =>
-      state.baseApi.queries[`getAllNews`]?.data as PaginatedResponseType<NewsType>
+      state.baseApi.queries[`getAllNews`]
+        ?.data as PaginatedResponseType<NewsType>
   );
 
   return (
@@ -40,7 +41,9 @@ const NewsTableLisiting = () => {
         onClickYes={async () => {
           if (onDelete) {
             await Promise.resolve(
-              dispatch(newsApi.endpoints.deleteNews.initiate(onDelete as string))
+              dispatch(
+                newsApi.endpoints.deleteNews.initiate(onDelete as string)
+              )
             );
           }
           toggleDeleteModel(false);
@@ -57,7 +60,6 @@ const NewsTableLisiting = () => {
               pageCount={newsData.pagination.total_page}
               pageIndex={newsData.pagination.current_page - 1}
             />
-
           ) : (
             <></>
           )
@@ -122,7 +124,7 @@ const NewsTableLisiting = () => {
                     />
                     <Button
                       className="h-8 w-8"
-                      kind='warning'
+                      kind="warning"
                       type="link"
                       href={`/admin/news/mutate/${item.id}`}
                       prefix={<PencilSimpleLine size={15} weight="duotone" />}

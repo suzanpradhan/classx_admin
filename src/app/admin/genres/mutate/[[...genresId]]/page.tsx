@@ -1,9 +1,18 @@
 'use client';
 import { useGetApiResponse } from '@/core/api/getApiResponse';
 import { useAppDispatch } from '@/core/redux/clientStore';
-import { Button, FormCard, FormGroup, TextField } from '@/core/ui/zenbuddha/src';
+import {
+  Button,
+  FormCard,
+  FormGroup,
+  TextField,
+} from '@/core/ui/zenbuddha/src';
 import genresApi from '@/modules/genres/genresApi';
-import { genresSchema, GenresSchemaType, GenresType } from '@/modules/genres/genresType';
+import {
+  genresSchema,
+  GenresSchemaType,
+  GenresType,
+} from '@/modules/genres/genresType';
 import { useFormik } from 'formik';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -19,9 +28,7 @@ const Page = () => {
 
   useEffect(() => {
     if (genresId) {
-      dispatch(
-        genresApi.endpoints.getEachGenres.initiate(genresId)
-      );
+      dispatch(genresApi.endpoints.getEachGenres.initiate(genresId));
     }
   }, [genresId, dispatch]);
 
@@ -78,12 +85,11 @@ const Page = () => {
     onSubmit,
   });
 
-
   return (
-    <FormCard onSubmit={formik.handleSubmit}  className="m-4">
+    <FormCard onSubmit={formik.handleSubmit} className="m-4">
       <FormGroup title="Basic Type">
         <div className="flex gap-2 mb-2 max-sm:flex-col">
-        <div className="flex flex-col flex-1">
+          <div className="flex flex-col flex-1">
             <TextField
               id="name"
               placeholder=""
@@ -97,7 +103,6 @@ const Page = () => {
             )}
           </div>
         </div>
-       
       </FormGroup>
       <div className="flex justify-end gap-2 m-4">
         <Button

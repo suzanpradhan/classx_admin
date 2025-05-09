@@ -17,9 +17,12 @@ const GenresTableLisiting = () => {
   const [deleteModelOpen, toggleDeleteModel] = useState(false);
   const [onDelete, setOnDelete] = useState<string | undefined>(undefined);
 
-
   useEffect(() => {
-    dispatch(genresApi.endpoints.getAllGenres.initiate({ pageNumber: pageIndex.toString() }));
+    dispatch(
+      genresApi.endpoints.getAllGenres.initiate({
+        pageNumber: pageIndex.toString(),
+      })
+    );
   }, [dispatch, pageIndex]);
 
   const genresData = useAppSelector(
@@ -69,7 +72,6 @@ const GenresTableLisiting = () => {
               <th className={tableStyles.table_th}>S.N.</th>
               <th className={tableStyles.table_th}>Name</th>
               <th className={tableStyles.table_th}>Action</th>
-
             </tr>
           </thead>
           <tbody>
@@ -81,7 +83,7 @@ const GenresTableLisiting = () => {
                   <Button
                     className="h-8 w-8"
                     type="link"
-                    kind='warning'
+                    kind="warning"
                     href={`/admin/genres/mutate/${item.id}`}
                     prefix={<PencilSimpleLine size={18} weight="duotone" />}
                   />
@@ -95,7 +97,6 @@ const GenresTableLisiting = () => {
                       toggleDeleteModel(true);
                     }}
                   />
-
                 </td>
               </tr>
             ))}

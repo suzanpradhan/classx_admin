@@ -63,4 +63,5 @@ export const eventApiPaths = {
   event_tagsUrl: 'event-tag/',
   performerUrl: 'performer/',
   eventPerformerUrl: 'event-performer/',
+  ticketTypeUrl: 'ticket-type/',
 };

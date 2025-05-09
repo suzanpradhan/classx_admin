@@ -1,4 +1,4 @@
-import ReleasesTableLisitng from "./(components)/ReleasesTableLisitng";
+import ReleasesTableLisitng from './(components)/ReleasesTableLisitng';
 
 const page = () => {
   return (

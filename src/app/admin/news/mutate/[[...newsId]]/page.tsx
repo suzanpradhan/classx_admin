@@ -1,7 +1,13 @@
 'use client';
 import { useGetApiResponse } from '@/core/api/getApiResponse';
 import { useAppDispatch } from '@/core/redux/clientStore';
-import { Button, FormCard, FormGroup, ImageInput, TextField } from '@/core/ui/zenbuddha/src';
+import {
+  Button,
+  FormCard,
+  FormGroup,
+  ImageInput,
+  TextField,
+} from '@/core/ui/zenbuddha/src';
 import DateSelector from '@/core/ui/zenbuddha/src/components/DateSelector';
 import TimeInput from '@/core/ui/zenbuddha/src/components/TimeInput';
 import newsApi from '@/modules/news/newsApi';
@@ -27,11 +33,9 @@ const Page = () => {
     if (newsId) {
       const fetchnews = async () => {
         try {
-          await dispatch(
-            newsApi.endpoints.getEachNews.initiate(newsId)
-          );
+          await dispatch(newsApi.endpoints.getEachNews.initiate(newsId));
         } catch (error) {
-          console.error("Error fetching news data:", error);
+          console.error('Error fetching news data:', error);
         }
       };
 
@@ -46,14 +50,12 @@ const Page = () => {
     try {
       const data = newsId
         ? await dispatch(
-          newsApi.endpoints.updateNews.initiate({
-            id: Number(newsId),
-            ...values,
-          })
-        ).unwrap()
-        : await dispatch(
-          newsApi.endpoints.addNews.initiate(values)
-        ).unwrap();
+            newsApi.endpoints.updateNews.initiate({
+              id: Number(newsId),
+              ...values,
+            })
+          ).unwrap()
+        : await dispatch(newsApi.endpoints.addNews.initiate(values)).unwrap();
 
       if (data) router.push('/admin/news/all');
     } catch (error) {
@@ -88,7 +90,6 @@ const Page = () => {
     : '';
   const timeString = `${initialHours}:${initialMinutes}:${initialSeconds}`;
 
-
   const formik = useFormik<NewsSchemaType>({
     enableReinitialize: true,
     initialValues: {
@@ -96,7 +97,7 @@ const Page = () => {
       title: toMutateNewsData ? toMutateNewsData.title : '',
       description: toMutateNewsData ? toMutateNewsData.description : '',
       cover_image: toMutateNewsData ? null : null,
-      content: toMutateNewsData ? toMutateNewsData.content ?? '' : '',
+      content: toMutateNewsData ? (toMutateNewsData.content ?? '') : '',
       date: dateTimeString,
       time: timeString,
     },
@@ -142,7 +143,9 @@ const Page = () => {
               onChange={handleImageChange}
             />
             {formik.errors.cover_image && (
-              <div className="text-red-500 text-sm">{formik.errors.cover_image}</div>
+              <div className="text-red-500 text-sm">
+                {formik.errors.cover_image}
+              </div>
             )}
           </div>
         </div>
@@ -156,9 +159,7 @@ const Page = () => {
                 formik.setFieldValue('date', date);
               }}
               value={
-                formik.values.date
-                  ? new Date(formik.values.date)
-                  : undefined
+                formik.values.date ? new Date(formik.values.date) : undefined
               }
             />
           </div>
@@ -191,7 +192,10 @@ const Page = () => {
           )}
         </div>
         <div className="mt-3 gap-2">
-          <label htmlFor="content" className="block text-sm mb-2 font-medium text-gray-700">
+          <label
+            htmlFor="content"
+            className="block text-sm mb-2 font-medium text-gray-700"
+          >
             Content
           </label>
           <ReactQuill
@@ -202,9 +206,7 @@ const Page = () => {
             onChange={handleRichTextChange}
           />
           {!!formik.errors.content && (
-            <div className="text-red-500 text-sm">
-              {formik.errors.content}
-            </div>
+            <div className="text-red-500 text-sm">{formik.errors.content}</div>
           )}
         </div>
       </FormGroup>
@@ -225,7 +227,7 @@ const Page = () => {
           onClick={() => router.back()}
         />
       </div>
-    </FormCard >
+    </FormCard>
   );
 };
 

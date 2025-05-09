@@ -117,7 +117,6 @@ const ServerAttachment = ({
           }
           onServerAttachmentRemove(serverFile);
         }}
-        
       />
     </div>
   );

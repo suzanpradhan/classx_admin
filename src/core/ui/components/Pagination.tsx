@@ -12,9 +12,10 @@ function Button({ content, onClick, active, disabled }: ButtonProps) {
   return (
     <button
       className={`flex flex-col cursor-pointer items-center justify-center w-8 h-8 shadow-[0_4px_10px_rgba(0,0,0,0.03)] text-sm font-normal transition-colors rounded-md
-        ${!disabled
-          ? 'hover:bg-blackPrimary hover:text-white'
-          : 'text-black cursor-not-allowed'
+        ${
+          !disabled
+            ? 'hover:bg-blackPrimary hover:text-white'
+            : 'text-black cursor-not-allowed'
         }
         ${active ? 'bg-accentBlue-500 text-white hover:bg-accentBlue-300' : 'text-dark-500/30'}
         `}

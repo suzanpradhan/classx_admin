@@ -1,9 +1,9 @@
-import TaraclTableListing from './(components)/TracksTableListing';
+import TicketListing from './(components)/TicketListing';
 
 const page = () => {
   return (
     <div className="m-4">
-      <TaraclTableListing />
+      <TicketListing />
     </div>
   );
 };

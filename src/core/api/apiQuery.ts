@@ -52,6 +52,7 @@ export const eventApi = createApi({
     'Event_Category',
     'Event_Performer',
     'Event_Tags',
+    'Ticket',
   ],
   endpoints: () => ({}),
 });

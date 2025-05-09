@@ -1,4 +1,4 @@
-import GenresTableLisiting from "./(components)/GenresTableListing";
+import GenresTableLisiting from './(components)/GenresTableListing';
 
 const page = () => {
   return (

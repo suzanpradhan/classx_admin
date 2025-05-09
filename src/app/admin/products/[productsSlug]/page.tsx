@@ -63,12 +63,10 @@ export default function EachDetailPage() {
                   <div className="text-base font-bold text-dark-500">
                     {productsData.title}
                   </div>
-
                 </div>
               }
               bottom={
                 <div className="flex gap-4 text-base font-normal text-primaryGray-500 pb-2">
-
                   <button
                     className={
                       tab == 1

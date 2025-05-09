@@ -47,7 +47,7 @@ const eventCategoryApi = eventApi.injectEndpoints({
         response?.results
           ? [
               ...response.results.map(
-                ({ id }) => ({ type: 'Event_Category', id }) as const
+                ({ id }) => ({ type: 'Event_Category', id: id }) as const
               ),
               { type: 'Event_Category', id: 'LIST' },
             ]

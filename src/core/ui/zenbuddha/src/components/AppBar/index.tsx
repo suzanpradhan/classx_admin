@@ -28,9 +28,7 @@ const AppBar = ({
           ) : (
             <></>
           )}
-          <div className='relative w-[90px] overflow-hidden'>
-          {leading}
-          </div>
+          <div className="relative w-[90px] overflow-hidden">{leading}</div>
         </div>
         <div className="max-w-[160px] flex gap-2 lg:px-4">{children}</div>
       </div>

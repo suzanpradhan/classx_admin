@@ -1,4 +1,4 @@
-import OrdersTableLisiting from "./(components)/OrdersTableListing";
+import OrdersTableLisiting from './(components)/OrdersTableListing';
 
 const page = () => {
   return (

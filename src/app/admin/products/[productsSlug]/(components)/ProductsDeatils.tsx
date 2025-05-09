@@ -18,7 +18,9 @@ const ProductsDeatils = ({ products }: { products: ProductsType }) => {
       >
         <div className="grid grid-cols-2 md:grid-cols-none md:grid-rows-2">
           <div className="text-sm text-black">Title</div>
-          <div className="text-base capitalize text-black">{products.title}</div>
+          <div className="text-base capitalize text-black">
+            {products.title}
+          </div>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-none md:grid-rows-2">
           <div className="text-sm text-black">Slug</div>
@@ -37,10 +39,8 @@ const ProductsDeatils = ({ products }: { products: ProductsType }) => {
           <div className="text-base text-black">{products.stock}</div>
         </div>
       </div>
-
-
     </div>
   );
 };
 
-export default ProductsDeatils
+export default ProductsDeatils;

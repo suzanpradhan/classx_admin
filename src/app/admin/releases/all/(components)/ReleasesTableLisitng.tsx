@@ -17,15 +17,22 @@ const ReleasesTableListing = () => {
   const dispatch = useAppDispatch();
   const [pageIndex, setPageIndex] = useState(1);
   const [deleteModelOpen, toggleDeleteModel] = useState(false);
-  const [onDelete, setOnDelete] = useState<{ releaseId: string; productSlug: string } | undefined>();
+  const [onDelete, setOnDelete] = useState<
+    { releaseId: string; productSlug: string } | undefined
+  >();
 
   useEffect(() => {
-    dispatch(releaseApi.endpoints.getAllReleases.initiate({ pageNumber: pageIndex.toString() }));
+    dispatch(
+      releaseApi.endpoints.getAllReleases.initiate({
+        pageNumber: pageIndex.toString(),
+      })
+    );
   }, [dispatch, pageIndex]);
 
   const releaseData = useAppSelector(
     (state: RootState) =>
-      state.baseApi.queries[`getAllReleases`]?.data as PaginatedResponseType<ReleasesType>
+      state.baseApi.queries[`getAllReleases`]
+        ?.data as PaginatedResponseType<ReleasesType>
   );
 
   return (
@@ -39,10 +46,14 @@ const ReleasesTableListing = () => {
           if (onDelete) {
             const { releaseId, productSlug } = onDelete;
             try {
-              await dispatch(releaseApi.endpoints.deleteReleases.initiate(releaseId));
-              await dispatch(productsApi.endpoints.deleteProducts.initiate(productSlug));
+              await dispatch(
+                releaseApi.endpoints.deleteReleases.initiate(releaseId)
+              );
+              await dispatch(
+                productsApi.endpoints.deleteProducts.initiate(productSlug)
+              );
             } catch (error) {
-              console.log("Error deleting product or release:", error);
+              console.log('Error deleting product or release:', error);
             } finally {
               toggleDeleteModel(false);
               setOnDelete(undefined);
@@ -105,29 +116,28 @@ const ReleasesTableListing = () => {
               <td className={tableStyles.table_td}>{item.title}</td>
               <td className={tableStyles.table_td}>{item.artist.name}</td>
               <td className={tableStyles.table_td}>
-                {item.genres && item.genres.length > 0 ? (
-                  item.genres.map((genre, genreIndex) => (
-                    <div
-                      key={genreIndex}
-                      className="inline-block px-1 text-xs bg-slate-300 text-dark-500 rounded-sm mr-1"
-                    >
-                      {genre.name}
-                    </div>
-                  ))
-                ) : (
-                  ""
-                )}
+                {item.genres && item.genres.length > 0
+                  ? item.genres.map((genre, genreIndex) => (
+                      <div
+                        key={genreIndex}
+                        className="inline-block px-1 text-xs bg-slate-300 text-dark-500 rounded-sm mr-1"
+                      >
+                        {genre.name}
+                      </div>
+                    ))
+                  : ''}
               </td>
               <td className={tableStyles.table_td}>
                 <span
-                  className={`text-white text-xs px-2 py-1 rounded-sm capitalize ${item.release_type === 'EP'
-                    ? 'bg-blue-500'
-                    : item.release_type === 'ALB'
-                      ? 'bg-green-500'
-                      : item.release_type === 'SNG'
-                        ? 'bg-yellow-500'
-                        : 'bg-black'
-                    }`}
+                  className={`text-white text-xs px-2 py-1 rounded-sm capitalize ${
+                    item.release_type === 'EP'
+                      ? 'bg-blue-500'
+                      : item.release_type === 'ALB'
+                        ? 'bg-green-500'
+                        : item.release_type === 'SNG'
+                          ? 'bg-yellow-500'
+                          : 'bg-black'
+                  }`}
                 >
                   {item.release_type}
                 </span>
@@ -149,7 +159,7 @@ const ReleasesTableListing = () => {
                   <Button
                     className="h-8 w-8"
                     type="link"
-                    kind='warning'
+                    kind="warning"
                     href={`/admin/releases/mutate/${item.id}/${item.product_slug}`}
                     prefix={<PencilSimpleLine size={15} weight="duotone" />}
                   />
@@ -158,7 +168,10 @@ const ReleasesTableListing = () => {
                     kind="danger"
                     type="button"
                     onClick={() => {
-                      setOnDelete({ releaseId: item.id.toString(), productSlug: item.product_slug });
+                      setOnDelete({
+                        releaseId: item.id.toString(),
+                        productSlug: item.product_slug,
+                      });
                       toggleDeleteModel(true);
                     }}
                     prefix={<TrashSimple size={18} weight="duotone" />}

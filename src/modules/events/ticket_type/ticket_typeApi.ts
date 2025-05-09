@@ -12,7 +12,14 @@ const ticketTypeAPi = eventApi.injectEndpoints({
         var formData = new FormData();
         formData.append('id', String(payload.id));
         if (payload.name) formData.append('name', payload.name);
-        // if (payload.event) formData.append('performer', payload.event);
+        if (payload.price) formData.append('price', payload.price);
+        if (payload.max_quantity_per_order)
+          formData.append(
+            'max_quantity_per_order',
+            payload.max_quantity_per_order.toString()
+          );
+        formData.append('stock.quantity', payload.stock.quantity.toString());
+        if (payload.event) formData.append('event', payload.event.value);
 
         return {
           url: `${eventApiPaths.ticketTypeUrl}`,
@@ -121,7 +128,14 @@ const ticketTypeAPi = eventApi.injectEndpoints({
       query: ({ id, ...payload }) => {
         var formData = new FormData();
         if (payload.name) formData.append('name', payload.name);
-
+        if (payload.price) formData.append('price', payload.price);
+        if (payload.max_quantity_per_order)
+          formData.append(
+            'max_quantity_per_order',
+            payload.max_quantity_per_order.toString()
+          );
+        formData.append('stock.quantity', payload.stock.quantity.toString());
+        if (payload.event) formData.append('event', payload.event.value);
         return {
           url: `${eventApiPaths.ticketTypeUrl}${id}/`,
           method: 'PATCH',

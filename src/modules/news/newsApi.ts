@@ -10,17 +10,22 @@ const newsApi = baseApi.injectEndpoints({
     addNews: builder.mutation<any, NewsSchemaType>({
       query: (payload) => {
         var formData = new FormData();
-        if (payload.title) formData.append('title', payload.title);
+        if (payload.title) {
+          formData.append('title', payload.title);
+        }
         if (payload.content) formData.append('content', payload.content);
-        if (payload.cover_image)
+        if (payload.cover_image) {
           formData.append('cover_image', payload.cover_image);
-        if (payload.date && payload.time)
+        }
+        if (payload.date && payload.time) {
           formData.append(
             'date',
             `${payload.date.getFullYear()}-${payload.date.getMonth() + 1}-${payload.date.getDate()} ${payload.time}`
           );
-        if (payload.description)
+        }
+        if (payload.description) {
           formData.append('description', payload.description);
+        }
         return {
           url: `${apiPaths.newsUrl}`,
           method: 'POST',

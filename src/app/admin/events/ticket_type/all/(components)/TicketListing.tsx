@@ -27,6 +27,7 @@ const TicketListing = () => {
         ?.data as PaginatedResponseType<TicketTypeDataType>
   );
 
+  console.log(ticketData, 'ticket dtat');
   return (
     <>
       <AlertDialog
@@ -75,9 +76,9 @@ const TicketListing = () => {
           </tr>
         </thead>
         <tbody>
-          {ticketData?.results.map((item, index) => {
+          {ticketData?.results.map((item) => {
             return (
-              <tr key={index} className={tableStyles.table_tbody_tr}>
+              <tr key={item.id} className={tableStyles.table_tbody_tr}>
                 <td className={tableStyles.table_td}>{item.id}</td>
                 <td className={tableStyles.table_td}>{item?.name}</td>
                 <td className={tableStyles.table_td}>{item?.price}</td>

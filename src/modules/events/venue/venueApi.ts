@@ -9,7 +9,7 @@ const venueApi = eventApi.injectEndpoints({
     // add
     addVenue: builder.mutation<any, VenueSchemaType>({
       query: (payload) => {
-        var formData = new FormData();
+        let formData = new FormData();
         formData.append('id', String(payload.id));
         if (payload.name) formData.append('name', payload.name);
         if (payload.city) formData.append('city', payload.city.value);
@@ -118,7 +118,7 @@ const venueApi = eventApi.injectEndpoints({
     //  Update
     updateVenue: builder.mutation<VenueDataType, VenueSchemaType>({
       query: ({ id, ...payload }) => {
-        var formData = new FormData();
+        let formData = new FormData();
         if (payload.name) formData.append('name', payload.name);
         if (payload.city) formData.append('city', payload.city.value);
         if (payload.image) formData.append('image', payload.image);

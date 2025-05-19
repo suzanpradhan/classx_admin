@@ -50,8 +50,6 @@ export const authOptions: NextAuthOptions = {
       return Promise.resolve(token);
     },
     async session({ session, token }) {
-      console.log(token);
-
       session.user = token as any;
       return Promise.resolve(session);
     },

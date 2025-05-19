@@ -9,7 +9,7 @@ const ticketTypeAPi = eventApi.injectEndpoints({
     // add
     addTicketType: builder.mutation<any, TicketTypeSchemaType>({
       query: (payload) => {
-        var formData = new FormData();
+        let formData = new FormData();
         formData.append('id', String(payload.id));
         if (payload.name) formData.append('name', payload.name);
         if (payload.price) formData.append('price', payload.price);
@@ -126,7 +126,7 @@ const ticketTypeAPi = eventApi.injectEndpoints({
       TicketTypeSchemaType
     >({
       query: ({ id, ...payload }) => {
-        var formData = new FormData();
+        let formData = new FormData();
         if (payload.name) formData.append('name', payload.name);
         if (payload.price) formData.append('price', payload.price);
         if (payload.max_quantity_per_order)

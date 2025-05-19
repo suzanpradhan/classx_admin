@@ -3,9 +3,18 @@ import { useGetApiResponse } from '@/core/api/getApiResponse';
 import { useAppDispatch } from '@/core/redux/clientStore';
 import { SelectorDataType } from '@/core/types/selectorType';
 import Selector from '@/core/ui/components/Selector';
-import { Button, FormCard, FormGroup, TextField } from '@/core/ui/zenbuddha/src';
+import {
+  Button,
+  FormCard,
+  FormGroup,
+  TextField,
+} from '@/core/ui/zenbuddha/src';
 import ordersApi from '@/modules/orders/ordersApi';
-import { ordersSchema, OrdersSchemaType, OrdersType } from '@/modules/orders/ordersType';
+import {
+  ordersSchema,
+  OrdersSchemaType,
+  OrdersType,
+} from '@/modules/orders/ordersType';
 import { useFormik } from 'formik';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -46,14 +55,14 @@ const Page = () => {
     try {
       const data = ordersId
         ? await dispatch(
-          ordersApi.endpoints.updateOrders.initiate({
-            id: Number(ordersId),
-            ...values,
-          })
-        ).unwrap()
+            ordersApi.endpoints.updateOrders.initiate({
+              id: Number(ordersId),
+              ...values,
+            })
+          ).unwrap()
         : await dispatch(
-          ordersApi.endpoints.addOrders.initiate(values)
-        ).unwrap();
+            ordersApi.endpoints.addOrders.initiate(values)
+          ).unwrap();
 
       if (data) router.push('/admin/orders/all');
     } catch (error) {
@@ -78,10 +87,16 @@ const Page = () => {
     enableReinitialize: true,
     initialValues: {
       id: toMutateOrdersData?.id ?? null,
-      billing_address: toMutateOrdersData ? toMutateOrdersData.billing_address : '',
+      billing_address: toMutateOrdersData
+        ? toMutateOrdersData.billing_address
+        : '',
       billing_city: toMutateOrdersData ? toMutateOrdersData.billing_city : '',
-      billing_country: toMutateOrdersData ? toMutateOrdersData.billing_country : '',
-      billing_postal_code: toMutateOrdersData ? toMutateOrdersData.billing_postal_code : '',
+      billing_country: toMutateOrdersData
+        ? toMutateOrdersData.billing_country
+        : '',
+      billing_postal_code: toMutateOrdersData
+        ? toMutateOrdersData.billing_postal_code
+        : '',
       status: toMutateOrdersData ? toMutateOrdersData.status : '',
       total_amount: toMutateOrdersData
         ? (toMutateOrdersData.total_amount.toString() ?? '')
@@ -141,11 +156,8 @@ const Page = () => {
                   )?.label ?? '',
                 value: formik.values.status ?? '',
               }}
-
             ></Selector>
           </div>
-
-
         </div>
         <div className="flex gap-2 mb-2 max-sm:flex-col">
           <div className="flex flex-col flex-1">
@@ -157,7 +169,9 @@ const Page = () => {
               {...formik.getFieldProps('billing_city')}
             />
             {formik.errors.billing_city && (
-              <div className="text-red-500 text-sm">{formik.errors.billing_city}</div>
+              <div className="text-red-500 text-sm">
+                {formik.errors.billing_city}
+              </div>
             )}
           </div>
           <div className="flex flex-col flex-1">
@@ -169,7 +183,9 @@ const Page = () => {
               {...formik.getFieldProps('billing_country')}
             />
             {formik.errors.billing_country && (
-              <div className="text-red-500 text-sm">{formik.errors.billing_country}</div>
+              <div className="text-red-500 text-sm">
+                {formik.errors.billing_country}
+              </div>
             )}
           </div>
         </div>
@@ -183,7 +199,9 @@ const Page = () => {
               {...formik.getFieldProps('billing_postal_code')}
             />
             {formik.errors.billing_postal_code && (
-              <div className="text-red-500 text-sm">{formik.errors.billing_postal_code}</div>
+              <div className="text-red-500 text-sm">
+                {formik.errors.billing_postal_code}
+              </div>
             )}
           </div>
           <div className="flex flex-col flex-1">
@@ -195,7 +213,9 @@ const Page = () => {
               {...formik.getFieldProps('total_amount')}
             />
             {formik.errors.total_amount && (
-              <div className="text-red-500 text-sm">{formik.errors.total_amount}</div>
+              <div className="text-red-500 text-sm">
+                {formik.errors.total_amount}
+              </div>
             )}
           </div>
         </div>

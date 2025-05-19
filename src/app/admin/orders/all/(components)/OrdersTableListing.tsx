@@ -27,7 +27,6 @@ const OrdersTableLisiting = () => {
         ?.data as PaginatedResponseType<OrdersType>
   );
 
-
   // console.log(orderseData, "data")
   return (
     <>
@@ -75,32 +74,41 @@ const OrdersTableLisiting = () => {
               <th className={tableStyles.table_th}>Total Amount</th>
               <th className={tableStyles.table_th}>Status</th>
               <th className={tableStyles.table_th}>Action</th>
-
             </tr>
           </thead>
           <tbody>
             {orderseData?.results.map((item, index) => (
               <tr key={index} className={tableStyles.table_tbody_tr}>
                 <td className={tableStyles.table_td}>{item.id}</td>
-                <td className={tableStyles.table_td}>{item.customer.profile?.full_name}</td>
+                <td className={tableStyles.table_td}>
+                  {item.customer.profile?.full_name}
+                </td>
                 <td className={tableStyles.table_td}>{item.billing_address}</td>
                 <td className={tableStyles.table_td}>{item.billing_city}</td>
                 <td className={tableStyles.table_td}>{item.billing_country}</td>
-                <td className={tableStyles.table_td}> <span className={`text-xs px-2 py-1 rounded-sm capitalize bg-slate-300 text-black flex items-center gap-1 w-max`}>{item.total_amount}</span></td>
+                <td className={tableStyles.table_td}>
+                  {' '}
+                  <span
+                    className={`text-xs px-2 py-1 rounded-sm capitalize bg-slate-300 text-black flex items-center gap-1 w-max`}
+                  >
+                    {item.total_amount}
+                  </span>
+                </td>
                 <td className={tableStyles.table_td}>
                   <span
-                    className={`text-white text-xs px-2 py-1 rounded-sm capitalize ${item.status === 'pending'
-                      ? 'bg-blue-500'
-                      : item.status === 'shipped'
-                        ? 'bg-green-500'
-                        : item.status === 'delivered'
-                          ? 'bg-purple-500'
-                          : item.status === 'downloadable'
-                            ? 'bg-slate-600'
-                            : item.status === 'cancelled'
-                              ? 'bg-red-500'
-                              : 'bg-gray-500'
-                      }`}
+                    className={`text-white text-xs px-2 py-1 rounded-sm capitalize ${
+                      item.status === 'pending'
+                        ? 'bg-blue-500'
+                        : item.status === 'shipped'
+                          ? 'bg-green-500'
+                          : item.status === 'delivered'
+                            ? 'bg-purple-500'
+                            : item.status === 'downloadable'
+                              ? 'bg-slate-600'
+                              : item.status === 'cancelled'
+                                ? 'bg-red-500'
+                                : 'bg-gray-500'
+                    }`}
                   >
                     {item.status}
                   </span>
@@ -113,11 +121,10 @@ const OrdersTableLisiting = () => {
                     href={`/admin/orders/${item.id}`}
                     buttonType="bordered"
                     prefix={<Eye size={18} weight="duotone" />}
-
                   />
                   <Button
                     className="h-8 w-8"
-                    kind='warning'
+                    kind="warning"
                     type="link"
                     href={`/admin/orders/mutate/${item.id}`}
                     prefix={<PencilSimpleLine size={15} weight="duotone" />}
@@ -131,13 +138,10 @@ const OrdersTableLisiting = () => {
                       toggleDeleteModel(true);
                     }}
                     prefix={<TrashSimple size={18} weight="duotone" />}
-
                   />
                 </td>
               </tr>
             ))}
-
-
           </tbody>
         </TableCard>
       </>

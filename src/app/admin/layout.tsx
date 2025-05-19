@@ -227,6 +227,19 @@ export default function TestLayout({
               link="/admin/events/event/mutate"
             />
           </SideBarNavGroup>
+          <SideBarNavGroup
+            title="Ticket Type"
+            segment="admin/events/ticket_type"
+          >
+            <SideBarNavLink
+              title="All Ticket Type"
+              link="/admin/events/ticket_type/all"
+            />
+            <SideBarNavLink
+              title="Add New Ticket Type"
+              link="/admin/events/ticket_type/mutate"
+            />
+          </SideBarNavGroup>
           <div className="my-2 border-t border-white/5"></div>
           {/* <SideBarNavTitle title="Settings" />
           <SideBarNavGroup title="Accounts" segment="admin/accounts">

@@ -94,7 +94,7 @@ const Page = () => {
   };
 
   const onSubmit = async (values: SoundSchemaType) => {
-    var finalRequestData: SoundRequestType = {
+    let finalRequestData: SoundRequestType = {
       ...values,
       genres: values.genres?.map((each) =>
         each.__isNew__

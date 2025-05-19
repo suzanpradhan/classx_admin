@@ -106,7 +106,7 @@ const Page = () => {
     }
   };
   const onSubmit = async (values: ReleasesSchemaType) => {
-    var finalRequestData: ReleasesRequestType = {
+    let finalRequestData: ReleasesRequestType = {
       ...values,
       genres: values.genres?.map((each) =>
         each.__isNew__

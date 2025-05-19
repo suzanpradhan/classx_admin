@@ -13,7 +13,7 @@ const performerApi = eventApi.injectEndpoints({
     // add
     addVenue: builder.mutation<any, EventPerformerSchemaType>({
       query: (payload) => {
-        var formData = new FormData();
+        let formData = new FormData();
         formData.append('id', String(payload.id));
         if (payload.event) formData.append('event', payload.event.value);
         if (payload.performer)
@@ -155,7 +155,7 @@ const performerApi = eventApi.injectEndpoints({
       EventPerformerSchemaType
     >({
       query: ({ id, ...payload }) => {
-        var formData = new FormData();
+        let formData = new FormData();
         if (payload.event) formData.append('event', payload.event.value);
         if (payload.performer)
           formData.append('performer', payload.performer.value);

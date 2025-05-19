@@ -2,22 +2,27 @@ import { eventApiPaths } from '@/core/api/apiConstants';
 import { eventApi } from '@/core/api/apiQuery';
 import { PaginatedResponseType } from '@/core/types/responseTypes';
 import { toast } from 'react-toastify';
-import { VenueDataType, VenueSchemaType } from './venueType';
+import { TicketTypeDataType, TicketTypeSchemaType } from './ticket_typeType';
 
-const venueApi = eventApi.injectEndpoints({
+const ticketTypeAPi = eventApi.injectEndpoints({
   endpoints: (builder) => ({
     // add
-    addVenue: builder.mutation<any, VenueSchemaType>({
+    addTicketType: builder.mutation<any, TicketTypeSchemaType>({
       query: (payload) => {
         let formData = new FormData();
         formData.append('id', String(payload.id));
         if (payload.name) formData.append('name', payload.name);
-        if (payload.city) formData.append('city', payload.city.value);
-        if (payload.image) formData.append('image', payload.image);
-        if (payload.description)
-          formData.append('description', payload.description);
+        if (payload.price) formData.append('price', payload.price);
+        if (payload.max_quantity_per_order)
+          formData.append(
+            'max_quantity_per_order',
+            payload.max_quantity_per_order.toString()
+          );
+        formData.append('stock.quantity', payload.stock.quantity.toString());
+        if (payload.event) formData.append('event', payload.event.value);
+
         return {
-          url: `${eventApiPaths.venueUrl}`,
+          url: `${eventApiPaths.ticketTypeUrl}`,
           method: 'POST',
           body: formData,
         };
@@ -25,34 +30,34 @@ const venueApi = eventApi.injectEndpoints({
       async onQueryStarted(payload, { queryFulfilled }) {
         try {
           await queryFulfilled;
-          toast.success('Venue Created.');
+          toast.success('Ticket Type Created.');
         } catch (err) {
           console.log(err);
-          toast.error('Failed creating a performer.');
+          toast.error('Failed creating a event ticket type.');
         }
       },
       transformResponse: (response: any) => {
         return response;
       },
-      invalidatesTags: [{ type: 'Venue', id: 'LIST' }],
+      invalidatesTags: [{ type: 'Ticket', id: 'LIST' }],
     }),
 
     // Get All
-    getAllVenue: builder.query<
-      PaginatedResponseType<VenueDataType>,
-      { pageNumber: string; searchString?: string }
+    getAllTicketType: builder.query<
+      PaginatedResponseType<TicketTypeDataType>,
+      number
     >({
-      query: ({ pageNumber, searchString }) =>
-        `${eventApiPaths.venueUrl}?page=${pageNumber}${searchString ? `&search=${searchString}` : ''}`,
+      query: (pageNumber) =>
+        `${eventApiPaths.ticketTypeUrl}?page=${pageNumber}`,
       providesTags: (response) =>
         response?.results
           ? [
               ...response.results.map(
-                ({ id }) => ({ type: 'Venue', id }) as const
+                ({ id }) => ({ type: 'Ticket', id }) as const
               ),
-              { type: 'Venue', id: 'LIST' },
+              { type: 'Ticket', id: 'LIST' },
             ]
-          : [{ type: 'Venue', id: 'LIST' }],
+          : [{ type: 'Ticket', id: 'LIST' }],
       serializeQueryArgs: ({ endpointName }) => {
         return endpointName;
       },
@@ -70,10 +75,10 @@ const venueApi = eventApi.injectEndpoints({
 
     // Get Each
 
-    getEachVenue: builder.query<VenueDataType, string>({
-      query: (venueId) => `${eventApiPaths.venueUrl}${venueId}/`,
+    getEachTicketType: builder.query<TicketTypeDataType, string>({
+      query: (ticketId) => `${eventApiPaths.ticketTypeUrl}${ticketId}/`,
       providesTags: (result, error, id) => {
-        return [{ type: 'Venue', id }];
+        return [{ type: 'Ticket', id }];
       },
       serializeQueryArgs: ({ queryArgs, endpointName }) => {
         return `${endpointName}("${queryArgs}")`;
@@ -87,47 +92,52 @@ const venueApi = eventApi.injectEndpoints({
         }
       },
       transformResponse: (response: any) => {
-        console.log('get each venue response', response);
+        console.log('get each ticket response', response);
         return response;
       },
     }),
 
     // delete
 
-    deleteVenue: builder.mutation<any, string>({
+    deleteTicketType: builder.mutation<any, string>({
       query(id) {
         return {
-          url: `${eventApiPaths.venueUrl}${id}/`,
+          url: `${eventApiPaths.ticketTypeUrl}${id}/`,
           method: 'DELETE',
         };
       },
       async onQueryStarted(payload, { queryFulfilled }) {
         try {
           await queryFulfilled;
-          toast.success('Venue has been deleted.');
+          toast.success('Ticket Type has been deleted.');
         } catch (err) {
-          console.error('Delete Venue Error:', err);
+          console.error('Delete Ticket Type Error:', err);
           toast.error(
-            'Failed to delete the Venue. Please check if the ID is correct.'
+            'Failed to delete the Event Performer. Please check if the ID is correct.'
           );
         }
       },
-      invalidatesTags: (result, error, id) => [{ type: 'Venue', id }],
+      invalidatesTags: (result, error, id) => [{ type: 'Ticket', id }],
     }),
 
     //  Update
-    updateVenue: builder.mutation<VenueDataType, VenueSchemaType>({
+    updateTicketType: builder.mutation<
+      TicketTypeDataType,
+      TicketTypeSchemaType
+    >({
       query: ({ id, ...payload }) => {
         let formData = new FormData();
         if (payload.name) formData.append('name', payload.name);
-        if (payload.city) formData.append('city', payload.city.value);
-        if (payload.image) formData.append('image', payload.image);
-
-        if (payload.description)
-          formData.append('description', payload.description);
-
+        if (payload.price) formData.append('price', payload.price);
+        if (payload.max_quantity_per_order)
+          formData.append(
+            'max_quantity_per_order',
+            payload.max_quantity_per_order.toString()
+          );
+        formData.append('stock.quantity', payload.stock.quantity.toString());
+        if (payload.event) formData.append('event', payload.event.value);
         return {
-          url: `${eventApiPaths.venueUrl}${id}/`,
+          url: `${eventApiPaths.ticketTypeUrl}${id}/`,
           method: 'PATCH',
           body: formData,
         };
@@ -135,16 +145,16 @@ const venueApi = eventApi.injectEndpoints({
       async onQueryStarted(payload, { queryFulfilled }) {
         try {
           await queryFulfilled;
-          toast.success('Venue  Updated.');
+          toast.success('Ticket Type Updated.');
         } catch (err) {
           console.log(err);
-          toast.error('Failed updating a Venue.');
+          toast.error('Failed updating a Ticket Type.');
         }
       },
-      invalidatesTags: (result, error, { id }) => [{ type: 'Venue', id: id! }],
+      invalidatesTags: (result, error, { id }) => [{ type: 'Ticket', id: id! }],
     }),
   }),
   overrideExisting: true,
 });
 
-export default venueApi;
+export default ticketTypeAPi;

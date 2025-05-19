@@ -1,4 +1,4 @@
-import DigitalDownloadTable from "./(components)/DigitalDownloadTable";
+import DigitalDownloadTable from './(components)/DigitalDownloadTable';
 
 const page = () => {
   return (

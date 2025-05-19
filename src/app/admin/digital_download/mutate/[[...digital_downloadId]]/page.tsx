@@ -5,9 +5,19 @@ import { useAppDispatch, useAppSelector } from '@/core/redux/clientStore';
 import { RootState } from '@/core/redux/store';
 import { PaginatedResponseType } from '@/core/types/responseTypes';
 import Selector from '@/core/ui/components/Selector';
-import { Button, FormCard, FormGroup, ImageInput, TextField } from '@/core/ui/zenbuddha/src';
+import {
+  Button,
+  FormCard,
+  FormGroup,
+  ImageInput,
+  TextField,
+} from '@/core/ui/zenbuddha/src';
 import digital_downloadApi from '@/modules/digital_download/digital_downloadApi';
-import { digital_downloadSchema, Digital_DownloadSchemaType, Digital_DownloadType } from '@/modules/digital_download/digital_downloadType';
+import {
+  digital_downloadSchema,
+  Digital_DownloadSchemaType,
+  Digital_DownloadType,
+} from '@/modules/digital_download/digital_downloadType';
 import releaseApi from '@/modules/releases/releasesApi';
 import { ReleasesType } from '@/modules/releases/releasesType';
 import { useFormik } from 'formik';
@@ -19,7 +29,8 @@ const Page = () => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const param = useParams();
-  const digital_downloadId = param.digital_downloadId && param.digital_downloadId[0];
+  const digital_downloadId =
+    param.digital_downloadId && param.digital_downloadId[0];
   const dispatch = useAppDispatch();
   // console.log(genresId)
 
@@ -29,10 +40,12 @@ const Page = () => {
       const fetchArtist = async () => {
         try {
           await dispatch(
-            digital_downloadApi.endpoints.getEachDigital.initiate(digital_downloadId)
+            digital_downloadApi.endpoints.getEachDigital.initiate(
+              digital_downloadId
+            )
           );
         } catch (error) {
-          console.error("Error fetching digital data:", error);
+          console.error('Error fetching digital data:', error);
         }
       };
 
@@ -49,7 +62,9 @@ const Page = () => {
       state.baseApi.queries[`getAllReleases`]
         ?.data as PaginatedResponseType<ReleasesType>
   );
-  const allReleaseMod = allRelease?.results.map((item) => { return { label: item.title, value: item.id.toString() } })
+  const allReleaseMod = allRelease?.results.map((item) => {
+    return { label: item.title, value: item.id.toString() };
+  });
 
   const onSubmit = async (values: Digital_DownloadSchemaType) => {
     if (isLoading) return;
@@ -58,14 +73,14 @@ const Page = () => {
     try {
       const data = digital_downloadId
         ? await dispatch(
-          digital_downloadApi.endpoints.updatedigital.initiate({
-            id: Number(digital_downloadId),
-            ...values,
-          })
-        ).unwrap()
+            digital_downloadApi.endpoints.updatedigital.initiate({
+              id: Number(digital_downloadId),
+              ...values,
+            })
+          ).unwrap()
         : await dispatch(
-          digital_downloadApi.endpoints.addigital.initiate(values)
-        ).unwrap();
+            digital_downloadApi.endpoints.addigital.initiate(values)
+          ).unwrap();
 
       if (data) router.push('/admin/digital_download/all');
     } catch (error) {
@@ -74,7 +89,6 @@ const Page = () => {
       setIsLoading(false);
     }
   };
-
 
   const validateForm = (values: Digital_DownloadSchemaType) => {
     try {
@@ -92,8 +106,15 @@ const Page = () => {
     initialValues: {
       id: toMutateDigitalData ? (toMutateDigitalData.id ?? null) : null,
       file: toMutateDigitalData ? null : null,
-      max_downloads: toMutateDigitalData ? toMutateDigitalData.max_downloads : 0,
-      release: toMutateDigitalData ? { value: toMutateDigitalData.release?.id.toString(), label: toMutateDigitalData.release?.title } : { value: '', label: '' },
+      max_downloads: toMutateDigitalData
+        ? toMutateDigitalData.max_downloads
+        : 0,
+      release: toMutateDigitalData
+        ? {
+            value: toMutateDigitalData.release?.id.toString(),
+            label: toMutateDigitalData.release?.title,
+          }
+        : { value: '', label: '' },
     },
     validate: validateForm,
     onSubmit,
@@ -102,7 +123,7 @@ const Page = () => {
   const handleFileChange = (event: any) => {
     const file = event.target.files[0];
     if (file) {
-      formik.setFieldValue("file", file);
+      formik.setFieldValue('file', file);
     }
   };
 
@@ -112,18 +133,16 @@ const Page = () => {
     { page }: any
   ) => {
     dispatch(
-      releaseApi.endpoints.getAllReleases.initiate(
-        { pageNumber: (allRelease.pagination.current_page + 1).toString(), searchString: searchQuery as string }
-      )
+      releaseApi.endpoints.getAllReleases.initiate({
+        pageNumber: (allRelease.pagination.current_page + 1).toString(),
+        searchString: searchQuery as string,
+      })
     );
     return {
       options: allReleaseMod,
-      hasMore:
-        allRelease?.pagination.next != null,
+      hasMore: allRelease?.pagination.next != null,
     };
   };
-
-
 
   return (
     <FormCard onSubmit={formik.handleSubmit} className="m-4">
@@ -135,22 +154,21 @@ const Page = () => {
                 id="release"
                 options={allReleaseMod}
                 loadPaginatedOptions={loadPaginatedRelease}
-                type='AsyncPaginate'
+                type="AsyncPaginate"
                 label="Release"
                 value={formik.values.release}
                 placeholder="Select release"
                 className="flex-1"
                 handleChange={(e) => {
-                  formik.setFieldValue(
-                    'release',
-                    e
-                  );
+                  formik.setFieldValue('release', e);
                 }}
                 name="release"
               ></Selector>
             )}
             {formik.errors.release && (
-              <div className="text-red-500 text-sm">{formik.errors.release}</div>
+              <div className="text-red-500 text-sm">
+                {formik.errors.release}
+              </div>
             )}
           </div>
           <div className="flex flex-col flex-1">
@@ -162,11 +180,11 @@ const Page = () => {
               {...formik.getFieldProps('max_downloads')}
             />
             {formik.errors.max_downloads && (
-              <div className="text-red-500 text-sm">{formik.errors.max_downloads}</div>
+              <div className="text-red-500 text-sm">
+                {formik.errors.max_downloads}
+              </div>
             )}
           </div>
-
-
         </div>
         <div className="flex flex-col flex-1">
           <ImageInput
@@ -181,7 +199,6 @@ const Page = () => {
             <div className="text-red-500 text-sm">{formik.errors?.file}</div>
           )}
         </div>
-
       </FormGroup>
       <div className="flex justify-end gap-2 m-4">
         <Button

@@ -142,7 +142,7 @@ const Page = () => {
             <TextField
               id="artist_ref"
               type="text"
-              label="Artist ref"
+              label="uuid"
               required
               className="flex-1"
               {...formik.getFieldProps('artist_ref')}

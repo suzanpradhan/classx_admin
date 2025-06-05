@@ -7,6 +7,7 @@ export const artistsSchema = z.object({
   name: z.string().pipe(nonempty),
   slug: z.string().optional(),
   bio: z.string(),
+  artist_ref: z.string(),
   profile_picture: imageFile.optional().nullable(),
 });
 export const artitstBookingSchema = z.object({
@@ -54,6 +55,7 @@ export type ArtistsType = {
   slug: string;
   name: string;
   bio: string;
+  artist_ref: string;
   profile_picture?: string;
 };
 

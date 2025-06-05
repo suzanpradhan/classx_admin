@@ -87,6 +87,7 @@ const Page = () => {
       id: toMutateArtistsData?.id ?? null,
       name: toMutateArtistsData?.name || '',
       bio: toMutateArtistsData?.bio || '',
+      artist_ref: toMutateArtistsData?.artist_ref || '',
       profile_picture: toMutateArtistsData ? null : null,
       slug: toMutateArtistsData ? toMutateArtistsData.slug : '',
     },
@@ -108,21 +109,20 @@ const Page = () => {
   return (
     <FormCard onSubmit={formik.handleSubmit} className="m-4">
       <FormGroup title="Basic Type">
+        <div className="flex flex-col flex-1 mb-2">
+          <TextField
+            id="name"
+            type="text"
+            label="Name"
+            required
+            className="flex-1"
+            {...formik.getFieldProps('name')}
+          />
+          {formik.errors.name && (
+            <div className="text-red-500 text-sm">{formik.errors.name}</div>
+          )}
+        </div>
         <div className="flex gap-2 mb-2 max-sm:flex-col">
-          <div className="flex flex-col flex-1">
-            <TextField
-              id="name"
-              type="text"
-              label="Name"
-              required
-              className="flex-1"
-              {...formik.getFieldProps('name')}
-            />
-            {formik.errors.name && (
-              <div className="text-red-500 text-sm">{formik.errors.name}</div>
-            )}
-          </div>
-
           <div className="flex flex-col flex-1">
             <ImageInput
               id="profile_picture"
@@ -135,6 +135,21 @@ const Page = () => {
             {formik.errors.profile_picture && (
               <div className="text-red-500 text-sm">
                 {formik.errors.profile_picture}
+              </div>
+            )}
+          </div>
+          <div className="flex flex-col flex-1">
+            <TextField
+              id="artist_ref"
+              type="text"
+              label="Artist ref"
+              required
+              className="flex-1"
+              {...formik.getFieldProps('artist_ref')}
+            />
+            {formik.errors.artist_ref && (
+              <div className="text-red-500 text-sm">
+                {formik.errors.artist_ref}
               </div>
             )}
           </div>

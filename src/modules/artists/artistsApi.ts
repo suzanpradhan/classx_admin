@@ -14,6 +14,7 @@ const artistsApi = baseApi.injectEndpoints({
         fromData.append('slug', String(payload.slug));
         fromData.append('name', String(payload.name));
         fromData.append('bio', String(payload.bio));
+        fromData.append('artist_ref', String(payload.artist_ref));
 
         if (payload.profile_picture)
           fromData.append('profile_picture', payload.profile_picture);
@@ -122,6 +123,7 @@ const artistsApi = baseApi.injectEndpoints({
 
         formData.append('name', String(payload.name));
         formData.append('bio', String(payload.bio));
+        formData.append('artist_ref', String(payload.artist_ref));
         if (payload.profile_picture)
           formData.append('profile_picture', payload.profile_picture);
 

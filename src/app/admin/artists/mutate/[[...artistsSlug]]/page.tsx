@@ -85,9 +85,9 @@ const Page = () => {
     enableReinitialize: true,
     initialValues: {
       id: toMutateArtistsData?.id ?? null,
-      name: toMutateArtistsData?.name || '',
-      bio: toMutateArtistsData?.bio || '',
-      artist_ref: toMutateArtistsData?.artist_ref || '',
+      name: toMutateArtistsData?.name ?? '',
+      bio: toMutateArtistsData?.bio ?? '',
+      artist_ref: toMutateArtistsData?.artist_ref ?? '',
       profile_picture: toMutateArtistsData ? null : null,
       slug: toMutateArtistsData ? toMutateArtistsData.slug : '',
     },

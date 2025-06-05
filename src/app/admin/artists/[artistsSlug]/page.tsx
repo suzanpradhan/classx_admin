@@ -10,7 +10,7 @@ import { PencilSimpleLine, TrashSimple, X } from 'phosphor-react';
 
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import ArtistsInfosTab from './(components)/AtristsDetailsTab';
+import ArtistsInfosTab from './(components)/ArtistsDetailsTab';
 
 export default function EachDetailPage() {
   const navigator = useRouter();

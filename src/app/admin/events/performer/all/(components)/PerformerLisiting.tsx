@@ -69,6 +69,7 @@ const PerformerLisiting = () => {
             <th className={tableStyles.table_th}>S.N.</th>
             <th className={tableStyles.table_th}>Event</th>
             <th className={tableStyles.table_th}>Performer</th>
+            <th className={tableStyles.table_th}>Uuid</th>
             <th className={tableStyles.table_th}>Action</th>
           </tr>
         </thead>
@@ -80,6 +81,9 @@ const PerformerLisiting = () => {
                 <td className={tableStyles.table_td}>{item?.event?.name}</td>
                 <td className={tableStyles.table_td}>
                   {item?.performer?.name}
+                </td>
+                <td className={tableStyles.table_td}>
+                  {item?.performer?.uuid}
                 </td>
 
                 <td className={tableStyles.table_td}>

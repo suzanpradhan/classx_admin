@@ -29,6 +29,10 @@ const ArtistsInfosTab = ({ artists }: { artists: ArtistsType }) => {
           <div className="text-sm text-black">Bio</div>
           <div className="text-base text-black">{parse(artists.bio)}</div>
         </div>
+        <div className="grid grid-cols-2 md:grid-cols-none">
+          <div className="text-sm text-black">Artist ref</div>
+          <div className="text-base text-black">{artists.artist_ref}</div>
+        </div>
       </div>
     </div>
   );

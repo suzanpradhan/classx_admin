@@ -9,18 +9,19 @@ const artistsApi = baseApi.injectEndpoints({
     // ADD
     addArtists: builder.mutation<any, ArtistsSchemaType>({
       query: (payload) => {
-        const fromData = new FormData();
-        fromData.append('id', String(payload.id));
-        fromData.append('slug', String(payload.slug));
-        fromData.append('name', String(payload.name));
-        fromData.append('bio', String(payload.bio));
+        const formData = new FormData();
+        formData.append('id', String(payload.id));
+        formData.append('slug', String(payload.slug));
+        formData.append('name', String(payload.name));
+        formData.append('bio', String(payload.bio));
+        formData.append('artist_ref', String(payload.artist_ref));
 
         if (payload.profile_picture)
-          fromData.append('profile_picture', payload.profile_picture);
+          formData.append('profile_picture', payload.profile_picture);
         return {
           url: `${apiPaths.artistsUrl}`,
           method: 'POST',
-          body: fromData,
+          body: formData,
         };
       },
       async onQueryStarted(payload, { queryFulfilled }) {
@@ -122,6 +123,7 @@ const artistsApi = baseApi.injectEndpoints({
 
         formData.append('name', String(payload.name));
         formData.append('bio', String(payload.bio));
+        formData.append('artist_ref', String(payload.artist_ref));
         if (payload.profile_picture)
           formData.append('profile_picture', payload.profile_picture);
 
